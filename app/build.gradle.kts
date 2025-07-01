@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.jubro"
+    namespace = "com.shlem666.jubro"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.jubro"
+        applicationId = "com.shlem666.jubro"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

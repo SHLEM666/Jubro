@@ -1,4 +1,4 @@
-package com.example.jubro.ui.theme
+package com.shlem666.jubro.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

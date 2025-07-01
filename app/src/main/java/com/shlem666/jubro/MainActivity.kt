@@ -1,4 +1,4 @@
-package com.example.jubro
+package com.shlem666.jubro
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.jubro.ui.theme.JubroTheme
+import com.shlem666.jubro.ui.theme.JubroTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

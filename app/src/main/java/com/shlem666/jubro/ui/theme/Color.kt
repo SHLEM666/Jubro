@@ -1,4 +1,4 @@
-package com.example.jubro.ui.theme
+package com.shlem666.jubro.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

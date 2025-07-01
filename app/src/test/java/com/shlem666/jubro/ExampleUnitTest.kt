@@ -1,4 +1,4 @@
-package com.example.jubro
+package com.shlem666.jubro
 
 import org.junit.Test
 

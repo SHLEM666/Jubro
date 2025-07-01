@@ -1,6 +1,5 @@
-package com.example.jubro.ui.theme
+package com.shlem666.jubro.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
