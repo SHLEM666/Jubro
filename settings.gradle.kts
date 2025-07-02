@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic") // include build-logic module
     repositories {
         google {
             content {
@@ -18,6 +19,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+// add support for type-safe project accessors
+//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "Jubro"
 include(":app")
