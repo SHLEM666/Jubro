@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.shlem666.jubro"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.shlem666.jubro"
