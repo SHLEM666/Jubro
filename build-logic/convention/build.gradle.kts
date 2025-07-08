@@ -43,15 +43,33 @@ tasks {
 }
 
 dependencies {
+    compileOnly(libs.compose.gradlePlugin)
+
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
 }
 
 gradlePlugin {
     plugins {
+        register("androidApplication") {
+            id = libs.plugins.jubro.android.application.asProvider().get().pluginId
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidApplicationCompose") {
+            id = libs.plugins.jubro.android.application.compose.get().pluginId
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
         register("androidLibrary") {
             id = libs.plugins.jubro.android.library.get().pluginId
             implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("hilt") {
+            id = libs.plugins.jubro.hilt.get().pluginId
+            implementationClass = "HiltConventionPlugin"
+        }
+        register("jvmLibrary") {
+            id = libs.plugins.jubro.jvm.library.get().pluginId
+            implementationClass = "JvmLibraryConventionPlugin"
         }
     }
 }

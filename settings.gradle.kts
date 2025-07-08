@@ -21,7 +21,7 @@ dependencyResolutionManagement {
 }
 
 // add support for type-safe project accessors
-//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "Jubro"
 include(":app")
