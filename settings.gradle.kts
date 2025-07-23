@@ -25,3 +25,9 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "Jubro"
 include(":app")
+include(":core:common")
+include(":core:model")
+include(":core:data")
+include(":core:datastore")
+include(":core:datastore-proto")
+include(":core:designsystem")
