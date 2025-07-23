@@ -60,8 +60,12 @@ gradlePlugin {
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("androidLibrary") {
-            id = libs.plugins.jubro.android.library.get().pluginId
+            id = libs.plugins.jubro.android.library.asProvider().get().pluginId
             implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("androidLibraryCompose") {
+            id = libs.plugins.jubro.android.library.compose.get().pluginId
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
         register("hilt") {
             id = libs.plugins.jubro.hilt.get().pluginId

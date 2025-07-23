@@ -52,6 +52,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 # Plugins defined by this project
 jubro-android-application = { id = "jubro.android.application" }
 jubro-android-application-compose = { id = "jubro.android.application.compose" }
+jubro-android-library-compose = { id = "jubro.android.library.compose" }
 jubro-android-library = { id = "jubro.android.library" }
 jubro-hilt = { id = "jubro.hilt" }
 jubro-jvm-library = { id = "jubro.jvm.library" }
