@@ -67,6 +67,10 @@ gradlePlugin {
             id = libs.plugins.jubro.android.library.compose.get().pluginId
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidFeature") {
+            id = libs.plugins.jubro.android.feature.get().pluginId
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
         register("hilt") {
             id = libs.plugins.jubro.hilt.get().pluginId
             implementationClass = "HiltConventionPlugin"

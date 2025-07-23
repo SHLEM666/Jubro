@@ -12,6 +12,11 @@ composeBom = "2025.07.00"
 hilt = "2.57"
 ksp = "2.2.0-2.0.2"
 androidDesugarJdkLibs = "2.1.5"
+androidxTracing = "1.3.0"
+androidxNavigation = "2.9.2"
+kotlinTest = "2.2.20-Beta1"
+androidxHiltNavigationCompose = "1.2.0"
+kotlinxSerializationJson = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,7 +43,12 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
+androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidxTracing" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -53,6 +63,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 jubro-android-application = { id = "jubro.android.application" }
 jubro-android-application-compose = { id = "jubro.android.application.compose" }
 jubro-android-library-compose = { id = "jubro.android.library.compose" }
-jubro-android-library = { id = "jubro.android.library" }
+jubro-android-feature = { id = "jubro.android.feature" }
 jubro-hilt = { id = "jubro.hilt" }
+jubro-android-library = { id = "jubro.android.library" }
 jubro-jvm-library = { id = "jubro.jvm.library" }
