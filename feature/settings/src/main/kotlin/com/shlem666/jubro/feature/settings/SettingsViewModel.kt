@@ -34,14 +34,35 @@ import kotlin.time.Duration.Companion.seconds
 class SettingsViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
+    val settingsUiState: StateFlow<SettingsUiState> =
+        userDataRepository.userData
+            .map { userData ->
+                Success(
+                    settings = UserEditableSettings(
+                        jupyterUrl = userData.jupyterUrl,
+                    ),
+                )
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = WhileSubscribed(5.seconds.inWholeMilliseconds),
+                initialValue = Loading,
+            )
 
+
+
+    fun updateJupyterUrl(pref: String) {
+        viewModelScope.launch {
+            userDataRepository.setJupyterUrlPreference(pref)
+        }
+    }
 }
 
 /**
  * Represents the settings which the user can edit within the app.
  */
 data class UserEditableSettings(
-    val useDynamicColor: Boolean,
+    val jupyterUrl: String,
 )
 
 sealed interface SettingsUiState {

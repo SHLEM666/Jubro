@@ -30,7 +30,7 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
         jubroPreferencesDataSource.userData
 
     @VisibleForTesting
-    override suspend fun setPref01Preference(pref: Boolean) {
-        jubroPreferencesDataSource.setPref01Preference(pref)
+    override suspend fun setJupyterUrlPreference(pref: String) {
+        jubroPreferencesDataSource.setJupyterUrlPreference(pref)
     }
 }

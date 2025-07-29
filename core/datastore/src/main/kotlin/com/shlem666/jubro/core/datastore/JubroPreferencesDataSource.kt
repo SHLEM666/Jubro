@@ -29,14 +29,14 @@ class JubroPreferencesDataSource @Inject constructor(
     val userData = userPreferences.data
         .map {
             UserData(
-                pref01 = it.pref01,
+                jupyterUrl = it.jupyterUrl,
             )
         }
 
-    suspend fun setPref01Preference(pref: Boolean) {
+    suspend fun setJupyterUrlPreference(pref: String) {
         try {
             userPreferences.updateData {
-                it.copy { this.pref01 = pref }
+                it.copy { this.jupyterUrl = pref }
             }
         } catch (ioException: IOException) {
             Log.e("JubroPreferences", "Failed to update user preferences", ioException)

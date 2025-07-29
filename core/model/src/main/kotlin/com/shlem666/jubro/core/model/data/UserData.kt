@@ -20,5 +20,5 @@ package com.shlem666.jubro.core.model.data
  * Class summarizing user interest data
  */
 data class UserData(
-    val pref01: Boolean,
+    val jupyterUrl: String,
 )

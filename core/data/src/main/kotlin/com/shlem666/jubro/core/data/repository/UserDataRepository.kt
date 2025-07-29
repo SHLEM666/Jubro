@@ -27,7 +27,7 @@ interface UserDataRepository {
     val userData: Flow<UserData>
 
     /**
-     * Sets the Pref01 value
+     * Sets the Jupyter URL value
      */
-    suspend fun setPref01Preference(pref: Boolean)
+    suspend fun setJupyterUrlPreference(pref: String)
 }
