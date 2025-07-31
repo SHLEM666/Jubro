@@ -1,6 +1,7 @@
 package com.shlem666.jubro.feature.settings
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -8,7 +9,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,32 +26,38 @@ fun SettingsDialog(
     onDismiss: () -> Unit,
 ) {
     val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
-    var firstAccess = true
-    var tempJupyterUrl by remember { mutableStateOf("") }
+    var firstAccess by rememberSaveable { mutableStateOf(true) }
+    var tempJupyterUrl by rememberSaveable { mutableStateOf("") }
+    // http://localhost:8888/tree/jupyter
+
+    @Composable
+    fun jupyterUrlField(): String {
+        return when (settingsUiState) {
+            is Loading -> {
+                stringResource(R.string.loading)
+            }
+            is Success -> {
+                if (firstAccess) {
+                    firstAccess = false
+                    tempJupyterUrl =
+                        (settingsUiState as Success).settings.jupyterUrl
+                }
+                tempJupyterUrl
+            }
+        }
+    }
 
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
         onDismissRequest = { /* Do nothing */ },
         title = {
-            Text(
-                stringResource(R.string.feature_settings_title)
-            )
+            Text( stringResource( R.string.feature_settings_title ) )
         },
         text = {
             TextField(
-                value = when (settingsUiState) {
-                    is Loading -> {
-                        stringResource(R.string.loading)
-                    }
-                    is Success -> {
-                        if (firstAccess) {
-                            firstAccess = false
-                            tempJupyterUrl = (settingsUiState as Success).settings.jupyterUrl
-                        }
-                        tempJupyterUrl
-                    }
-                },
+                value = jupyterUrlField(),
                 onValueChange = { tempJupyterUrl = it },
+                modifier = modifier.fillMaxWidth(),
                 label = {
                     Text( stringResource(R.string.jupyter_url) )
                 },
@@ -70,7 +77,7 @@ fun SettingsDialog(
         },
         dismissButton = {
             TextButton(
-                onClick = onDismiss
+                onClick = { onDismiss() }
             ) {
                 Text( stringResource(R.string.btn_cancel) )
             }
