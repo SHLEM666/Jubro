@@ -30,16 +30,64 @@ class JubroPreferencesDataSource @Inject constructor(
         .map {
             UserData(
                 jupyterUrl = it.jupyterUrl,
+                // !!! It needs to add corresponding suffix ("Map", "List", etc.) !!!
+                tabsUrls = it.tabsUrlsList,
             )
         }
 
-    suspend fun setJupyterUrlPreference(pref: String) {
+    suspend fun setJupyterUrl(jupyterUrl: String) {
         try {
             userPreferences.updateData {
-                it.copy { this.jupyterUrl = pref }
+                it.copy {
+                    this.jupyterUrl = jupyterUrl
+                }
             }
         } catch (ioException: IOException) {
             Log.e("JubroPreferences", "Failed to update user preferences", ioException)
         }
     }
+
+    suspend fun addTabsUrls(url: String) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    tabsUrls.add(url)
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun editTabsUrls(url: String, index: Int) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    val newTabsUrls = tabsUrls.toMutableList()
+                    newTabsUrls[index] = url
+                    tabsUrls.clear()
+                    tabsUrls.addAll(newTabsUrls)
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun removeTabUrl(index : Int) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    val newTabsUrls = tabsUrls.filterIndexed { i, it ->
+                        i != index
+                    }
+                    tabsUrls.clear()
+                    tabsUrls.addAll(newTabsUrls)
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update user preferences", ioException)
+        }
+    }
+
 }

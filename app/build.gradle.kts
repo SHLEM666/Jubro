@@ -31,8 +31,12 @@ android {
 
 dependencies {
 
+    implementation(projects.core.data)
     implementation(projects.core.designsystem)
+    implementation(projects.core.ui)
     implementation(projects.feature.settings)
+
+    implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -41,6 +45,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.appcompat)
 
     testImplementation(libs.junit)
 

@@ -26,8 +26,11 @@ interface UserDataRepository {
      */
     val userData: Flow<UserData>
 
-    /**
-     * Sets the Jupyter URL value
-     */
-    suspend fun setJupyterUrlPreference(pref: String)
+    suspend fun setJupyterUrl(jupyterUrl: String)
+
+    suspend fun addTabsUrls(url: String)
+
+    suspend fun editTabsUrls(newUrl: String, index: Int)
+
+    suspend fun removeTabsUrls(index: Int)
 }

@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package com.shlem666.jubro.core.model.data
+plugins {
+    alias(libs.plugins.jubro.android.library)
+    alias(libs.plugins.jubro.android.library.compose)
+}
 
-/**
- * Class summarizing user interest data
- */
-data class UserData(
-    val jupyterUrl: String,
-    val tabsUrls: MutableList<String>,
-)
+android {
+    namespace = "com.shlem666.jubro.core.ui"
+}
+
+dependencies {
+    implementation(libs.androidx.activity.compose)
+
+    api(projects.core.designsystem)
+}
