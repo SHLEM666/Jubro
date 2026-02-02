@@ -28,7 +28,6 @@ fun SettingsDialog(
     val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
     var firstAccess by rememberSaveable { mutableStateOf(true) }
     var tempJupyterUrl by rememberSaveable { mutableStateOf("") }
-    // http://localhost:8888/tree/jupyter
 
     @Composable
     fun jupyterUrlField(): String {
@@ -39,8 +38,8 @@ fun SettingsDialog(
             is Success -> {
                 if (firstAccess) {
                     firstAccess = false
-                    tempJupyterUrl =
-                        (settingsUiState as Success).settings.jupyterUrl
+                    tempJupyterUrl = (settingsUiState as Success)
+                        .settings.jupyterUrl
                 }
                 tempJupyterUrl
             }

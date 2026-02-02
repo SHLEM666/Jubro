@@ -20,8 +20,6 @@ option java_package = "com.shlem666.jubro.core.datastore";
 option java_multiple_files = true;
 
 message UserPreferences {
-
   string jupyterUrl = 1;
-
   // NEXT AVAILABLE ID: 2
 }

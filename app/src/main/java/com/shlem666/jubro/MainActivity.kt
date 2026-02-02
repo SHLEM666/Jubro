@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.shlem666.jubro.ui.JubroApp
 import com.shlem666.jubro.core.designsystem.theme.JubroTheme
+import com.shlem666.jubro.ui.JubroApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
