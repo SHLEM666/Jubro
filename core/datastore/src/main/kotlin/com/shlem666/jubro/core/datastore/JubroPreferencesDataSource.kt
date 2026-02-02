@@ -33,10 +33,12 @@ class JubroPreferencesDataSource @Inject constructor(
             )
         }
 
-    suspend fun setJupyterUrlPreference(pref: String) {
+    suspend fun setJupyterUrl(jupyterUrl: String) {
         try {
             userPreferences.updateData {
-                it.copy { this.jupyterUrl = pref }
+                it.copy {
+                    this.jupyterUrl = jupyterUrl
+                }
             }
         } catch (ioException: IOException) {
             Log.e("JubroPreferences", "Failed to update user preferences", ioException)

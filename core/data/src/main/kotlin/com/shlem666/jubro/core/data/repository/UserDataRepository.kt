@@ -29,5 +29,5 @@ interface UserDataRepository {
     /**
      * Sets the Jupyter URL value
      */
-    suspend fun setJupyterUrlPreference(pref: String)
+    suspend fun setJupyterUrl(jupyterUrl: String)
 }

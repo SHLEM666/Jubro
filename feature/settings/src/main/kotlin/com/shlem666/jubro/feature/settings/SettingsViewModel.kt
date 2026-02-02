@@ -51,9 +51,9 @@ class SettingsViewModel @Inject constructor(
 
 
 
-    fun updateJupyterUrl(pref: String) {
+    fun updateJupyterUrl(jupyterUrl: String) {
         viewModelScope.launch {
-            userDataRepository.setJupyterUrlPreference(pref)
+            userDataRepository.setJupyterUrl(jupyterUrl)
         }
     }
 }

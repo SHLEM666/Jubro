@@ -29,8 +29,8 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override val userData: Flow<UserData> =
         jubroPreferencesDataSource.userData
 
-    @VisibleForTesting
-    override suspend fun setJupyterUrlPreference(pref: String) {
-        jubroPreferencesDataSource.setJupyterUrlPreference(pref)
+    //@VisibleForTesting
+    override suspend fun setJupyterUrl(jupyterUrl: String) {
+        jubroPreferencesDataSource.setJupyterUrl(jupyterUrl)
     }
 }
