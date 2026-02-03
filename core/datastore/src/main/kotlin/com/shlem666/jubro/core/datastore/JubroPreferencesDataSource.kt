@@ -29,7 +29,11 @@ class JubroPreferencesDataSource @Inject constructor(
     val userData = userPreferences.data
         .map {
             UserData(
-                jupyterUrl = it.jupyterUrl,
+                jupyterUrl = if ( it.hasJupyterUrl() ) {
+                    it.jupyterUrl
+                } else {
+                    "http://localhost:8888/lab/"
+                },
             )
         }
 
