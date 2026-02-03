@@ -1,0 +1,1 @@
+jupyterapp.commands.execute('editmenu:undo');
