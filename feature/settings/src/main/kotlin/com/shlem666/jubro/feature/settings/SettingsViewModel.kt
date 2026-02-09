@@ -19,8 +19,8 @@ package com.shlem666.jubro.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shlem666.jubro.core.data.repository.UserDataRepository
-import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
-import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.feature.settings.UiState.Loading
+import com.shlem666.jubro.feature.settings.UiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
@@ -34,22 +34,25 @@ import kotlin.time.Duration.Companion.seconds
 class SettingsViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
-    val settingsUiState: StateFlow<SettingsUiState> =
+
+    val uiState: StateFlow<UiState> =
         userDataRepository.userData
             .map { userData ->
-                Success(
-                    settings = UserEditableSettings(
-                        jupyterUrl = userData.jupyterUrl,
-                    ),
-                )
+                if (userData.jupyterUrl.isEmpty()) {
+                    Loading
+                } else {
+                    Success(
+                        resources = DataStoreResources(
+                            jupyterUrl = userData.jupyterUrl
+                        ),
+                    )
+                }
             }
             .stateIn(
                 scope = viewModelScope,
                 started = WhileSubscribed(5.seconds.inWholeMilliseconds),
                 initialValue = Loading,
             )
-
-
 
     fun updateJupyterUrl(jupyterUrl: String) {
         viewModelScope.launch {
@@ -61,11 +64,11 @@ class SettingsViewModel @Inject constructor(
 /**
  * Represents the settings which the user can edit within the app.
  */
-data class UserEditableSettings(
+data class DataStoreResources(
     val jupyterUrl: String,
 )
 
-sealed interface SettingsUiState {
-    data object Loading : SettingsUiState
-    data class Success(val settings: UserEditableSettings) : SettingsUiState
+sealed interface UiState {
+    data object Loading : UiState
+    data class Success(val resources: DataStoreResources) : UiState
 }

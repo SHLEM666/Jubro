@@ -16,8 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
-import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.feature.settings.UiState.Loading
+import com.shlem666.jubro.feature.settings.UiState.Success
 
 @Composable
 fun SettingsDialog(
@@ -25,21 +25,21 @@ fun SettingsDialog(
     viewModel: SettingsViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
-    val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var firstAccess by rememberSaveable { mutableStateOf(true) }
     var tempJupyterUrl by rememberSaveable { mutableStateOf("") }
 
     @Composable
     fun jupyterUrlField(): String {
-        return when (settingsUiState) {
+        return when (uiState) {
             is Loading -> {
                 stringResource(R.string.loading)
             }
             is Success -> {
                 if (firstAccess) {
                     firstAccess = false
-                    tempJupyterUrl = (settingsUiState as Success)
-                        .settings.jupyterUrl
+                    tempJupyterUrl = (uiState as Success)
+                        .resources.jupyterUrl
                 }
                 tempJupyterUrl
             }
