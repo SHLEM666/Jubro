@@ -36,8 +36,8 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class JubroViewModel @Inject constructor(
-    private val userDataRepository: UserDataRepository,
-    @ApplicationContext private val context: Context,
+    userDataRepository: UserDataRepository,
+    @param:ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     @SuppressLint("StaticFieldLeak")
@@ -76,6 +76,9 @@ class JubroViewModel @Inject constructor(
     }
 }
 
+/**
+ * Represents the settings which the user can edit within the app.
+ */
 data class DataStoreResources(
     val jupyterUrl: String,
 )
