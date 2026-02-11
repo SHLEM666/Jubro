@@ -1,6 +1,8 @@
 package com.shlem666.jubro.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
@@ -11,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.unit.dp
@@ -28,14 +31,14 @@ fun JubroApp() {
     }
 
     Scaffold(
-        modifier = Modifier.imePadding(),
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.background)
+            .imePadding()
+            .displayCutoutPadding()
+        ,
         topBar = {
-            TopAppBar(
-                modifier = Modifier.height(80.dp),
-                title = { },
-                actions = { TopToolBarLayout(
-                    toggleSettingDialog = { showSettingsDialog = true }
-                ) },
+            TopToolBarLayout(
+                toggleSettingDialog = { showSettingsDialog = true }
             )
         },
         bottomBar = { BottomToolBarLayout() }
