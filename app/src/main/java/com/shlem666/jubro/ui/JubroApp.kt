@@ -2,8 +2,7 @@ package com.shlem666.jubro.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.displayCutoutPadding
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,18 +11,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
-import androidx.compose.ui.unit.dp
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.window.core.layout.WindowWidthSizeClass
 import com.shlem666.jubro.feature.settings.SettingsDialog
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JubroApp() {
-    var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
 
+    val sizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
+    val portrait = sizeClass == WindowWidthSizeClass.COMPACT
+
+    var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
     if (showSettingsDialog) {
         SettingsDialog(
             onDismiss = { showSettingsDialog = false },
@@ -34,20 +34,29 @@ fun JubroApp() {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .imePadding()
-            .displayCutoutPadding()
+            //.displayCutoutPadding()
         ,
         topBar = {
-            TopToolBarLayout(
-                toggleSettingDialog = { showSettingsDialog = true }
-            )
+            if (portrait) {
+                TopToolBarLayout(
+                    toggleSettingDialog = { showSettingsDialog = true }
+                )
+            }
         },
-        bottomBar = { BottomToolBarLayout() }
-
+        bottomBar = {
+            if (portrait) { BottomToolBarLayout() }
+        }
     ) { innerPadding ->
-        Box(
+        Row (
             Modifier.padding(innerPadding)
         ) {
-            JubroWebView()
+            if (!portrait) { LeftToolBarLayout() }
+            Box( modifier = Modifier.weight(1f) ) { JubroWebView() }
+            if (!portrait) {
+                RightToolBarLayout(
+                    toggleSettingDialog = { showSettingsDialog = true }
+                )
+            }
         }
     }
 }
