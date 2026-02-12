@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.shlem666.jubro.core.designsystem.component.JubroSettingsSwitchItem
 import com.shlem666.jubro.feature.settings.UiState.Loading
 import com.shlem666.jubro.feature.settings.UiState.Success
 
@@ -29,6 +30,7 @@ fun SettingsDialog(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var firstAccess by rememberSaveable { mutableStateOf(true) }
     var tempJupyterUrl by rememberSaveable { mutableStateOf("") }
+    var tempNotchPadding by rememberSaveable { mutableStateOf(false) }
 
     @Composable
     fun initTempUiState() {
@@ -39,6 +41,8 @@ fun SettingsDialog(
                     firstAccess = false
                     tempJupyterUrl = (uiState as Success)
                         .resources.jupyterUrl
+                    tempNotchPadding = (uiState as Success)
+                        .resources.notchPadding
                 }
             }
         }
@@ -55,6 +59,11 @@ fun SettingsDialog(
                     Text( stringResource(R.string.jupyter_url) )
                 },
                 singleLine = true,
+            )
+            JubroSettingsSwitchItem(
+                text = stringResource(R.string.notch_padding),
+                isChecked = tempNotchPadding,
+                onToggle = { tempNotchPadding = !tempNotchPadding },
             )
         }
     }
@@ -74,6 +83,7 @@ fun SettingsDialog(
             TextButton(
                 onClick = {
                     viewModel.updateJupyterUrl(tempJupyterUrl)
+                    viewModel.updateNotchPadding(tempNotchPadding)
                     onDismiss()
                 }
             ) {

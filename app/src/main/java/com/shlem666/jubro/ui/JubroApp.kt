@@ -3,6 +3,7 @@ package com.shlem666.jubro.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,11 +15,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.shlem666.jubro.feature.settings.SettingsDialog
 
 @Composable
-fun JubroApp() {
+fun JubroApp(
+    viewModel: JubroViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val notchPadding = when (uiState) {
+        is UiState.Loading -> {
+            false
+        }
+        is UiState.Success -> {
+            (uiState as UiState.Success).resources.notchPadding
+        }
+    }
 
     val sizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
     val portrait = sizeClass == WindowWidthSizeClass.COMPACT
@@ -34,7 +49,15 @@ fun JubroApp() {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .imePadding()
-            //.displayCutoutPadding()
+            .then(
+                if (
+                    notchPadding
+                ) {
+                    Modifier.displayCutoutPadding()
+                } else {
+                    Modifier
+                }
+            )
         ,
         topBar = {
             if (portrait) {

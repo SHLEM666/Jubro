@@ -21,4 +21,5 @@ package com.shlem666.jubro.core.model.data
  */
 data class UserData(
     val jupyterUrl: String,
+    val notchPadding: Boolean,
 )

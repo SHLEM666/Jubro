@@ -21,5 +21,6 @@ option java_multiple_files = true;
 
 message UserPreferences {
   optional string jupyterUrl = 1;
-  // NEXT AVAILABLE ID: 2
+  optional bool notchPadding = 2;
+  // NEXT AVAILABLE ID: 3
 }

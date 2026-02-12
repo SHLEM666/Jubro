@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import kotlin.Boolean
 import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
@@ -51,7 +52,8 @@ class JubroViewModel @Inject constructor(
                 } else {
                     Success(
                         resources = DataStoreResources(
-                            jupyterUrl = userData.jupyterUrl
+                            jupyterUrl = userData.jupyterUrl,
+                            notchPadding =  userData.notchPadding,
                         ),
                     )
                 }
@@ -81,6 +83,7 @@ class JubroViewModel @Inject constructor(
  */
 data class DataStoreResources(
     val jupyterUrl: String,
+    val notchPadding: Boolean,
 )
 
 sealed interface UiState {

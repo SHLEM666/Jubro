@@ -33,4 +33,7 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override suspend fun setJupyterUrl(jupyterUrl: String) {
         jubroPreferencesDataSource.setJupyterUrl(jupyterUrl)
     }
+    override suspend fun setNotchPadding(notchPadding: Boolean) {
+        jubroPreferencesDataSource.setNotchPadding(notchPadding)
+    }
 }

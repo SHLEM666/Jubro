@@ -43,7 +43,8 @@ class SettingsViewModel @Inject constructor(
                 } else {
                     Success(
                         resources = DataStoreResources(
-                            jupyterUrl = userData.jupyterUrl
+                            jupyterUrl = userData.jupyterUrl,
+                            notchPadding =  userData.notchPadding,
                         ),
                     )
                 }
@@ -59,6 +60,12 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setJupyterUrl(jupyterUrl)
         }
     }
+
+    fun updateNotchPadding(notchPadding: Boolean) {
+        viewModelScope.launch {
+            userDataRepository.setNotchPadding(notchPadding)
+        }
+    }
 }
 
 /**
@@ -66,6 +73,7 @@ class SettingsViewModel @Inject constructor(
  */
 data class DataStoreResources(
     val jupyterUrl: String,
+    val notchPadding: Boolean,
 )
 
 sealed interface UiState {

@@ -34,6 +34,11 @@ class JubroPreferencesDataSource @Inject constructor(
                 } else {
                     "http://localhost:8888/lab/"
                 },
+                notchPadding = if ( it.hasNotchPadding() ) {
+                    it.notchPadding
+                } else {
+                    false
+                },
             )
         }
 
@@ -45,7 +50,19 @@ class JubroPreferencesDataSource @Inject constructor(
                 }
             }
         } catch (ioException: IOException) {
-            Log.e("JubroPreferences", "Failed to update user preferences", ioException)
+            Log.e("JubroPreferences", "Failed to update jupyterUrl", ioException)
+        }
+    }
+
+    suspend fun setNotchPadding(notchPadding: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.notchPadding = notchPadding
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update notchPadding", ioException)
         }
     }
 }

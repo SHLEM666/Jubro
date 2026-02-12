@@ -30,4 +30,9 @@ interface UserDataRepository {
      * Sets the Jupyter URL value
      */
     suspend fun setJupyterUrl(jupyterUrl: String)
+
+    /**
+     * Sets the notchPadding value
+     */
+    suspend fun setNotchPadding(notchPadding: Boolean)
 }
