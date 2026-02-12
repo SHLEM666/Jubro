@@ -1,13 +1,14 @@
-package com.shlem666.jubro.ui
+package com.shlem666.jubro.ui.toolbars
 
 import android.view.KeyEvent.KEYCODE_DPAD_DOWN
 import android.view.KeyEvent.KEYCODE_DPAD_LEFT
 import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.KeyEvent.KEYCODE_DPAD_UP
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,30 +17,33 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowDown
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowLeft
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowRight
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowUp
-import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Redo
-import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
+import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
+import com.shlem666.jubro.ui.JubroViewModel
 
 @Composable
-fun BottomToolBarLayout(
+fun RightToolBarLayout(
+    toggleSettingDialog: () -> Unit,
     viewModel: JubroViewModel = hiltViewModel(),
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .navigationBarsPadding()
-            .fillMaxWidth()
+    Column(
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxHeight()
     ) {
-        Row {
+        Column {
             JubroIconButton(
-                onClick = { viewModel.evalJS("Undo.js") },
-                icon = Undo
+                onClick = { viewModel.evalJS("ToggleRightSideBar.js") },
+                icon = ViewSidebar
             )
             JubroIconButton(
-                onClick = { viewModel.evalJS("Redo.js") },
-                icon = Redo
+                onClick = { toggleSettingDialog() },
+                icon = Icons.Filled.Menu
             )
         }
-        Row {
+        Column {
+            JubroIconButton(
+                onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_UP) },
+                icon = KeyboardArrowUp
+            )
             JubroIconButton(
                 onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_LEFT) },
                 icon = KeyboardArrowLeft
@@ -47,10 +51,6 @@ fun BottomToolBarLayout(
             JubroIconButton(
                 onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_RIGHT) },
                 icon = KeyboardArrowRight
-            )
-            JubroIconButton(
-                onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_UP) },
-                icon = KeyboardArrowUp
             )
             JubroIconButton(
                 onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_DOWN) },

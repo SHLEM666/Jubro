@@ -19,6 +19,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.shlem666.jubro.feature.settings.SettingsDialog
+import com.shlem666.jubro.ui.toolbars.BottomToolBarLayout
+import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
+import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
+import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
 
 @Composable
 fun JubroApp(
@@ -67,13 +71,17 @@ fun JubroApp(
             }
         },
         bottomBar = {
-            if (portrait) { BottomToolBarLayout() }
+            if (portrait) {
+                BottomToolBarLayout()
+            }
         }
     ) { innerPadding ->
         Row (
             Modifier.padding(innerPadding)
         ) {
-            if (!portrait) { LeftToolBarLayout() }
+            if (!portrait) {
+                LeftToolBarLayout()
+            }
             Box( modifier = Modifier.weight(1f) ) { JubroWebView() }
             if (!portrait) {
                 RightToolBarLayout(
