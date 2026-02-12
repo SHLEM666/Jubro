@@ -39,6 +39,13 @@ class JubroPreferencesDataSource @Inject constructor(
                 } else {
                     false
                 },
+                hideStatusBarInLandscape = if (
+                    it.hasHideStatusBarInLandscape()
+                ) {
+                    it.hideStatusBarInLandscape
+                } else {
+                    false
+                },
             )
         }
 
@@ -63,6 +70,18 @@ class JubroPreferencesDataSource @Inject constructor(
             }
         } catch (ioException: IOException) {
             Log.e("JubroPreferences", "Failed to update notchPadding", ioException)
+        }
+    }
+
+    suspend fun setHideStatusBarInLandscape(hideStatusBarInLandscape: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.hideStatusBarInLandscape = hideStatusBarInLandscape
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update hideStatusBarInLandscape", ioException)
         }
     }
 }

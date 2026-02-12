@@ -45,6 +45,8 @@ class SettingsViewModel @Inject constructor(
                         resources = DataStoreResources(
                             jupyterUrl = userData.jupyterUrl,
                             notchPadding =  userData.notchPadding,
+                            hideStatusBarInLandscape =
+                                userData.hideStatusBarInLandscape,
                         ),
                     )
                 }
@@ -66,6 +68,16 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setNotchPadding(notchPadding)
         }
     }
+
+    fun updateHideStatusBarInLandscape(
+        hideStatusBarInLandscape: Boolean
+    ) {
+        viewModelScope.launch {
+            userDataRepository.setHideStatusBarInLandscape(
+                hideStatusBarInLandscape
+            )
+        }
+    }
 }
 
 /**
@@ -74,6 +86,7 @@ class SettingsViewModel @Inject constructor(
 data class DataStoreResources(
     val jupyterUrl: String,
     val notchPadding: Boolean,
+    val hideStatusBarInLandscape: Boolean,
 )
 
 sealed interface UiState {

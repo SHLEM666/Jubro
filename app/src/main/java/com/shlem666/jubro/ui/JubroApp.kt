@@ -27,6 +27,8 @@ import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
 @Composable
 fun JubroApp(
     viewModel: JubroViewModel = hiltViewModel(),
+    hideStatusBar: () -> Unit,
+    showStatusBar: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -36,6 +38,15 @@ fun JubroApp(
         }
         is UiState.Success -> {
             (uiState as UiState.Success).resources.notchPadding
+        }
+    }
+
+    val hideStatusBar = when (uiState) {
+        is UiState.Loading -> {
+            false
+        }
+        is UiState.Success -> {
+            (uiState as UiState.Success).resources.hideStatusBarInLandscape
         }
     }
 
@@ -49,19 +60,16 @@ fun JubroApp(
         )
     }
 
+    val conditionalModifiers = Modifier
+        .then(if (notchPadding) {
+            Modifier.displayCutoutPadding()
+        } else { Modifier } )
+
     Scaffold(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .imePadding()
-            .then(
-                if (
-                    notchPadding
-                ) {
-                    Modifier.displayCutoutPadding()
-                } else {
-                    Modifier
-                }
-            )
+            .then(conditionalModifiers)
         ,
         topBar = {
             if (portrait) {
@@ -76,6 +84,8 @@ fun JubroApp(
             }
         }
     ) { innerPadding ->
+        if (portrait || !hideStatusBar) { showStatusBar() }
+        if (!portrait && hideStatusBar) { hideStatusBar() }
         Row (
             Modifier.padding(innerPadding)
         ) {

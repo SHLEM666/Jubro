@@ -22,5 +22,6 @@ option java_multiple_files = true;
 message UserPreferences {
   optional string jupyterUrl = 1;
   optional bool notchPadding = 2;
-  // NEXT AVAILABLE ID: 3
+  optional bool hideStatusBarInLandscape = 3;
+  // NEXT AVAILABLE ID: 4
 }

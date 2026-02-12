@@ -3,6 +3,7 @@
     <string name="feature_settings_title">Settings</string>
     <string name="jupyter_url">Jupyter URL</string>
     <string name="notch_padding">Notch padding in landscape</string>
+    <string name="hide_status_bar_in_landscape">Hide status bar in landscape</string>
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
     <string name="loading">LOADING…</string>

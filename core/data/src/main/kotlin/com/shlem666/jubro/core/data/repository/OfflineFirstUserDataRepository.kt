@@ -36,4 +36,12 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override suspend fun setNotchPadding(notchPadding: Boolean) {
         jubroPreferencesDataSource.setNotchPadding(notchPadding)
     }
+
+    override suspend fun setHideStatusBarInLandscape(
+        hideStatusBarInLandscape: Boolean
+    ) {
+        jubroPreferencesDataSource.setHideStatusBarInLandscape(
+            hideStatusBarInLandscape
+        )
+    }
 }
