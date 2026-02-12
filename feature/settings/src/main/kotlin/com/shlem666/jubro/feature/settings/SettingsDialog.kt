@@ -1,5 +1,6 @@
 package com.shlem666.jubro.feature.settings
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
@@ -30,31 +31,24 @@ fun SettingsDialog(
     var tempJupyterUrl by rememberSaveable { mutableStateOf("") }
 
     @Composable
-    fun jupyterUrlField(): String {
-        return when (uiState) {
-            is Loading -> {
-                stringResource(R.string.loading)
-            }
+    fun initTempUiState() {
+        when (uiState) {
+            is Loading -> { }
             is Success -> {
                 if (firstAccess) {
                     firstAccess = false
                     tempJupyterUrl = (uiState as Success)
                         .resources.jupyterUrl
                 }
-                tempJupyterUrl
             }
         }
     }
 
-    AlertDialog(
-        properties = DialogProperties(usePlatformDefaultWidth = false),
-        onDismissRequest = { /* Do nothing */ },
-        title = {
-            Text( stringResource( R.string.feature_settings_title ) )
-        },
-        text = {
+    @Composable
+    fun settingsItems() {
+        Column {
             TextField(
-                value = jupyterUrlField(),
+                value = tempJupyterUrl,
                 onValueChange = { tempJupyterUrl = it },
                 modifier = modifier.fillMaxWidth(),
                 label = {
@@ -62,6 +56,18 @@ fun SettingsDialog(
                 },
                 singleLine = true,
             )
+        }
+    }
+
+    initTempUiState()
+    AlertDialog(
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+        onDismissRequest = { /* Do nothing */ },
+        title = {
+            Text( stringResource( R.string.feature_settings_title ) )
+        },
+        text = {
+            settingsItems()
         },
         modifier = modifier.fillMaxSize(),
         confirmButton = {
