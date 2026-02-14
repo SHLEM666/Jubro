@@ -23,6 +23,8 @@ import com.shlem666.jubro.ui.toolbars.BottomToolBarLayout
 import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
 import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
 import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
+import com.shlem666.jubro.ui.UiState.Loading
+import com.shlem666.jubro.ui.UiState.Success
 
 @Composable
 fun JubroApp(
@@ -31,27 +33,20 @@ fun JubroApp(
     showStatusBar: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var notchPadding by rememberSaveable { mutableStateOf(false) }
+    var hideStatusBar by rememberSaveable { mutableStateOf(false) }
+    val portrait = currentWindowAdaptiveInfo().windowSizeClass
+        .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
 
-    val notchPadding = when (uiState) {
-        is UiState.Loading -> {
-            false
-        }
-        is UiState.Success -> {
-            (uiState as UiState.Success).resources.notchPadding
+    when (uiState) {
+        is Loading -> { }
+        is Success -> {
+            notchPadding = (uiState as Success)
+                .resources.notchPadding
+            hideStatusBar = (uiState as Success)
+                .resources.hideStatusBarInLandscape
         }
     }
-
-    val hideStatusBar = when (uiState) {
-        is UiState.Loading -> {
-            false
-        }
-        is UiState.Success -> {
-            (uiState as UiState.Success).resources.hideStatusBarInLandscape
-        }
-    }
-
-    val sizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
-    val portrait = sizeClass == WindowWidthSizeClass.COMPACT
 
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
     if (showSettingsDialog) {

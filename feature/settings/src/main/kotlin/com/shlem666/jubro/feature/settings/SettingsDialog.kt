@@ -33,20 +33,17 @@ fun SettingsDialog(
     var tempNotchPadding by rememberSaveable { mutableStateOf(false) }
     var tempHideStatusBarInLandscape by rememberSaveable { mutableStateOf(false) }
 
-    @Composable
-    fun initTempUiState() {
-        when (uiState) {
-            is Loading -> { }
-            is Success -> {
-                if (firstAccess) {
-                    firstAccess = false
-                    tempJupyterUrl = (uiState as Success)
-                        .resources.jupyterUrl
-                    tempNotchPadding = (uiState as Success)
-                        .resources.notchPadding
-                    tempHideStatusBarInLandscape = (uiState as Success)
-                        .resources.hideStatusBarInLandscape
-                }
+    when (uiState) {
+        is Loading -> { }
+        is Success -> {
+            if (firstAccess) {
+                firstAccess = false
+                tempJupyterUrl = (uiState as Success)
+                    .resources.jupyterUrl
+                tempNotchPadding = (uiState as Success)
+                    .resources.notchPadding
+                tempHideStatusBarInLandscape = (uiState as Success)
+                    .resources.hideStatusBarInLandscape
             }
         }
     }
@@ -71,12 +68,13 @@ fun SettingsDialog(
             JubroSettingsSwitchItem(
                 text = stringResource(R.string.hide_status_bar_in_landscape),
                 isChecked = tempHideStatusBarInLandscape,
-                onToggle = { tempHideStatusBarInLandscape = !tempHideStatusBarInLandscape },
+                onToggle = {
+                    tempHideStatusBarInLandscape = !tempHideStatusBarInLandscape
+                },
             )
         }
     }
 
-    initTempUiState()
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
         onDismissRequest = { /* Do nothing */ },
