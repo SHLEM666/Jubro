@@ -23,4 +23,5 @@ data class UserData(
     val jupyterUrl: String,
     val notchPadding: Boolean,
     val hideStatusBarInLandscape: Boolean,
+    val screenOrient: Int,
 )

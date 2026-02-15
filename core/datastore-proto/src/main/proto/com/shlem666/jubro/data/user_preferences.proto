@@ -23,5 +23,6 @@ message UserPreferences {
   optional string jupyterUrl = 1;
   optional bool notchPadding = 2;
   optional bool hideStatusBarInLandscape = 3;
-  // NEXT AVAILABLE ID: 4
+  optional sint32 screenOrient = 4;
+  // NEXT AVAILABLE ID: 5
 }

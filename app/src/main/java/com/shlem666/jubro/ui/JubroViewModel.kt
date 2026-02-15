@@ -55,6 +55,7 @@ class JubroViewModel @Inject constructor(
                             jupyterUrl = userData.jupyterUrl,
                             notchPadding =  userData.notchPadding,
                             hideStatusBarInLandscape = userData.hideStatusBarInLandscape,
+                            screenOrient = userData.screenOrient,
                         ),
                     )
                 }
@@ -86,6 +87,7 @@ data class DataStoreResources(
     val jupyterUrl: String,
     val notchPadding: Boolean,
     val hideStatusBarInLandscape: Boolean,
+    val screenOrient: Int,
 )
 
 sealed interface UiState {

@@ -44,4 +44,8 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
             hideStatusBarInLandscape
         )
     }
+
+    override suspend fun setScreenOrient(screenOrient: Int) {
+        jubroPreferencesDataSource.setScreenOrient(screenOrient)
+    }
 }

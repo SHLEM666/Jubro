@@ -40,4 +40,9 @@ interface UserDataRepository {
      * Sets the hideStatusBarInLandscape value
      */
     suspend fun setHideStatusBarInLandscape(hideStatusBarInLandscape: Boolean)
+
+    /**
+     * Sets the screenOrient value
+     */
+    suspend fun setScreenOrient(screenOrient: Int)
 }

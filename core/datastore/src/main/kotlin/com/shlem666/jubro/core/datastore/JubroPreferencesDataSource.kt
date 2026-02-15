@@ -16,6 +16,7 @@
 
 package com.shlem666.jubro.core.datastore
 
+import android.content.pm.ActivityInfo
 import android.util.Log
 import androidx.datastore.core.DataStore
 import com.shlem666.jubro.core.model.data.UserData
@@ -45,6 +46,13 @@ class JubroPreferencesDataSource @Inject constructor(
                     it.hideStatusBarInLandscape
                 } else {
                     false
+                },
+                screenOrient = if (
+                    it.hasScreenOrient()
+                ) {
+                    it.screenOrient
+                } else {
+                    ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 },
             )
         }
@@ -82,6 +90,18 @@ class JubroPreferencesDataSource @Inject constructor(
             }
         } catch (ioException: IOException) {
             Log.e("JubroPreferences", "Failed to update hideStatusBarInLandscape", ioException)
+        }
+    }
+
+    suspend fun setScreenOrient(screenOrient: Int) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.screenOrient = screenOrient
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update screenOrient", ioException)
         }
     }
 }

@@ -9,6 +9,9 @@ import androidx.compose.material.icons.automirrored.outlined.ViewSidebar
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.ScreenLockLandscape
+import androidx.compose.material.icons.filled.ScreenLockPortrait
+import androidx.compose.material.icons.filled.ScreenRotation
 
 object JubroIcons {
     val ViewSidebar = Icons.AutoMirrored.Outlined.ViewSidebar
@@ -19,4 +22,7 @@ object JubroIcons {
     val KeyboardArrowRight = Icons.AutoMirrored.Filled.KeyboardArrowRight
     val KeyboardArrowUp = Icons.Filled.KeyboardArrowUp
     val KeyboardArrowDown = Icons.Filled.KeyboardArrowDown
+    val ScreenRotation = Icons.Filled.ScreenRotation
+    val ScreenLockPortrait = Icons.Filled.ScreenLockPortrait
+    val ScreenLockLandscape = Icons.Filled.ScreenLockLandscape
 }

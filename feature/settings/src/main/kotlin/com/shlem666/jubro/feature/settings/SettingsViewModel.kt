@@ -47,6 +47,7 @@ class SettingsViewModel @Inject constructor(
                             notchPadding =  userData.notchPadding,
                             hideStatusBarInLandscape =
                                 userData.hideStatusBarInLandscape,
+                            screenOrient = userData.screenOrient,
                         ),
                     )
                 }
@@ -78,6 +79,16 @@ class SettingsViewModel @Inject constructor(
             )
         }
     }
+
+    fun updateScreenOrient(
+        screenOrient: Int
+    ) {
+        viewModelScope.launch {
+            userDataRepository.setScreenOrient(
+                screenOrient
+            )
+        }
+    }
 }
 
 /**
@@ -87,6 +98,7 @@ data class DataStoreResources(
     val jupyterUrl: String,
     val notchPadding: Boolean,
     val hideStatusBarInLandscape: Boolean,
+    val screenOrient: Int,
 )
 
 sealed interface UiState {

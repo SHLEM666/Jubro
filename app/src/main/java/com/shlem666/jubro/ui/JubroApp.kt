@@ -1,5 +1,7 @@
 package com.shlem666.jubro.ui
 
+import android.content.pm.ActivityInfo
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -35,6 +39,9 @@ fun JubroApp(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var notchPadding by rememberSaveable { mutableStateOf(false) }
     var hideStatusBar by rememberSaveable { mutableStateOf(false) }
+    var screenOrient by rememberSaveable { mutableIntStateOf(
+        ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    ) }
     val portrait = currentWindowAdaptiveInfo().windowSizeClass
         .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
 
@@ -45,6 +52,8 @@ fun JubroApp(
                 .resources.notchPadding
             hideStatusBar = (uiState as Success)
                 .resources.hideStatusBarInLandscape
+            screenOrient = (uiState as Success)
+                .resources.screenOrient
         }
     }
 
@@ -55,10 +64,29 @@ fun JubroApp(
         )
     }
 
-    val conditionalModifiers = Modifier
-        .then(if (notchPadding) {
+    val conditionalModifiers = Modifier.then(
+        if (notchPadding) {
             Modifier.displayCutoutPadding()
-        } else { Modifier } )
+        } else {
+            Modifier
+        }
+    )
+
+    @Composable
+    fun LockScreenOrientation(orientation: Int) {
+        val activity = LocalActivity.current
+        DisposableEffect(orientation) {
+            val activity = activity ?: return@DisposableEffect onDispose { }
+            val originalOrientation = activity.requestedOrientation
+            activity.requestedOrientation = orientation
+            onDispose {
+                // restore original orientation when view disappears
+                activity.requestedOrientation = originalOrientation
+            }
+        }
+    }
+
+    LockScreenOrientation(screenOrient)
 
     Scaffold(
         modifier = Modifier
