@@ -42,7 +42,6 @@ fun SettingsDialog(
     onDismiss: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var firstAccess by rememberSaveable { mutableStateOf(true) }
     var tempJupyterUrl by rememberSaveable { mutableStateOf("") }
     var tempNotchPadding by rememberSaveable { mutableStateOf(false) }
     var tempHideStatusBarInLandscape by rememberSaveable { mutableStateOf(false) }
@@ -53,22 +52,35 @@ fun SettingsDialog(
     when (uiState) {
         is Loading -> { }
         is Success -> {
-            if (firstAccess) {
-                firstAccess = false
-                tempJupyterUrl = (uiState as Success)
-                    .resources.jupyterUrl
-                tempNotchPadding = (uiState as Success)
-                    .resources.notchPadding
-                tempHideStatusBarInLandscape = (uiState as Success)
-                    .resources.hideStatusBarInLandscape
-                tempScreenOrient = (uiState as Success)
-                    .resources.screenOrient
-            }
+            tempJupyterUrl = (uiState as Success)
+                .resources.jupyterUrl
+            tempNotchPadding = (uiState as Success)
+                .resources.notchPadding
+            tempHideStatusBarInLandscape = (uiState as Success)
+                .resources.hideStatusBarInLandscape
+            tempScreenOrient = (uiState as Success)
+                .resources.screenOrient
         }
     }
 
     @Composable
-    fun DeviceOrientationItem() {
+    fun JupyterURLItem() {
+        TextField(
+            value = tempJupyterUrl,
+            onValueChange = { tempJupyterUrl = it },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+            ,
+            label = {
+                Text( stringResource(R.string.jupyter_url) )
+            },
+            singleLine = true,
+        )
+    }
+
+    @Composable
+    fun OrientationControlItem() {
         val pairs = listOf(
             Pair(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED, ScreenRotation),
             Pair(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, ScreenLockPortrait),
@@ -106,19 +118,8 @@ fun SettingsDialog(
             modifier = Modifier
                 .verticalScroll( state = rememberScrollState() ),
         ) {
-            DeviceOrientationItem()
-            TextField(
-                value = tempJupyterUrl,
-                onValueChange = { tempJupyterUrl = it },
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-                ,
-                label = {
-                    Text( stringResource(R.string.jupyter_url) )
-                },
-                singleLine = true,
-            )
+            OrientationControlItem()
+            JupyterURLItem()
             JubroSettingsSwitchItem(
                 text = stringResource(R.string.notch_padding),
                 isChecked = tempNotchPadding,
