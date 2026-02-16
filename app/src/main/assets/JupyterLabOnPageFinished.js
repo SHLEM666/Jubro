@@ -8,7 +8,14 @@
 			//elem.innerHTML += "select {display: none;}";
 			document.body.appendChild(elem);
 			document.addEventListener('contextmenu', (e) => {
-				if (e.target.closest('.jp-CodeMirrorEditor')) {
+				if (
+				    //e.target.closest('.jp-CodeMirrorEditor') ||
+				    //e.target.closest('.jp-RenderedMarkdown') ||
+                    //e.target.closest('.jp-RenderedText') ||
+                    //e.target.closest('.jp-OutputArea') ||
+                    //e.target.closest('.jp-InputArea') ||
+                    e.target.closest('.jp-Cell')
+				) {
 					e.stopImmediatePropagation();
 					e.stopPropagation();
 				}
