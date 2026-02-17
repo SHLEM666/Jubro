@@ -42,8 +42,13 @@ fun JubroApp(
     var screenOrient by rememberSaveable { mutableIntStateOf(
         ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     ) }
-    val portrait = currentWindowAdaptiveInfo().windowSizeClass
-        .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
+
+    var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
+    if (showSettingsDialog) {
+        SettingsDialog(
+            onDismiss = { showSettingsDialog = false },
+        )
+    }
 
     when (uiState) {
         is Loading -> { }
@@ -57,20 +62,10 @@ fun JubroApp(
         }
     }
 
-    var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
-    if (showSettingsDialog) {
-        SettingsDialog(
-            onDismiss = { showSettingsDialog = false },
-        )
-    }
-
-    val conditionalModifiers = Modifier.then(
-        if (notchPadding) {
-            Modifier.displayCutoutPadding()
-        } else {
-            Modifier
-        }
-    )
+    val portrait = currentWindowAdaptiveInfo().windowSizeClass
+        .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
+    if (portrait || !hideStatusBar) { showStatusBar() }
+    if (!portrait && hideStatusBar) { hideStatusBar() }
 
     @Composable
     fun LockScreenOrientation(orientation: Int) {
@@ -92,7 +87,9 @@ fun JubroApp(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .imePadding()
-            .then(conditionalModifiers)
+            .then(if (notchPadding) {
+                Modifier.displayCutoutPadding()
+            } else { Modifier } )
         ,
         topBar = {
             if (portrait) {
@@ -101,20 +98,12 @@ fun JubroApp(
                 )
             }
         },
-        bottomBar = {
-            if (portrait) {
-                BottomToolBarLayout()
-            }
-        }
+        bottomBar = { if (portrait) { BottomToolBarLayout() } }
     ) { innerPadding ->
-        if (portrait || !hideStatusBar) { showStatusBar() }
-        if (!portrait && hideStatusBar) { hideStatusBar() }
         Row (
             Modifier.padding(innerPadding)
         ) {
-            if (!portrait) {
-                LeftToolBarLayout()
-            }
+            if (!portrait) { LeftToolBarLayout() }
             Box( modifier = Modifier.weight(1f) ) { JubroWebView() }
             if (!portrait) {
                 RightToolBarLayout(
