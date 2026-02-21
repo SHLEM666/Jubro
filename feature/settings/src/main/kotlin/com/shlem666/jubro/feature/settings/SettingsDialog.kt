@@ -15,7 +15,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -42,120 +41,34 @@ fun SettingsDialog(
     onDismiss: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var tempJupyterUrl by rememberSaveable { mutableStateOf("") }
-    var tempNotchPadding by rememberSaveable { mutableStateOf(false) }
-    var tempHideStatusBarInLandscape by rememberSaveable { mutableStateOf(false) }
-    var tempScreenOrient by rememberSaveable { mutableIntStateOf(
-        ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-    ) }
-
-    when (uiState) {
-        is Loading -> { }
-        is Success -> {
-            tempJupyterUrl = (uiState as Success)
-                .resources.jupyterUrl
-            tempNotchPadding = (uiState as Success)
-                .resources.notchPadding
-            tempHideStatusBarInLandscape = (uiState as Success)
-                .resources.hideStatusBarInLandscape
-            tempScreenOrient = (uiState as Success)
-                .resources.screenOrient
-        }
-    }
-
-    @Composable
-    fun JupyterURLItem() {
-        TextField(
-            value = tempJupyterUrl,
-            onValueChange = { tempJupyterUrl = it },
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
-            ,
-            label = {
-                Text( stringResource(R.string.jupyter_url) )
-            },
-            singleLine = true,
-        )
-    }
-
-    @Composable
-    fun OrientationControlItem() {
-        val pairs = listOf(
-            Pair(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED, ScreenRotation),
-            Pair(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, ScreenLockPortrait),
-            Pair(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ScreenLockLandscape),
-            Pair(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE, ScreenLockLandscape),
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
-            ,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround,
-        ) {
-            pairs.forEach { pair ->
-                JubroOrientButton(
-                    modifier = Modifier
-                        .then(if (
-                            pair.first == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
-                        ) {
-                            Modifier.scale(scaleX = 1f, scaleY = -1f)
-                        } else { Modifier } )
-                    ,
-                    activated = pair.first == tempScreenOrient,
-                    onClick = { tempScreenOrient = pair.first },
-                    icon = pair.second,
-                )
-            }
-        }
-    }
-
-    @Composable
-    fun settingsItems() {
-        Column(
-            modifier = Modifier
-                .verticalScroll( state = rememberScrollState() ),
-        ) {
-            OrientationControlItem()
-            JupyterURLItem()
-            JubroSettingsSwitchItem(
-                text = stringResource(R.string.notch_padding),
-                isChecked = tempNotchPadding,
-                onToggle = { tempNotchPadding = !tempNotchPadding },
-            )
-            JubroSettingsSwitchItem(
-                text = stringResource(R.string.hide_status_bar_in_landscape),
-                isChecked = tempHideStatusBarInLandscape,
-                onToggle = {
-                    tempHideStatusBarInLandscape = !tempHideStatusBarInLandscape
-                },
-            )
-        }
-    }
+    var onConfirm = { onDismiss() }
 
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
-        onDismissRequest = { /* Do nothing */ },
-        title = {
-            Text( stringResource( R.string.feature_settings_title ) )
-        },
+        onDismissRequest = { onDismiss() },
+        title = { Text( stringResource(R.string.feature_settings_title) ) },
         text = {
-            settingsItems()
+            when (uiState) {
+                is Loading -> {
+                    Text( stringResource(R.string.loading) )
+                }
+                is Success -> {
+                    SettingsItems(
+                        resources = (uiState as Success).resources,
+                        updateOnConfirm = { tempSettings ->
+                            onConfirm = {
+                                viewModel.applySettings(tempSettings)
+                                onDismiss()
+                            }
+                        },
+                    )
+                }
+            }
         },
         modifier = modifier.fillMaxSize(),
         confirmButton = {
             TextButton(
-                onClick = {
-                    viewModel.updateJupyterUrl(tempJupyterUrl)
-                    viewModel.updateNotchPadding(tempNotchPadding)
-                    viewModel.updateHideStatusBarInLandscape(
-                        tempHideStatusBarInLandscape
-                    )
-                    viewModel.updateScreenOrient(tempScreenOrient)
-                    onDismiss()
-                }
+                onClick = { onConfirm() }
             ) {
                 Text( stringResource(R.string.btn_save) )
             }
@@ -167,5 +80,105 @@ fun SettingsDialog(
                 Text( stringResource(R.string.btn_cancel) )
             }
         },
+    )
+}
+
+@Composable
+fun SettingsItems(
+    resources: DataStoreResources,
+    updateOnConfirm: (DataStoreResources) -> Unit,
+) {
+    var tempSettings by rememberSaveable(
+        stateSaver = DataStoreResources.Saver
+    ) {
+        mutableStateOf(resources)
+    }
+    updateOnConfirm(tempSettings)
+
+    Column(
+        modifier = Modifier
+            .verticalScroll( state = rememberScrollState() ),
+    ) {
+        OrientationControlItem(
+            screenOrient = tempSettings.screenOrient,
+            onScreenOrientChange = {
+                tempSettings = tempSettings.copy(screenOrient = it)
+            }
+        )
+        JupyterURLItem(
+            value = tempSettings.jupyterUrl,
+            onValueChange = {
+                tempSettings = tempSettings.copy(jupyterUrl = it)
+            }
+        )
+        JubroSettingsSwitchItem(
+            text = stringResource(R.string.notch_padding),
+            isChecked = tempSettings.notchPadding,
+            onToggle = {
+                tempSettings = tempSettings.copy(
+                    notchPadding = !tempSettings.notchPadding
+                )
+            },
+        )
+        JubroSettingsSwitchItem(
+            text = stringResource(R.string.hide_status_bar_in_landscape),
+            isChecked = tempSettings.hideStatusBarInLandscape,
+            onToggle = {
+                tempSettings = tempSettings.copy(
+                    hideStatusBarInLandscape = !tempSettings.hideStatusBarInLandscape
+                )
+            },
+        )
+    }
+}
+
+@Composable
+fun OrientationControlItem(
+    screenOrient: Int,
+    onScreenOrientChange: (Int) -> Unit,
+) {
+    val triples = listOf(
+        Triple(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED, ScreenRotation, Modifier),
+        Triple(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, ScreenLockPortrait, Modifier),
+        Triple(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ScreenLockLandscape, Modifier),
+        Triple(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE, ScreenLockLandscape,
+            Modifier.scale(scaleX = 1f, scaleY = -1f)),
+    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+        ,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround,
+    ) {
+        triples.forEach { triple ->
+            JubroOrientButton(
+                modifier = triple.third,
+                activated = triple.first == screenOrient,
+                onClick = {
+                    onScreenOrientChange(triple.first)
+                },
+                icon = triple.second,
+            )
+        }
+    }
+}
+
+@Composable
+fun JupyterURLItem(
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
+    TextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        label = {
+            Text(stringResource(R.string.jupyter_url))
+        },
+        singleLine = true,
     )
 }

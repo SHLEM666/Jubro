@@ -16,6 +16,7 @@
 
 package com.shlem666.jubro.feature.settings
 
+import androidx.compose.runtime.saveable.Saver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shlem666.jubro.core.data.repository.UserDataRepository
@@ -58,34 +59,15 @@ class SettingsViewModel @Inject constructor(
                 initialValue = Loading,
             )
 
-    fun updateJupyterUrl(jupyterUrl: String) {
+    fun applySettings(settings: DataStoreResources) {
         viewModelScope.launch {
-            userDataRepository.setJupyterUrl(jupyterUrl)
-        }
-    }
-
-    fun updateNotchPadding(notchPadding: Boolean) {
-        viewModelScope.launch {
-            userDataRepository.setNotchPadding(notchPadding)
-        }
-    }
-
-    fun updateHideStatusBarInLandscape(
-        hideStatusBarInLandscape: Boolean
-    ) {
-        viewModelScope.launch {
+            userDataRepository.setJupyterUrl(settings.jupyterUrl)
+            userDataRepository.setNotchPadding(settings.notchPadding)
             userDataRepository.setHideStatusBarInLandscape(
-                hideStatusBarInLandscape
+                settings.hideStatusBarInLandscape
             )
-        }
-    }
-
-    fun updateScreenOrient(
-        screenOrient: Int
-    ) {
-        viewModelScope.launch {
             userDataRepository.setScreenOrient(
-                screenOrient
+                settings.screenOrient
             )
         }
     }
@@ -99,7 +81,24 @@ data class DataStoreResources(
     val notchPadding: Boolean,
     val hideStatusBarInLandscape: Boolean,
     val screenOrient: Int,
-)
+) {
+    companion object {
+        val Saver = Saver< DataStoreResources, List<Any> >(
+            save = { listOf(
+                it.jupyterUrl,
+                it.notchPadding,
+                it.hideStatusBarInLandscape,
+                it.screenOrient,
+            ) },
+            restore = { DataStoreResources(
+                jupyterUrl = it[0] as String,
+                notchPadding = it[1] as Boolean,
+                hideStatusBarInLandscape = it[2] as Boolean,
+                screenOrient = it[3] as Int,
+            ) },
+        )
+    }
+}
 
 sealed interface UiState {
     data object Loading : UiState
