@@ -122,10 +122,10 @@ fun SettingsItems(
         )
         JubroSettingsSwitchItem(
             text = stringResource(R.string.hide_status_bar_in_landscape),
-            isChecked = tempSettings.hideStatusBarInLandscape,
+            isChecked = tempSettings.hideStatusBar,
             onToggle = {
                 tempSettings = tempSettings.copy(
-                    hideStatusBarInLandscape = !tempSettings.hideStatusBarInLandscape
+                    hideStatusBar = !tempSettings.hideStatusBar
                 )
             },
         )

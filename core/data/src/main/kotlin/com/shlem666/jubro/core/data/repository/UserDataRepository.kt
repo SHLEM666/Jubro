@@ -37,9 +37,9 @@ interface UserDataRepository {
     suspend fun setNotchPadding(notchPadding: Boolean)
 
     /**
-     * Sets the hideStatusBarInLandscape value
+     * Sets the hideStatusBar value
      */
-    suspend fun setHideStatusBarInLandscape(hideStatusBarInLandscape: Boolean)
+    suspend fun setHideStatusBar(hideStatusBar: Boolean)
 
     /**
      * Sets the screenOrient value

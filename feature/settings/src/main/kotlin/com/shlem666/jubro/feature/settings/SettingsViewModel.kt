@@ -46,8 +46,7 @@ class SettingsViewModel @Inject constructor(
                         resources = DataStoreResources(
                             jupyterUrl = userData.jupyterUrl,
                             notchPadding =  userData.notchPadding,
-                            hideStatusBarInLandscape =
-                                userData.hideStatusBarInLandscape,
+                            hideStatusBar = userData.hideStatusBar,
                             screenOrient = userData.screenOrient,
                         ),
                     )
@@ -63,12 +62,8 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             userDataRepository.setJupyterUrl(settings.jupyterUrl)
             userDataRepository.setNotchPadding(settings.notchPadding)
-            userDataRepository.setHideStatusBarInLandscape(
-                settings.hideStatusBarInLandscape
-            )
-            userDataRepository.setScreenOrient(
-                settings.screenOrient
-            )
+            userDataRepository.setHideStatusBar(settings.hideStatusBar)
+            userDataRepository.setScreenOrient(settings.screenOrient)
         }
     }
 }
@@ -79,7 +74,7 @@ class SettingsViewModel @Inject constructor(
 data class DataStoreResources(
     val jupyterUrl: String,
     val notchPadding: Boolean,
-    val hideStatusBarInLandscape: Boolean,
+    val hideStatusBar: Boolean,
     val screenOrient: Int,
 ) {
     companion object {
@@ -87,13 +82,13 @@ data class DataStoreResources(
             save = { listOf(
                 it.jupyterUrl,
                 it.notchPadding,
-                it.hideStatusBarInLandscape,
+                it.hideStatusBar,
                 it.screenOrient,
             ) },
             restore = { DataStoreResources(
                 jupyterUrl = it[0] as String,
                 notchPadding = it[1] as Boolean,
-                hideStatusBarInLandscape = it[2] as Boolean,
+                hideStatusBar = it[2] as Boolean,
                 screenOrient = it[3] as Int,
             ) },
         )

@@ -40,16 +40,12 @@ class JubroPreferencesDataSource @Inject constructor(
                 } else {
                     false
                 },
-                hideStatusBarInLandscape = if (
-                    it.hasHideStatusBarInLandscape()
-                ) {
-                    it.hideStatusBarInLandscape
+                hideStatusBar = if ( it.hasHideStatusBar() ) {
+                    it.hideStatusBar
                 } else {
                     false
                 },
-                screenOrient = if (
-                    it.hasScreenOrient()
-                ) {
+                screenOrient = if ( it.hasScreenOrient() ) {
                     it.screenOrient
                 } else {
                     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -81,15 +77,15 @@ class JubroPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun setHideStatusBarInLandscape(hideStatusBarInLandscape: Boolean) {
+    suspend fun setHideStatusBar(hideStatusBar: Boolean) {
         try {
             userPreferences.updateData {
                 it.copy {
-                    this.hideStatusBarInLandscape = hideStatusBarInLandscape
+                    this.hideStatusBar = hideStatusBar
                 }
             }
         } catch (ioException: IOException) {
-            Log.e("JubroPreferences", "Failed to update hideStatusBarInLandscape", ioException)
+            Log.e("JubroPreferences", "Failed to update hideStatusBar", ioException)
         }
     }
 

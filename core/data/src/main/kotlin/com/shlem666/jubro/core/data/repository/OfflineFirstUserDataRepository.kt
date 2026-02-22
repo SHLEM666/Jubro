@@ -37,12 +37,8 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
         jubroPreferencesDataSource.setNotchPadding(notchPadding)
     }
 
-    override suspend fun setHideStatusBarInLandscape(
-        hideStatusBarInLandscape: Boolean
-    ) {
-        jubroPreferencesDataSource.setHideStatusBarInLandscape(
-            hideStatusBarInLandscape
-        )
+    override suspend fun setHideStatusBar(hideStatusBar: Boolean) {
+        jubroPreferencesDataSource.setHideStatusBar(hideStatusBar)
     }
 
     override suspend fun setScreenOrient(screenOrient: Int) {

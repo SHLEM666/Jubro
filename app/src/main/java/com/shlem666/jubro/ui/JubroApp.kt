@@ -53,12 +53,9 @@ fun JubroApp(
     when (uiState) {
         is Loading -> { }
         is Success -> {
-            notchPadding = (uiState as Success)
-                .resources.notchPadding
-            hideStatusBar = (uiState as Success)
-                .resources.hideStatusBarInLandscape
-            screenOrient = (uiState as Success)
-                .resources.screenOrient
+            notchPadding = (uiState as Success).resources.notchPadding
+            hideStatusBar = (uiState as Success).resources.hideStatusBar
+            screenOrient = (uiState as Success).resources.screenOrient
         }
     }
 
