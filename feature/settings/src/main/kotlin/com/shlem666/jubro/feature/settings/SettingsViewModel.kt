@@ -16,6 +16,7 @@
 
 package com.shlem666.jubro.feature.settings
 
+import android.content.pm.ActivityInfo
 import androidx.compose.runtime.saveable.Saver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -72,10 +73,10 @@ class SettingsViewModel @Inject constructor(
  * Represents the settings which the user can edit within the app.
  */
 data class AppSettings(
-    val jupyterUrl: String,
-    val notchPadding: Boolean,
-    val hideStatusBar: Boolean,
-    val screenOrient: Int,
+    val jupyterUrl: String = "",
+    val notchPadding: Boolean = false,
+    val hideStatusBar: Boolean = false,
+    val screenOrient: Int = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,
 ) {
     companion object {
         val Saver = Saver< AppSettings, List<Any> >(

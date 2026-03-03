@@ -1,7 +1,6 @@
 package com.shlem666.jubro.ui
 
 import android.app.Activity
-import android.content.pm.ActivityInfo
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -41,14 +40,7 @@ fun JubroApp(
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
         .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
-        mutableStateOf(
-            AppSettings(
-                jupyterUrl = "",
-                notchPadding = false,
-                hideStatusBar = false,
-                screenOrient = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,
-            )
-        )
+        mutableStateOf( AppSettings() )
     }
 
     if (uiState is Success) {
