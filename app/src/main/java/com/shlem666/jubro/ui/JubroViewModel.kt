@@ -20,6 +20,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.KeyEvent
 import android.webkit.WebView
+import androidx.compose.runtime.saveable.Saver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shlem666.jubro.core.data.repository.UserDataRepository
@@ -88,7 +89,24 @@ data class DataStoreResources(
     val notchPadding: Boolean,
     val hideStatusBar: Boolean,
     val screenOrient: Int,
-)
+) {
+    companion object {
+        val Saver = Saver< DataStoreResources, List<Any> >(
+            save = { listOf(
+                it.jupyterUrl,
+                it.notchPadding,
+                it.hideStatusBar,
+                it.screenOrient,
+            ) },
+            restore = { DataStoreResources(
+                jupyterUrl = it[0] as String,
+                notchPadding = it[1] as Boolean,
+                hideStatusBar = it[2] as Boolean,
+                screenOrient = it[3] as Int,
+            ) },
+        )
+    }
+}
 
 sealed interface UiState {
     data object Loading : UiState

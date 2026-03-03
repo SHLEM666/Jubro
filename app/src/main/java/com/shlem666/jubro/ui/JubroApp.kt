@@ -1,5 +1,6 @@
 package com.shlem666.jubro.ui
 
+import android.app.Activity
 import android.content.pm.ActivityInfo
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
@@ -18,7 +19,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -27,86 +30,99 @@ import com.shlem666.jubro.ui.toolbars.BottomToolBarLayout
 import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
 import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
 import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
-import com.shlem666.jubro.ui.UiState.Loading
 import com.shlem666.jubro.ui.UiState.Success
 
 @Composable
 fun JubroApp(
     viewModel: JubroViewModel = hiltViewModel(),
-    hideStatusBar: () -> Unit,
-    showStatusBar: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var notchPadding by rememberSaveable { mutableStateOf(false) }
-    var hideStatusBar by rememberSaveable { mutableStateOf(false) }
-    var screenOrient by rememberSaveable { mutableIntStateOf(
-        ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-    ) }
-
-    var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
-    if (showSettingsDialog) {
-        SettingsDialog(
-            onDismiss = { showSettingsDialog = false },
+    val isCompact = currentWindowAdaptiveInfo().windowSizeClass
+        .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
+    var settings by rememberSaveable(stateSaver = DataStoreResources.Saver) {
+        mutableStateOf(
+            DataStoreResources(
+                jupyterUrl = "",
+                notchPadding = false,
+                hideStatusBar = false,
+                screenOrient = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,
+            )
         )
     }
 
-    when (uiState) {
-        is Loading -> { }
-        is Success -> {
-            notchPadding = (uiState as Success).resources.notchPadding
-            hideStatusBar = (uiState as Success).resources.hideStatusBar
-            screenOrient = (uiState as Success).resources.screenOrient
+    if (uiState is Success) {
+        settings = (uiState as Success).resources
+        if (!isCompact && settings.hideStatusBar) {
+            HideStatusBar(true)
+        } else {
+            HideStatusBar(false)
         }
+        LockScreenOrientation(settings.screenOrient)
     }
 
-    val portrait = currentWindowAdaptiveInfo().windowSizeClass
-        .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
-    if (portrait || !hideStatusBar) { showStatusBar() }
-    if (!portrait && hideStatusBar) { hideStatusBar() }
-
-    @Composable
-    fun LockScreenOrientation(orientation: Int) {
-        val activity = LocalActivity.current
-        DisposableEffect(orientation) {
-            val activity = activity ?: return@DisposableEffect onDispose { }
-            val originalOrientation = activity.requestedOrientation
-            activity.requestedOrientation = orientation
-            onDispose {
-                // restore original orientation when view disappears
-                activity.requestedOrientation = originalOrientation
-            }
-        }
+    var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
+    if (showSettingsDialog) {
+        SettingsDialog( onDismiss = { showSettingsDialog = false } )
     }
-
-    LockScreenOrientation(screenOrient)
 
     Scaffold(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .imePadding()
-            .then(if (notchPadding) {
+            .then(if (settings.notchPadding) {
                 Modifier.displayCutoutPadding()
             } else { Modifier } )
         ,
         topBar = {
-            if (portrait) {
-                TopToolBarLayout(
-                    toggleSettingDialog = { showSettingsDialog = true }
-                )
-            }
+            if (isCompact) { TopToolBarLayout(
+                toggleSettingDialog = { showSettingsDialog = true }
+            ) }
         },
-        bottomBar = { if (portrait) { BottomToolBarLayout() } }
+        bottomBar = { if (isCompact) { BottomToolBarLayout() } }
     ) { innerPadding ->
         Row (
             Modifier.padding(innerPadding)
         ) {
-            if (!portrait) { LeftToolBarLayout() }
-            Box( modifier = Modifier.weight(1f) ) { JubroWebView() }
-            if (!portrait) {
-                RightToolBarLayout(
-                    toggleSettingDialog = { showSettingsDialog = true }
-                )
+            if (!isCompact) { LeftToolBarLayout() }
+            Box( modifier = Modifier.weight(1f) ) {
+                JubroWebView(settings.jupyterUrl)
             }
+            if (!isCompact) { RightToolBarLayout(
+                toggleSettingDialog = { showSettingsDialog = true }
+            ) }
         }
+    }
+}
+
+@Composable
+fun LockScreenOrientation(orientation: Int) {
+    val activity = LocalActivity.current
+    DisposableEffect(orientation) {
+        val activity = activity ?: return@DisposableEffect onDispose { }
+        val originalOrientation = activity.requestedOrientation
+        activity.requestedOrientation = orientation
+        onDispose {
+            // restore original orientation when view disappears
+            activity.requestedOrientation = originalOrientation
+        }
+    }
+}
+
+@Composable
+fun HideStatusBar(hide: Boolean) {
+    val activity = LocalActivity.current
+    val window = (activity as Activity).window
+    val windowInsetsController =
+        WindowCompat.getInsetsController(window, window.decorView)
+    val statusBars = WindowInsetsCompat.Type.statusBars()
+    if (hide) {
+        windowInsetsController.hide(statusBars)
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat
+                .BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    } else {
+        windowInsetsController.show(statusBars)
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
     }
 }

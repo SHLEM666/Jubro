@@ -9,67 +9,54 @@ import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun JubroWebView(
+    url: String,
     viewModel: JubroViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    when (uiState) {
-
-        is UiState.Loading -> { }
-
-        is UiState.Success -> {
-
-            val url = (uiState as UiState.Success).resources.jupyterUrl
-
-            // webview needs exactly Activity Context (LocalContext.current)
-            // to mobile version of select html-element may work properly
-            AndroidView(
-                factory = { context ->
-                    WebView(context).apply {
-                        settings.apply {
-                            @SuppressLint("SetJavaScriptEnabled")
-                            javaScriptEnabled = true
-                            domStorageEnabled = true
-                        }
-                        layoutParams = FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.MATCH_PARENT
-                        )
-                        webViewClient = object : WebViewClient() {
-                            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                                super.onPageStarted(view, url, favicon)
-                            }
-                            override fun onPageFinished(view: WebView?, url: String?) {
-                                super.onPageFinished(view, url)
-                                viewModel.evalJS("JupyterLabOnPageFinished.js")
-                            }
-                            override fun shouldOverrideUrlLoading(
-                                view: WebView,
-                                request: WebResourceRequest
-                            ): Boolean {
-                                view.loadUrl(request.url.toString())
-                                return true
-                            }
-                        }
-                        webChromeClient = WebChromeClient()
+    // webview needs exactly Activity Context (LocalContext.current)
+    // to mobile version of select html-element may work properly
+    AndroidView(
+        factory = { context ->
+            WebView(context).apply {
+                settings.apply {
+                    @SuppressLint("SetJavaScriptEnabled")
+                    javaScriptEnabled = true
+                    domStorageEnabled = true
+                }
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = object : WebViewClient() {
+                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                        super.onPageStarted(view, url, favicon)
                     }
-                },
-                update = { webView ->
-                    webView.loadUrl(url)
-                    viewModel.webView = webView
-                },
-                onReset = { webView ->
-                    webView.stopLoading()
-                    webView.loadUrl("about:blank")
-                    webView.clearHistory()
-                },
-            )
-        }
-    }
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+                        viewModel.evalJS("JupyterLabOnPageFinished.js")
+                    }
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView,
+                        request: WebResourceRequest
+                    ): Boolean {
+                        view.loadUrl(request.url.toString())
+                        return true
+                    }
+                }
+                webChromeClient = WebChromeClient()
+            }
+        },
+        update = { webView ->
+            webView.loadUrl(url)
+            viewModel.webView = webView
+        },
+        onReset = { webView ->
+            webView.stopLoading()
+            webView.loadUrl("about:blank")
+            webView.clearHistory()
+        },
+    )
 }
