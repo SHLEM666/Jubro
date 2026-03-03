@@ -54,7 +54,7 @@ fun SettingsDialog(
                 }
                 is Success -> {
                     SettingsItems(
-                        resources = (uiState as Success).resources,
+                        appSettings = (uiState as Success).appSettings,
                         updateOnConfirm = { tempSettings ->
                             onConfirm = {
                                 viewModel.applySettings(tempSettings)
@@ -85,13 +85,13 @@ fun SettingsDialog(
 
 @Composable
 fun SettingsItems(
-    resources: DataStoreResources,
-    updateOnConfirm: (DataStoreResources) -> Unit,
+    appSettings: AppSettings,
+    updateOnConfirm: (AppSettings) -> Unit,
 ) {
     var tempSettings by rememberSaveable(
-        stateSaver = DataStoreResources.Saver
+        stateSaver = AppSettings.Saver
     ) {
-        mutableStateOf(resources)
+        mutableStateOf(appSettings)
     }
     updateOnConfirm(tempSettings)
 

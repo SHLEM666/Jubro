@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
-import com.shlem666.jubro.feature.settings.DataStoreResources
+import com.shlem666.jubro.feature.settings.AppSettings
 import com.shlem666.jubro.feature.settings.UiState
 import com.shlem666.jubro.feature.settings.UiState.Loading
 import com.shlem666.jubro.feature.settings.UiState.Success
@@ -52,7 +52,7 @@ class JubroViewModel @Inject constructor(
                     Loading
                 } else {
                     Success(
-                        resources = DataStoreResources(
+                        appSettings = AppSettings(
                             jupyterUrl = userData.jupyterUrl,
                             notchPadding =  userData.notchPadding,
                             hideStatusBar = userData.hideStatusBar,

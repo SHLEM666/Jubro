@@ -19,9 +19,6 @@ package com.shlem666.jubro.feature.settings
 import androidx.compose.runtime.saveable.Saver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shlem666.jubro.core.data.repository.UserDataRepository
-import com.shlem666.jubro.feature.settings.UiState.Loading
-import com.shlem666.jubro.feature.settings.UiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +27,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
+import com.shlem666.jubro.core.data.repository.UserDataRepository
+import com.shlem666.jubro.feature.settings.UiState.Loading
+import com.shlem666.jubro.feature.settings.UiState.Success
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -43,7 +43,7 @@ class SettingsViewModel @Inject constructor(
                     Loading
                 } else {
                     Success(
-                        resources = DataStoreResources(
+                        appSettings = AppSettings(
                             jupyterUrl = userData.jupyterUrl,
                             notchPadding =  userData.notchPadding,
                             hideStatusBar = userData.hideStatusBar,
@@ -58,7 +58,7 @@ class SettingsViewModel @Inject constructor(
                 initialValue = Loading,
             )
 
-    fun applySettings(settings: DataStoreResources) {
+    fun applySettings(settings: AppSettings) {
         viewModelScope.launch {
             userDataRepository.setJupyterUrl(settings.jupyterUrl)
             userDataRepository.setNotchPadding(settings.notchPadding)
@@ -71,21 +71,21 @@ class SettingsViewModel @Inject constructor(
 /**
  * Represents the settings which the user can edit within the app.
  */
-data class DataStoreResources(
+data class AppSettings(
     val jupyterUrl: String,
     val notchPadding: Boolean,
     val hideStatusBar: Boolean,
     val screenOrient: Int,
 ) {
     companion object {
-        val Saver = Saver< DataStoreResources, List<Any> >(
+        val Saver = Saver< AppSettings, List<Any> >(
             save = { listOf(
                 it.jupyterUrl,
                 it.notchPadding,
                 it.hideStatusBar,
                 it.screenOrient,
             ) },
-            restore = { DataStoreResources(
+            restore = { AppSettings(
                 jupyterUrl = it[0] as String,
                 notchPadding = it[1] as Boolean,
                 hideStatusBar = it[2] as Boolean,
@@ -97,5 +97,5 @@ data class DataStoreResources(
 
 sealed interface UiState {
     data object Loading : UiState
-    data class Success(val resources: DataStoreResources) : UiState
+    data class Success(val appSettings: AppSettings) : UiState
 }

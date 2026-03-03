@@ -30,7 +30,7 @@ import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
 import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
 import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
 import com.shlem666.jubro.feature.settings.SettingsDialog
-import com.shlem666.jubro.feature.settings.DataStoreResources
+import com.shlem666.jubro.feature.settings.AppSettings
 import com.shlem666.jubro.feature.settings.UiState.Success
 
 @Composable
@@ -40,9 +40,9 @@ fun JubroApp(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
         .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
-    var settings by rememberSaveable(stateSaver = DataStoreResources.Saver) {
+    var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
         mutableStateOf(
-            DataStoreResources(
+            AppSettings(
                 jupyterUrl = "",
                 notchPadding = false,
                 hideStatusBar = false,
@@ -52,13 +52,13 @@ fun JubroApp(
     }
 
     if (uiState is Success) {
-        settings = (uiState as Success).resources
-        if (!isCompact && settings.hideStatusBar) {
+        appSettings = (uiState as Success).appSettings
+        if (!isCompact && appSettings.hideStatusBar) {
             HideStatusBar(true)
         } else {
             HideStatusBar(false)
         }
-        LockScreenOrientation(settings.screenOrient)
+        LockScreenOrientation(appSettings.screenOrient)
     }
 
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
@@ -70,7 +70,7 @@ fun JubroApp(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .imePadding()
-            .then(if (settings.notchPadding) {
+            .then(if (appSettings.notchPadding) {
                 Modifier.displayCutoutPadding()
             } else { Modifier } )
         ,
@@ -86,7 +86,7 @@ fun JubroApp(
         ) {
             if (!isCompact) { LeftToolBarLayout() }
             Box( modifier = Modifier.weight(1f) ) {
-                JubroWebView(settings.jupyterUrl)
+                JubroWebView(appSettings.jupyterUrl)
             }
             if (!isCompact) { RightToolBarLayout(
                 toggleSettingDialog = { showSettingsDialog = true }
