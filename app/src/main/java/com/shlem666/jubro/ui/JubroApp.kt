@@ -25,12 +25,13 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.shlem666.jubro.feature.settings.SettingsDialog
 import com.shlem666.jubro.ui.toolbars.BottomToolBarLayout
 import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
 import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
 import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
-import com.shlem666.jubro.ui.UiState.Success
+import com.shlem666.jubro.feature.settings.SettingsDialog
+import com.shlem666.jubro.feature.settings.DataStoreResources
+import com.shlem666.jubro.feature.settings.UiState.Success
 
 @Composable
 fun JubroApp(

@@ -20,12 +20,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.KeyEvent
 import android.webkit.WebView
-import androidx.compose.runtime.saveable.Saver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shlem666.jubro.core.data.repository.UserDataRepository
-import com.shlem666.jubro.ui.UiState.Loading
-import com.shlem666.jubro.ui.UiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -33,8 +29,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-import kotlin.Boolean
 import kotlin.time.Duration.Companion.seconds
+import com.shlem666.jubro.core.data.repository.UserDataRepository
+import com.shlem666.jubro.feature.settings.DataStoreResources
+import com.shlem666.jubro.feature.settings.UiState
+import com.shlem666.jubro.feature.settings.UiState.Loading
+import com.shlem666.jubro.feature.settings.UiState.Success
 
 @HiltViewModel
 class JubroViewModel @Inject constructor(
@@ -79,36 +79,4 @@ class JubroViewModel @Inject constructor(
         webView.dispatchKeyEvent( KeyEvent(KeyEvent.ACTION_DOWN, code) )
         webView.dispatchKeyEvent( KeyEvent(KeyEvent.ACTION_UP, code) )
     }
-}
-
-/**
- * Represents the settings which the user can edit within the app.
- */
-data class DataStoreResources(
-    val jupyterUrl: String,
-    val notchPadding: Boolean,
-    val hideStatusBar: Boolean,
-    val screenOrient: Int,
-) {
-    companion object {
-        val Saver = Saver< DataStoreResources, List<Any> >(
-            save = { listOf(
-                it.jupyterUrl,
-                it.notchPadding,
-                it.hideStatusBar,
-                it.screenOrient,
-            ) },
-            restore = { DataStoreResources(
-                jupyterUrl = it[0] as String,
-                notchPadding = it[1] as Boolean,
-                hideStatusBar = it[2] as Boolean,
-                screenOrient = it[3] as Int,
-            ) },
-        )
-    }
-}
-
-sealed interface UiState {
-    data object Loading : UiState
-    data class Success(val resources: DataStoreResources) : UiState
 }
