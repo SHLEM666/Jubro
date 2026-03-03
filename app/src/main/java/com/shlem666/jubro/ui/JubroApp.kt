@@ -58,6 +58,15 @@ fun JubroApp(
         SettingsDialog( onDismiss = { showSettingsDialog = false } )
     }
 
+    val bottomBar = @Composable { if (isCompact) BottomToolBarLayout() }
+    val topBar = @Composable { if (isCompact) TopToolBarLayout(
+        toggleSettingDialog = { showSettingsDialog = true }
+    ) }
+    val leftBar = @Composable { if (!isCompact) LeftToolBarLayout() }
+    val rightBar = @Composable { if (!isCompact) RightToolBarLayout(
+        toggleSettingDialog = { showSettingsDialog = true }
+    ) }
+
     Scaffold(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
@@ -66,23 +75,17 @@ fun JubroApp(
                 Modifier.displayCutoutPadding()
             } else { Modifier } )
         ,
-        topBar = {
-            if (isCompact) { TopToolBarLayout(
-                toggleSettingDialog = { showSettingsDialog = true }
-            ) }
-        },
-        bottomBar = { if (isCompact) { BottomToolBarLayout() } }
+        topBar = { topBar() },
+        bottomBar = { bottomBar() },
     ) { innerPadding ->
         Row (
             Modifier.padding(innerPadding)
         ) {
-            if (!isCompact) { LeftToolBarLayout() }
+            leftBar()
             Box( modifier = Modifier.weight(1f) ) {
                 JubroWebView(appSettings.jupyterUrl)
             }
-            if (!isCompact) { RightToolBarLayout(
-                toggleSettingDialog = { showSettingsDialog = true }
-            ) }
+            rightBar()
         }
     }
 }
