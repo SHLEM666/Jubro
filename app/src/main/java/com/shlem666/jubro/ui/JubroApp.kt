@@ -30,21 +30,21 @@ import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
 import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
 import com.shlem666.jubro.feature.settings.SettingsDialog
 import com.shlem666.jubro.feature.settings.AppSettings
-import com.shlem666.jubro.feature.settings.UiState.Success
+import com.shlem666.jubro.feature.settings.SettingsUiState.Success
 
 @Composable
 fun JubroApp(
     viewModel: JubroViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val appUiState by viewModel.appUiState.collectAsStateWithLifecycle()
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
         .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
         mutableStateOf( AppSettings() )
     }
 
-    if (uiState is Success) {
-        appSettings = (uiState as Success).appSettings
+    if (appUiState is Success) {
+        appSettings = (appUiState as Success).appSettings
         if (!isCompact && appSettings.hideStatusBar) {
             HideStatusBar(true)
         } else {

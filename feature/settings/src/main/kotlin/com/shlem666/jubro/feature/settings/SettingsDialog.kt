@@ -31,8 +31,8 @@ import com.shlem666.jubro.core.designsystem.component.JubroSettingsSwitchItem
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ScreenLockLandscape
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ScreenLockPortrait
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ScreenRotation
-import com.shlem666.jubro.feature.settings.UiState.Loading
-import com.shlem666.jubro.feature.settings.UiState.Success
+import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
+import com.shlem666.jubro.feature.settings.SettingsUiState.Success
 
 @Composable
 fun SettingsDialog(
@@ -40,7 +40,7 @@ fun SettingsDialog(
     viewModel: SettingsViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
     var onConfirm = { onDismiss() }
 
     AlertDialog(
@@ -48,13 +48,13 @@ fun SettingsDialog(
         onDismissRequest = { onDismiss() },
         title = { Text( stringResource(R.string.feature_settings_title) ) },
         text = {
-            when (uiState) {
+            when (settingsUiState) {
                 is Loading -> {
                     Text( stringResource(R.string.loading) )
                 }
                 is Success -> {
                     SettingsItems(
-                        appSettings = (uiState as Success).appSettings,
+                        appSettings = (settingsUiState as Success).appSettings,
                         updateOnConfirm = { tempSettings ->
                             onConfirm = {
                                 viewModel.applySettings(tempSettings)

@@ -29,15 +29,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
-import com.shlem666.jubro.feature.settings.UiState.Loading
-import com.shlem666.jubro.feature.settings.UiState.Success
+import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
+import com.shlem666.jubro.feature.settings.SettingsUiState.Success
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
-    val uiState: StateFlow<UiState> =
+    val settingsUiState: StateFlow<SettingsUiState> =
         userDataRepository.userData
             .map { userData ->
                 if (userData.jupyterUrl.isEmpty()) {
@@ -96,7 +96,7 @@ data class AppSettings(
     }
 }
 
-sealed interface UiState {
-    data object Loading : UiState
-    data class Success(val appSettings: AppSettings) : UiState
+sealed interface SettingsUiState {
+    data object Loading : SettingsUiState
+    data class Success(val appSettings: AppSettings) : SettingsUiState
 }

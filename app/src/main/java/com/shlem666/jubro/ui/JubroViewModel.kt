@@ -32,9 +32,9 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.feature.settings.AppSettings
-import com.shlem666.jubro.feature.settings.UiState
-import com.shlem666.jubro.feature.settings.UiState.Loading
-import com.shlem666.jubro.feature.settings.UiState.Success
+import com.shlem666.jubro.feature.settings.SettingsUiState
+import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
+import com.shlem666.jubro.feature.settings.SettingsUiState.Success
 
 @HiltViewModel
 class JubroViewModel @Inject constructor(
@@ -45,7 +45,7 @@ class JubroViewModel @Inject constructor(
     @SuppressLint("StaticFieldLeak")
     var webView = WebView(context)
 
-    val uiState: StateFlow<UiState> =
+    val appUiState: StateFlow<SettingsUiState> =
         userDataRepository.userData
             .map { userData ->
                 if (userData.jupyterUrl.isEmpty()) {
