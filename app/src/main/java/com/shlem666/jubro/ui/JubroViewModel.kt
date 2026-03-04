@@ -35,10 +35,12 @@ import com.shlem666.jubro.feature.settings.AppSettings
 import com.shlem666.jubro.feature.settings.SettingsUiState
 import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
 import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.util.JsManager
 
 @HiltViewModel
 class JubroViewModel @Inject constructor(
     userDataRepository: UserDataRepository,
+    private val jsManager: JsManager,
     @param:ApplicationContext private val context: Context,
 ) : ViewModel() {
 
@@ -67,10 +69,9 @@ class JubroViewModel @Inject constructor(
                 initialValue = Loading,
             )
 
-    fun evalJS(script: String) {
+    fun evalJS(scriptName: String) {
         webView.evaluateJavascript(
-            context.assets.open(script)
-                .bufferedReader().use{ it.readText() },
+            jsManager.scripts?.get(scriptName) ?: "",
             null
         )
     }
