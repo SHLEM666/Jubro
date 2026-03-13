@@ -11,17 +11,16 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.shlem666.jubro.core.designsystem.component.JubroIconButton
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Refresh
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
-import com.shlem666.jubro.ui.JubroViewModel
+import com.shlem666.jubro.util.WebViewController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopToolBarLayout(
     toggleSettingDialog: () -> Unit,
-    viewModel: JubroViewModel = hiltViewModel(),
+    webViewController: WebViewController
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -32,11 +31,11 @@ fun TopToolBarLayout(
         Row {
             JubroIconButton(
                 modifier = Modifier.scale(scaleX = -1f, scaleY = 1f),
-                onClick = { viewModel.evalJS("ToggleLeftSideBar.js") },
+                onClick = { webViewController.evalJS("ToggleLeftSideBar.js") },
                 icon = ViewSidebar
             )
             JubroIconButton(
-                onClick = { viewModel.webView.reload() },
+                onClick = { webViewController.webView.reload() },
                 icon = Refresh
             )
         }
@@ -46,7 +45,7 @@ fun TopToolBarLayout(
                 icon = Icons.Filled.Menu
             )
             JubroIconButton(
-                onClick = { viewModel.evalJS("ToggleRightSideBar.js") },
+                onClick = { webViewController.evalJS("ToggleRightSideBar.js") },
                 icon = ViewSidebar
             )
         }

@@ -31,12 +31,15 @@ import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
 import com.shlem666.jubro.feature.settings.SettingsDialog
 import com.shlem666.jubro.feature.settings.AppSettings
 import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.feature.settings.SettingsViewModel
+import com.shlem666.jubro.util.WebViewController
 
 @Composable
 fun JubroApp(
-    viewModel: JubroViewModel = hiltViewModel(),
+    viewModel: SettingsViewModel = hiltViewModel(),
+    webViewController: WebViewController,
 ) {
-    val appUiState by viewModel.appUiState.collectAsStateWithLifecycle()
+    val appUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
         .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
@@ -58,14 +61,24 @@ fun JubroApp(
         SettingsDialog( onDismiss = { showSettingsDialog = false } )
     }
 
-    val bottomBar = @Composable { if (isCompact) BottomToolBarLayout() }
-    val topBar = @Composable { if (isCompact) TopToolBarLayout(
-        toggleSettingDialog = { showSettingsDialog = true }
-    ) }
-    val leftBar = @Composable { if (!isCompact) LeftToolBarLayout() }
-    val rightBar = @Composable { if (!isCompact) RightToolBarLayout(
-        toggleSettingDialog = { showSettingsDialog = true }
-    ) }
+    val bottomBar = @Composable {
+        if (isCompact) BottomToolBarLayout(webViewController)
+    }
+    val topBar = @Composable {
+        if (isCompact) TopToolBarLayout(
+            webViewController = webViewController,
+            toggleSettingDialog = { showSettingsDialog = true },
+        )
+    }
+    val leftBar = @Composable {
+        if (!isCompact) LeftToolBarLayout(webViewController)
+    }
+    val rightBar = @Composable {
+        if (!isCompact) RightToolBarLayout(
+            webViewController = webViewController,
+            toggleSettingDialog = { showSettingsDialog = true },
+        )
+    }
 
     Scaffold(
         modifier = Modifier
@@ -85,8 +98,10 @@ fun JubroApp(
             Box( modifier = Modifier.weight(1f) ) {
                 JubroWebView(
                     url = appSettings.jupyterUrl,
-                    onUpdate = { webView -> viewModel.webView = webView },
-                    onPageFinished = { viewModel.evalJS(
+                    onUpdate = { webView ->
+                        webViewController.webView = webView
+                    },
+                    onPageFinished = { webViewController.evalJS(
                         "JupyterLabOnPageFinished.js"
                     ) },
                 )

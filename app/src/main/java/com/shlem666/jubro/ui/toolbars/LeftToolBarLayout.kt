@@ -6,17 +6,16 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.shlem666.jubro.core.designsystem.component.JubroIconButton
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Redo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Refresh
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
-import com.shlem666.jubro.ui.JubroViewModel
+import com.shlem666.jubro.util.WebViewController
 
 @Composable
 fun LeftToolBarLayout(
-    viewModel: JubroViewModel = hiltViewModel(),
+    webViewController: WebViewController,
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -25,21 +24,21 @@ fun LeftToolBarLayout(
         Column {
             JubroIconButton(
                 modifier = Modifier.scale(scaleX = -1f, scaleY = 1f),
-                onClick = { viewModel.evalJS("ToggleLeftSideBar.js") },
+                onClick = { webViewController.evalJS("ToggleLeftSideBar.js") },
                 icon = ViewSidebar
             )
             JubroIconButton(
-                onClick = { viewModel.webView.reload() },
+                onClick = { webViewController.webView.reload() },
                 icon = Refresh
             )
         }
         Column {
             JubroIconButton(
-                onClick = { viewModel.evalJS("Undo.js") },
+                onClick = { webViewController.evalJS("Undo.js") },
                 icon = Undo
             )
             JubroIconButton(
-                onClick = { viewModel.evalJS("Redo.js") },
+                onClick = { webViewController.evalJS("Redo.js") },
                 icon = Redo
             )
         }

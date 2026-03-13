@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.shlem666.jubro.core.designsystem.component.JubroIconButton
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowDown
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowLeft
@@ -18,11 +17,11 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowRight
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowUp
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Redo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
-import com.shlem666.jubro.ui.JubroViewModel
+import com.shlem666.jubro.util.WebViewController
 
 @Composable
 fun BottomToolBarLayout(
-    viewModel: JubroViewModel = hiltViewModel(),
+    webViewController: WebViewController,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -32,29 +31,29 @@ fun BottomToolBarLayout(
     ) {
         Row {
             JubroIconButton(
-                onClick = { viewModel.evalJS("Undo.js") },
+                onClick = { webViewController.evalJS("Undo.js") },
                 icon = Undo
             )
             JubroIconButton(
-                onClick = { viewModel.evalJS("Redo.js") },
+                onClick = { webViewController.evalJS("Redo.js") },
                 icon = Redo
             )
         }
         Row {
             JubroIconButton(
-                onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_LEFT) },
+                onClick = { webViewController.simulateKeyPress(KEYCODE_DPAD_LEFT) },
                 icon = KeyboardArrowLeft
             )
             JubroIconButton(
-                onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_RIGHT) },
+                onClick = { webViewController.simulateKeyPress(KEYCODE_DPAD_RIGHT) },
                 icon = KeyboardArrowRight
             )
             JubroIconButton(
-                onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_UP) },
+                onClick = { webViewController.simulateKeyPress(KEYCODE_DPAD_UP) },
                 icon = KeyboardArrowUp
             )
             JubroIconButton(
-                onClick = { viewModel.simulateKeyPress(KEYCODE_DPAD_DOWN) },
+                onClick = { webViewController.simulateKeyPress(KEYCODE_DPAD_DOWN) },
                 icon = KeyboardArrowDown
             )
         }
