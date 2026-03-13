@@ -1,7 +1,6 @@
 package com.shlem666.jubro.ui
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -31,10 +30,10 @@ fun JubroWebView(
                     FrameLayout.LayoutParams.MATCH_PARENT
                 )
                 webViewClient = object : WebViewClient() {
-                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                        super.onPageStarted(view, url, favicon)
-                    }
-                    override fun onPageFinished(view: WebView?, url: String?) {
+                    override fun onPageFinished(
+                        view: WebView?,
+                        url: String?
+                    ) {
                         super.onPageFinished(view, url)
                         onPageFinished()
                     }
