@@ -17,7 +17,7 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowLeft
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowRight
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowUp
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
-import com.shlem666.jubro.util.WebViewController
+import com.shlem666.jubro.ui.webview.WebViewController
 
 @Composable
 fun RightToolBarLayout(

@@ -32,7 +32,8 @@ import com.shlem666.jubro.feature.settings.SettingsDialog
 import com.shlem666.jubro.feature.settings.AppSettings
 import com.shlem666.jubro.feature.settings.SettingsUiState.Success
 import com.shlem666.jubro.feature.settings.SettingsViewModel
-import com.shlem666.jubro.util.WebViewController
+import com.shlem666.jubro.ui.webview.JubroWebView
+import com.shlem666.jubro.ui.webview.WebViewController
 
 @Composable
 fun JubroApp(
@@ -101,9 +102,11 @@ fun JubroApp(
                     onUpdate = { webView ->
                         webViewController.webView = webView
                     },
-                    onPageFinished = { webViewController.evalJS(
-                        "JupyterLabOnPageFinished.js"
-                    ) },
+                    onPageFinished = {
+                        webViewController.evalJS(
+                            "JupyterLabOnPageFinished.js"
+                        )
+                    },
                 )
             }
             rightBar()

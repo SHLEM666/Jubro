@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.shlem666.jubro.core.designsystem.theme.JubroTheme
 import com.shlem666.jubro.ui.JubroApp
-import com.shlem666.jubro.util.WebViewController
+import com.shlem666.jubro.ui.webview.WebViewController
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

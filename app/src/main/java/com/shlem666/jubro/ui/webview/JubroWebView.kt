@@ -1,4 +1,4 @@
-package com.shlem666.jubro.ui
+package com.shlem666.jubro.ui.webview
 
 import android.annotation.SuppressLint
 import android.webkit.WebChromeClient
@@ -37,6 +37,7 @@ fun JubroWebView(
                         super.onPageFinished(view, url)
                         onPageFinished()
                     }
+
                     override fun shouldOverrideUrlLoading(
                         view: WebView,
                         request: WebResourceRequest

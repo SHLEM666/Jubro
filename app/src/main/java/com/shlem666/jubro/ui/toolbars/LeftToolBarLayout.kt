@@ -11,7 +11,7 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Redo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Refresh
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
-import com.shlem666.jubro.util.WebViewController
+import com.shlem666.jubro.ui.webview.WebViewController
 
 @Composable
 fun LeftToolBarLayout(

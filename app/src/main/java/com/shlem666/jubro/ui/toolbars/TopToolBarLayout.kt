@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.scale
 import com.shlem666.jubro.core.designsystem.component.JubroIconButton
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Refresh
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
-import com.shlem666.jubro.util.WebViewController
+import com.shlem666.jubro.ui.webview.WebViewController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
