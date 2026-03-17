@@ -17,8 +17,9 @@
 package com.shlem666.jubro.core.data.di
 
 import com.shlem666.jubro.core.data.repository.OfflineFirstUserDataRepository
-
 import com.shlem666.jubro.core.data.repository.UserDataRepository
+import com.shlem666.jubro.core.data.repository.DefaultJsDataRepository
+import com.shlem666.jubro.core.data.repository.JsDataRepository
 
 import dagger.Binds
 import dagger.Module
@@ -34,4 +35,8 @@ abstract class DataModule {
         userDataRepository: OfflineFirstUserDataRepository,
     ): UserDataRepository
 
+    @Binds
+    internal abstract fun bindsJsDataRepository(
+        jsDataRepository: DefaultJsDataRepository,
+    ): JsDataRepository
 }
