@@ -20,7 +20,6 @@ import com.shlem666.jubro.core.data.repository.OfflineFirstUserDataRepository
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.DefaultJsDataRepository
 import com.shlem666.jubro.core.data.repository.JsDataRepository
-
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
