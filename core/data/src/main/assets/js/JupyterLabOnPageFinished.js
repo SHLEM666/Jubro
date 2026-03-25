@@ -3,7 +3,8 @@
 	if (document.body) {
 		try {
 			var elem = document.createElement("style");
-			elem.innerHTML += "#jp-MainMenu {overflow-x: scroll;}";
+			elem.innerHTML += "#jp-menu-panel {overflow-x: scroll;}";
+            //elem.innerHTML += "#jp-MainMenu {overflow-x: scroll;}";
 			//elem.innerHTML += ".jp-NotebookTrustedStatus {display: none;}";
 			//elem.innerHTML += "select {display: none;}";
 			document.body.appendChild(elem);
