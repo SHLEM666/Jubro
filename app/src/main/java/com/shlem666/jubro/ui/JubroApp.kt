@@ -63,20 +63,18 @@ fun JubroApp(
     }
 
     val bottomBar = @Composable {
-        if (isCompact) BottomToolBarLayout(webViewController)
+        if (isCompact) BottomToolBarLayout()
     }
     val topBar = @Composable {
         if (isCompact) TopToolBarLayout(
-            webViewController = webViewController,
             toggleSettingDialog = { showSettingsDialog = true },
         )
     }
     val leftBar = @Composable {
-        if (!isCompact) LeftToolBarLayout(webViewController)
+        if (!isCompact) LeftToolBarLayout()
     }
     val rightBar = @Composable {
         if (!isCompact) RightToolBarLayout(
-            webViewController = webViewController,
             toggleSettingDialog = { showSettingsDialog = true },
         )
     }
