@@ -97,17 +97,7 @@ fun JubroApp(
         ) {
             leftBar()
             Box( modifier = Modifier.weight(1f) ) {
-                JubroWebView(
-                    url = appSettings.jupyterUrl,
-                    onUpdate = { webView ->
-                        webViewController.webView = webView
-                    },
-                    onPageFinished = {
-                        webViewController.evalJS(
-                            "JupyterLabOnPageFinished.js"
-                        )
-                    },
-                )
+                JubroWebView(appSettings.jupyterUrl)
             }
             rightBar()
         }

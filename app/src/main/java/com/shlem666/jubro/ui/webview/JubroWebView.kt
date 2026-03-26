@@ -9,12 +9,12 @@ import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun JubroWebView(
     url: String,
-    onUpdate: (WebView) -> Unit,
-    onPageFinished: () -> Unit,
+    viewModel: JubroWebViewViewModel = hiltViewModel(),
 ) {
     // webview needs exactly Activity Context (LocalContext.current)
     // to mobile version of select html-element may work properly
@@ -36,7 +36,7 @@ fun JubroWebView(
                         url: String?
                     ) {
                         super.onPageFinished(view, url)
-                        onPageFinished()
+                        viewModel.onPageFinished()
                     }
                     override fun shouldOverrideUrlLoading(
                         view: WebView,
@@ -54,7 +54,7 @@ fun JubroWebView(
         },
         update = { webView ->
             webView.loadUrl(url)
-            onUpdate(webView)
+            viewModel.attacheWebView(webView)
         },
         onReset = { webView ->
             webView.stopLoading()
