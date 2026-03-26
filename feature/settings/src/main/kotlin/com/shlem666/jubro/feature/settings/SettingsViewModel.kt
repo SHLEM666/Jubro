@@ -49,6 +49,7 @@ class SettingsViewModel @Inject constructor(
                             notchPadding =  userData.notchPadding,
                             hideStatusBar = userData.hideStatusBar,
                             screenOrient = userData.screenOrient,
+                            useJsApi = userData.useJsApi,
                         ),
                     )
                 }
@@ -65,6 +66,7 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setNotchPadding(settings.notchPadding)
             userDataRepository.setHideStatusBar(settings.hideStatusBar)
             userDataRepository.setScreenOrient(settings.screenOrient)
+            userDataRepository.setUseJsApi(settings.useJsApi)
         }
     }
 }
@@ -77,6 +79,7 @@ data class AppSettings(
     val notchPadding: Boolean = false,
     val hideStatusBar: Boolean = false,
     val screenOrient: Int = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,
+    val useJsApi: Boolean = false,
 ) {
     companion object {
         val Saver = Saver< AppSettings, List<Any> >(
@@ -85,12 +88,14 @@ data class AppSettings(
                 it.notchPadding,
                 it.hideStatusBar,
                 it.screenOrient,
+                it.useJsApi,
             ) },
             restore = { AppSettings(
                 jupyterUrl = it[0] as String,
                 notchPadding = it[1] as Boolean,
                 hideStatusBar = it[2] as Boolean,
                 screenOrient = it[3] as Int,
+                useJsApi = it[4] as Boolean,
             ) },
         )
     }

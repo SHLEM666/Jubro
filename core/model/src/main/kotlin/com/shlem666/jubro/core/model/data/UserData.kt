@@ -24,4 +24,5 @@ data class UserData(
     val notchPadding: Boolean,
     val hideStatusBar: Boolean,
     val screenOrient: Int,
+    val useJsApi: Boolean,
 )

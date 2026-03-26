@@ -50,6 +50,11 @@ class JubroPreferencesDataSource @Inject constructor(
                 } else {
                     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 },
+                useJsApi = if ( it.hasUseJsApi() ) {
+                    it.useJsApi
+                } else {
+                    false
+                },
             )
         }
 
@@ -98,6 +103,18 @@ class JubroPreferencesDataSource @Inject constructor(
             }
         } catch (ioException: IOException) {
             Log.e("JubroPreferences", "Failed to update screenOrient", ioException)
+        }
+    }
+
+    suspend fun setUseJsApi(useJsApi: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.useJsApi = useJsApi
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update useJsApi", ioException)
         }
     }
 }

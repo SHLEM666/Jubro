@@ -24,5 +24,6 @@ message UserPreferences {
   optional bool notchPadding = 2;
   optional bool hideStatusBar = 3;
   optional int32 screenOrient = 4;
-  // NEXT AVAILABLE ID: 5
+  optional bool useJsApi = 5;
+  // NEXT AVAILABLE ID: 6
 }

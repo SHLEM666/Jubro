@@ -20,7 +20,7 @@ class JubroWebViewViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             userDataRepository.userData.collect {
-                useJsApi = it.hideStatusBar
+                useJsApi = it.useJsApi
             }
         }
     }

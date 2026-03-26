@@ -44,4 +44,8 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override suspend fun setScreenOrient(screenOrient: Int) {
         jubroPreferencesDataSource.setScreenOrient(screenOrient)
     }
+
+    override suspend fun setUseJsApi(useJsApi: Boolean) {
+        jubroPreferencesDataSource.setUseJsApi(useJsApi)
+    }
 }

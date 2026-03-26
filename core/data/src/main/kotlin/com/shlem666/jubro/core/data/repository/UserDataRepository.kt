@@ -45,4 +45,9 @@ interface UserDataRepository {
      * Sets the screenOrient value
      */
     suspend fun setScreenOrient(screenOrient: Int)
+
+    /**
+     * Sets the useJsApi value
+     */
+    suspend fun setUseJsApi(useJsApi: Boolean)
 }

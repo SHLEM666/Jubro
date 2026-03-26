@@ -135,6 +135,15 @@ fun SettingsItems(
                 )
             },
         )
+        JubroSettingsSwitchItem(
+            text = stringResource(R.string.use_js_api),
+            isChecked = tempSettings.useJsApi,
+            onToggle = {
+                tempSettings = tempSettings.copy(
+                    useJsApi = !tempSettings.useJsApi
+                )
+            },
+        )
     }
 }
 
