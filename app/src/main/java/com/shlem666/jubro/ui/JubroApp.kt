@@ -33,50 +33,26 @@ import com.shlem666.jubro.feature.settings.AppSettings
 import com.shlem666.jubro.feature.settings.SettingsUiState.Success
 import com.shlem666.jubro.feature.settings.SettingsViewModel
 import com.shlem666.jubro.ui.webview.JubroWebView
-import com.shlem666.jubro.ui.webview.WebViewController
 
 @Composable
 fun JubroApp(
-    viewModel: SettingsViewModel = hiltViewModel(),
-    webViewController: WebViewController,
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
 ) {
-    val appUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
+    val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
         .windowWidthSizeClass == WindowWidthSizeClass.COMPACT
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
         mutableStateOf( AppSettings() )
     }
-
-    if (appUiState is Success) {
-        appSettings = (appUiState as Success).appSettings
-        if (!isCompact && appSettings.hideStatusBar) {
-            HideStatusBar(true)
-        } else {
-            HideStatusBar(false)
-        }
+    if (settingsUiState is Success) {
+        appSettings = (settingsUiState as Success).appSettings
+        HideStatusBar(!isCompact && appSettings.hideStatusBar)
         LockScreenOrientation(appSettings.screenOrient)
     }
 
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
     if (showSettingsDialog) {
         SettingsDialog( onDismiss = { showSettingsDialog = false } )
-    }
-
-    val bottomBar = @Composable {
-        if (isCompact) BottomToolBarLayout()
-    }
-    val topBar = @Composable {
-        if (isCompact) TopToolBarLayout(
-            toggleSettingDialog = { showSettingsDialog = true },
-        )
-    }
-    val leftBar = @Composable {
-        if (!isCompact) LeftToolBarLayout()
-    }
-    val rightBar = @Composable {
-        if (!isCompact) RightToolBarLayout(
-            toggleSettingDialog = { showSettingsDialog = true },
-        )
     }
 
     Scaffold(
@@ -87,17 +63,19 @@ fun JubroApp(
                 Modifier.displayCutoutPadding()
             } else { Modifier } )
         ,
-        topBar = { topBar() },
-        bottomBar = { bottomBar() },
+        topBar = { if (isCompact) TopToolBarLayout {
+            showSettingsDialog = true
+        } },
+        bottomBar = { if (isCompact) BottomToolBarLayout() },
     ) { innerPadding ->
-        Row (
-            Modifier.padding(innerPadding)
-        ) {
-            leftBar()
-            Box( modifier = Modifier.weight(1f) ) {
+        Row ( Modifier.padding(innerPadding) ) {
+            if (!isCompact) LeftToolBarLayout()
+            Box( Modifier.weight(1f) ) {
                 JubroWebView(appSettings.jupyterUrl)
             }
-            rightBar()
+            if (!isCompact) RightToolBarLayout {
+                    showSettingsDialog = true
+            }
         }
     }
 }
