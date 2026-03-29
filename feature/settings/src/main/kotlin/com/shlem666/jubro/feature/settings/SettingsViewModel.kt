@@ -40,19 +40,15 @@ class SettingsViewModel @Inject constructor(
     val settingsUiState: StateFlow<SettingsUiState> =
         userDataRepository.userData
             .map { userData ->
-                if (userData.jupyterUrl.isEmpty()) {
-                    Loading
-                } else {
-                    Success(
-                        appSettings = AppSettings(
-                            jupyterUrl = userData.jupyterUrl,
-                            notchPadding =  userData.notchPadding,
-                            hideStatusBar = userData.hideStatusBar,
-                            screenOrient = userData.screenOrient,
-                            useJsApi = userData.useJsApi,
-                        ),
-                    )
-                }
+                Success(
+                    appSettings = AppSettings(
+                        jupyterUrl = userData.jupyterUrl,
+                        notchPadding =  userData.notchPadding,
+                        hideStatusBar = userData.hideStatusBar,
+                        screenOrient = userData.screenOrient,
+                        useJsApi = userData.useJsApi,
+                    ),
+                )
             }
             .stateIn(
                 scope = viewModelScope,
