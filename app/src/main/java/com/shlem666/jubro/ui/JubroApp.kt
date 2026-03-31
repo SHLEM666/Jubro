@@ -44,37 +44,39 @@ fun JubroApp(
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
         mutableStateOf( AppSettings() )
     }
-    if (settingsUiState is Success) {
-        appSettings = (settingsUiState as Success).appSettings
-        HideStatusBar(!isCompact && appSettings.hideStatusBar)
-        LockScreenOrientation(appSettings.screenOrient)
-    }
 
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
     if (showSettingsDialog) {
         SettingsDialog( onDismiss = { showSettingsDialog = false } )
     }
 
-    Scaffold(
-        modifier = Modifier
-            .background(color = MaterialTheme.colorScheme.background)
-            .imePadding()
-            .then(if (appSettings.notchPadding) {
-                Modifier.displayCutoutPadding()
-            } else { Modifier } )
-        ,
-        topBar = { if (isCompact) TopToolBarLayout {
-            showSettingsDialog = true
-        } },
-        bottomBar = { if (isCompact) BottomToolBarLayout() },
-    ) { innerPadding ->
-        Row ( Modifier.padding(innerPadding) ) {
-            if (!isCompact) LeftToolBarLayout()
-            Box( Modifier.weight(1f) ) {
-                JubroWebView(appSettings.jupyterUrl)
-            }
-            if (!isCompact) RightToolBarLayout {
+    if (settingsUiState is Success) {
+        appSettings = (settingsUiState as Success).appSettings
+
+        HideStatusBar(!isCompact && appSettings.hideStatusBar)
+        LockScreenOrientation(appSettings.screenOrient)
+
+        Scaffold(
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.background)
+                .imePadding()
+                .then(if (appSettings.notchPadding) {
+                    Modifier.displayCutoutPadding()
+                } else { Modifier } )
+            ,
+            topBar = { if (isCompact) TopToolBarLayout {
+                showSettingsDialog = true
+            } },
+            bottomBar = { if (isCompact) BottomToolBarLayout() },
+        ) { innerPadding ->
+            Row ( Modifier.padding(innerPadding) ) {
+                if (!isCompact) LeftToolBarLayout()
+                Box( Modifier.weight(1f) ) {
+                    JubroWebView(appSettings.jupyterUrl)
+                }
+                if (!isCompact) RightToolBarLayout {
                     showSettingsDialog = true
+                }
             }
         }
     }
