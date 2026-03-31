@@ -47,7 +47,9 @@ fun SettingsDialog(
     onDismiss: () -> Unit,
 ) {
     val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
-    var onConfirm = { onDismiss() }
+    var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
+        mutableStateOf((settingsUiState as Success).appSettings)
+    }
 
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -60,12 +62,9 @@ fun SettingsDialog(
                 }
                 is Success -> {
                     SettingsItems(
-                        appSettings = (settingsUiState as Success).appSettings,
-                        updateOnConfirm = { tempSettings ->
-                            onConfirm = {
-                                viewModel.applySettings(tempSettings)
-                                onDismiss()
-                            }
+                        tempSettings = appSettings,
+                        updateSettings = { tempSettings ->
+                            appSettings = tempSettings
                         },
                     )
                 }
@@ -74,7 +73,10 @@ fun SettingsDialog(
         modifier = modifier.fillMaxSize(),
         confirmButton = {
             TextButton(
-                onClick = { onConfirm() }
+                onClick = {
+                    viewModel.applySettings(appSettings)
+                    onDismiss()
+                }
             ) {
                 Text( stringResource(R.string.btn_save) )
             }
@@ -91,16 +93,9 @@ fun SettingsDialog(
 
 @Composable
 fun SettingsItems(
-    appSettings: AppSettings,
-    updateOnConfirm: (AppSettings) -> Unit,
+    tempSettings: AppSettings,
+    updateSettings: (AppSettings) -> Unit
 ) {
-    var tempSettings by rememberSaveable(
-        stateSaver = AppSettings.Saver
-    ) {
-        mutableStateOf(appSettings)
-    }
-    updateOnConfirm(tempSettings)
-
     Column(
         modifier = Modifier
             .verticalScroll( state = rememberScrollState() ),
@@ -108,40 +103,40 @@ fun SettingsItems(
         OrientationControlItem(
             screenOrient = tempSettings.screenOrient,
             onScreenOrientChange = {
-                tempSettings = tempSettings.copy(screenOrient = it)
+                updateSettings( tempSettings.copy(screenOrient = it) )
             }
         )
         JupyterURLItem(
             value = tempSettings.jupyterUrl,
             onValueChange = {
-                tempSettings = tempSettings.copy(jupyterUrl = it)
+                updateSettings( tempSettings.copy(jupyterUrl = it) )
             }
         )
         JubroSettingsSwitchItem(
             text = stringResource(R.string.notch_padding),
             isChecked = tempSettings.notchPadding,
             onToggle = {
-                tempSettings = tempSettings.copy(
+                updateSettings( tempSettings.copy(
                     notchPadding = !tempSettings.notchPadding
-                )
+                ) )
             },
         )
         JubroSettingsSwitchItem(
             text = stringResource(R.string.hide_status_bar_in_landscape),
             isChecked = tempSettings.hideStatusBar,
             onToggle = {
-                tempSettings = tempSettings.copy(
+                updateSettings( tempSettings.copy(
                     hideStatusBar = !tempSettings.hideStatusBar
-                )
+                ) )
             },
         )
         JubroSettingsSwitchItem(
             text = stringResource(R.string.use_js_api),
             isChecked = tempSettings.useJsApi,
             onToggle = {
-                tempSettings = tempSettings.copy(
+                updateSettings( tempSettings.copy(
                     useJsApi = !tempSettings.useJsApi
-                )
+                ) )
             },
         )
     }
