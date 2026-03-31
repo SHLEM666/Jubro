@@ -1,6 +1,8 @@
 package com.shlem666.jubro.ui
 
 import android.app.Activity
+import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -55,6 +57,7 @@ fun JubroApp(
 
         HideStatusBar(!isCompact && appSettings.hideStatusBar)
         LockScreenOrientation(appSettings.screenOrient)
+        HandleOnBackPressed()
 
         Scaffold(
             modifier = Modifier
@@ -113,4 +116,15 @@ fun HideStatusBar(hide: Boolean) {
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
     }
+}
+
+@Composable
+fun HandleOnBackPressed() {
+    val activity = LocalActivity.current
+    (activity as ComponentActivity).onBackPressedDispatcher.addCallback(
+        activity,
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { /* Do nothing */ }
+        }
+    )
 }
