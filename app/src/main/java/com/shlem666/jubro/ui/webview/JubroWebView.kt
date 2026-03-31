@@ -8,6 +8,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -16,6 +18,10 @@ fun JubroWebView(
     url: String,
     viewModel: JubroWebViewViewModel = hiltViewModel(),
 ) {
+    // so that the jupyterUrl value in the shouldOverrideUrlLoading
+    // function is not taken from the closure
+    val jupyterUrl by rememberUpdatedState(url)
+
     // webview needs exactly Activity Context (LocalContext.current)
     // to mobile version of select html-element may work properly
     AndroidView(
@@ -42,10 +48,24 @@ fun JubroWebView(
                         view: WebView,
                         request: WebResourceRequest
                     ): Boolean {
-                        view.context.startActivity(Intent(
-                            Intent.ACTION_VIEW,
-                            request.url
-                        ) )
+                        val requestUrl = request.url.toString()
+                        if (
+                            requestUrl.contains(
+                                jupyterUrl, true
+                            ) ||
+                            "$requestUrl/".contains(
+                                jupyterUrl, true
+                            )
+                        ) {
+                            view.loadUrl(requestUrl)
+                        } else {
+                            view.context.startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    request.url
+                                )
+                            )
+                        }
                         return true
                     }
                 }
@@ -53,7 +73,7 @@ fun JubroWebView(
             }
         },
         update = { webView ->
-            webView.loadUrl(url)
+            webView.loadUrl(jupyterUrl)
             viewModel.attacheWebView(webView)
         },
         onReset = { webView ->
