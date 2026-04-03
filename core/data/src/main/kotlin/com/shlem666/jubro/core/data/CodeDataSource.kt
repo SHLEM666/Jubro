@@ -5,14 +5,14 @@ import android.content.res.AssetManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class JsDataSource @Inject constructor(
+class CodeDataSource @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) {
     private val assetManager: AssetManager = context.assets
-    private val path = "js"
+    private val path = "code"
     private val fileNames = assetManager.list(path)
 
-    fun getJsData() = fileNames?.associateWith { fileName ->
+    fun getCodeData() = fileNames?.associateWith { fileName ->
         assetManager
             .open("$path/$fileName")
             .bufferedReader().use { it.readText() }

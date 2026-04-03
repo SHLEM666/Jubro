@@ -5,16 +5,16 @@ import android.view.InputDevice
 import android.view.KeyEvent
 import android.webkit.WebView
 import javax.inject.Inject
-import com.shlem666.jubro.core.data.repository.JsDataRepository
+import com.shlem666.jubro.core.data.repository.CodeDataRepository
 
 class WebViewController @Inject constructor(
-    private val jsDataRepository: JsDataRepository
+    private val codeDataRepository: CodeDataRepository
 ) {
     lateinit var webView: WebView
 
-    fun evalJS(scriptName: String) {
+    fun evalJS(fileName: String) {
         webView.evaluateJavascript(
-            jsDataRepository.scripts[scriptName] ?: "",
+            codeDataRepository.files[fileName] ?: "",
             null
         )
     }
