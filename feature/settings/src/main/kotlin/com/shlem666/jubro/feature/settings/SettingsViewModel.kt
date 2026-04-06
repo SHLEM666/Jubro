@@ -29,12 +29,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
+import com.shlem666.jubro.core.data.repository.CodeDataRepository
 import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
 import com.shlem666.jubro.feature.settings.SettingsUiState.Success
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
+    private val codeDataRepository: CodeDataRepository,
 ) : ViewModel() {
 
     val settingsUiState: StateFlow<SettingsUiState> =
@@ -64,6 +66,10 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setScreenOrient(settings.screenOrient)
             userDataRepository.setUseJsApi(settings.useJsApi)
         }
+    }
+
+    fun getCode(fileName: String) : String {
+        return codeDataRepository.files[fileName] ?: ""
     }
 }
 

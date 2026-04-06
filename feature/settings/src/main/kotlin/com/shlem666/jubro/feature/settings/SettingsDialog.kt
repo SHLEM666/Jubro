@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
 import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.feature.settings.items.HintTextSwitchItem
 import com.shlem666.jubro.feature.settings.items.JupyterURLItem
 import com.shlem666.jubro.feature.settings.items.OrientationControlItem
 import com.shlem666.jubro.feature.settings.items.SwitchItem
@@ -81,6 +82,7 @@ fun Items(
 ) {
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .verticalScroll( state = rememberScrollState() ),
     ) {
         OrientationControlItem(
@@ -113,14 +115,15 @@ fun Items(
                 ) )
             },
         )
-        SwitchItem(
-            text = stringResource(R.string.use_js_api),
+        HintTextSwitchItem(
+            primaryText = stringResource(R.string.use_js_api),
+            secondaryText = stringResource(R.string.know_more),
             isChecked = tempSettings.useJsApi,
             onToggle = {
                 updateSettings( tempSettings.copy(
                     useJsApi = !tempSettings.useJsApi
                 ) )
-            },
+            }
         )
     }
 }

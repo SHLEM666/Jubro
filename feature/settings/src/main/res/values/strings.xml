@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="loading">LOADING…</string>
     <string name="feature_settings_title">Settings</string>
+
     <string name="jupyter_url">Jupyter URL</string>
     <string name="notch_padding">Notch padding in landscape</string>
     <string name="hide_status_bar_in_landscape">Hide status bar in landscape</string>
     <string name="use_js_api">Use Jupyter JavaScript API</string>
+    <string name="know_more">Would you like to know more?</string>
+
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
-    <string name="loading">LOADING…</string>
+
+    <string name="about_js_api">About Jupyter JavaScript API</string>
+    <string name="about_js_api_p1">You can enable this option if you are hosting Jupyter yourself and run it with the <tt>--expose-app-in-browser</tt> option. \n</string>
+    <string name="about_js_api_p2">In other cases, it is highly recommended to leave the option disabled and also add keyboard shortcuts for <tt>Show Left Activity Bar</tt> and <tt>Show Right Activity Bar</tt> menu items. \n</string>
+    <string name="about_js_api_p3">To do this, go to <tt>Settings Editor > JSON Settings Editor > Keyboard Shortcuts</tt> and insert the following code to the <tt>User Preferences</tt> field.</string>
+
+    <string name="btn_copy">Copy</string>
+    <string name="btn_close">Close</string>
+
 </resources>

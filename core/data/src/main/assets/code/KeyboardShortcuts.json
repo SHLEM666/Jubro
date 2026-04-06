@@ -1,0 +1,20 @@
+{
+	"shortcuts": [
+		{
+			"command": "application:toggle-side-tabbar",
+			"keys": ["Shift Ctrl Y"],
+			"selector": "body",
+			"args": {
+				"side": "left"
+			}
+		},
+		{
+			"command": "application:toggle-side-tabbar",
+			"keys": ["Shift Ctrl O"],
+			"selector": "body",
+			"args": {
+				"side": "right"
+			}
+		}
+	]
+}
