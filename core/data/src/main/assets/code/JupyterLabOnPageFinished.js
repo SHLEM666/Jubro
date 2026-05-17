@@ -4,6 +4,7 @@
 		try {
 			var elem = document.createElement("style");
 			elem.innerHTML += "#jp-menu-panel {overflow-x: scroll;}";
+			elem.innerHTML += ".jp-LabShell[data-shell-mode='single-document'] #jp-menu-panel {padding: 0px;}";
             //elem.innerHTML += "#jp-MainMenu {overflow-x: scroll;}";
 			//elem.innerHTML += ".jp-NotebookTrustedStatus {display: none;}";
 			//elem.innerHTML += "select {display: none;}";
