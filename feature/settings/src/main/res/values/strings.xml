@@ -5,6 +5,7 @@
     <string name="feature_settings_title">Settings</string>
 
     <string name="jupyter_url">Jupyter URL</string>
+    <string name="use_dark_theme">Use dark theme</string>
     <string name="notch_padding">Notch padding in landscape</string>
     <string name="hide_status_bar_in_landscape">Hide status bar in landscape</string>
     <string name="use_js_api">Use Jupyter JavaScript API</string>

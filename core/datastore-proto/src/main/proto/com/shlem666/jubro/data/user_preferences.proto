@@ -25,5 +25,6 @@ message UserPreferences {
   optional bool hideStatusBar = 3;
   optional int32 screenOrient = 4;
   optional bool useJsApi = 5;
-  // NEXT AVAILABLE ID: 6
+  optional bool darkTheme = 6;
+  // NEXT AVAILABLE ID: 7
 }

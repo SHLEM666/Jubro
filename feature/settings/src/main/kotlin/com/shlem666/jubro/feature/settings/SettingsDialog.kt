@@ -98,6 +98,15 @@ fun Items(
             }
         )
         SwitchItem(
+            text = stringResource(R.string.use_dark_theme),
+            isChecked = tempSettings.darkTheme,
+            onToggle = {
+                updateSettings( tempSettings.copy(
+                    darkTheme = !tempSettings.darkTheme
+                ) )
+            },
+        )
+        SwitchItem(
             text = stringResource(R.string.notch_padding),
             isChecked = tempSettings.notchPadding,
             onToggle = {

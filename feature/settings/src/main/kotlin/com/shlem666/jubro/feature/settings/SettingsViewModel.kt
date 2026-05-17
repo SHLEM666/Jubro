@@ -49,6 +49,7 @@ class SettingsViewModel @Inject constructor(
                         hideStatusBar = userData.hideStatusBar,
                         screenOrient = userData.screenOrient,
                         useJsApi = userData.useJsApi,
+                        darkTheme = userData.darkTheme,
                     ),
                 )
             }
@@ -65,6 +66,7 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setHideStatusBar(settings.hideStatusBar)
             userDataRepository.setScreenOrient(settings.screenOrient)
             userDataRepository.setUseJsApi(settings.useJsApi)
+            userDataRepository.setDarkTheme(settings.darkTheme)
         }
     }
 
@@ -82,6 +84,7 @@ data class AppSettings(
     val hideStatusBar: Boolean = false,
     val screenOrient: Int = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,
     val useJsApi: Boolean = false,
+    val darkTheme: Boolean = false
 ) {
     companion object {
         val Saver = Saver< AppSettings, List<Any> >(
@@ -91,6 +94,7 @@ data class AppSettings(
                 it.hideStatusBar,
                 it.screenOrient,
                 it.useJsApi,
+                it.darkTheme,
             ) },
             restore = { AppSettings(
                 jupyterUrl = it[0] as String,
@@ -98,6 +102,7 @@ data class AppSettings(
                 hideStatusBar = it[2] as Boolean,
                 screenOrient = it[3] as Int,
                 useJsApi = it[4] as Boolean,
+                darkTheme = it[5] as Boolean,
             ) },
         )
     }

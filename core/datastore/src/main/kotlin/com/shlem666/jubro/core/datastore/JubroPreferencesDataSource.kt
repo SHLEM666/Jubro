@@ -55,6 +55,11 @@ class JubroPreferencesDataSource @Inject constructor(
                 } else {
                     false
                 },
+                darkTheme = if ( it.hasDarkTheme() ) {
+                    it.darkTheme
+                } else {
+                    false
+                },
             )
         }
 
@@ -115,6 +120,18 @@ class JubroPreferencesDataSource @Inject constructor(
             }
         } catch (ioException: IOException) {
             Log.e("JubroPreferences", "Failed to update useJsApi", ioException)
+        }
+    }
+
+    suspend fun setDarkTheme(darkTheme: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.darkTheme = darkTheme
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("JubroPreferences", "Failed to update darkTheme", ioException)
         }
     }
 }

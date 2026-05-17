@@ -25,4 +25,5 @@ data class UserData(
     val hideStatusBar: Boolean,
     val screenOrient: Int,
     val useJsApi: Boolean,
+    val darkTheme: Boolean,
 )

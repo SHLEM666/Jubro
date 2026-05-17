@@ -33,6 +33,7 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override suspend fun setJupyterUrl(jupyterUrl: String) {
         jubroPreferencesDataSource.setJupyterUrl(jupyterUrl)
     }
+
     override suspend fun setNotchPadding(notchPadding: Boolean) {
         jubroPreferencesDataSource.setNotchPadding(notchPadding)
     }
@@ -47,5 +48,9 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
 
     override suspend fun setUseJsApi(useJsApi: Boolean) {
         jubroPreferencesDataSource.setUseJsApi(useJsApi)
+    }
+
+    override suspend fun setDarkTheme(darkTheme: Boolean) {
+        jubroPreferencesDataSource.setDarkTheme(darkTheme)
     }
 }

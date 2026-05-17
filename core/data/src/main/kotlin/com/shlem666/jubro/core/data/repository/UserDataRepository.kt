@@ -50,4 +50,9 @@ interface UserDataRepository {
      * Sets the useJsApi value
      */
     suspend fun setUseJsApi(useJsApi: Boolean)
+
+    /**
+     * Sets the darkTheme value
+     */
+    suspend fun setDarkTheme(darkTheme: Boolean)
 }
