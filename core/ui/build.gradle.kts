@@ -24,7 +24,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.activity.compose)
 
-    api(projects.core.designsystem)
 }

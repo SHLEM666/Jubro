@@ -24,10 +24,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.google.oss.licenses)
     implementation(projects.core.data)
-
-    //testImplementation(projects.core.testing)
-    //androidTestImplementation(libs.bundles.androidx.compose.ui.test)
 }

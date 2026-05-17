@@ -33,6 +33,5 @@ dependencies {
 
     implementation(projects.core.common)
 
-    //testImplementation(projects.core.datastoreTest)
     //testImplementation(libs.kotlinx.coroutines.test)
 }
