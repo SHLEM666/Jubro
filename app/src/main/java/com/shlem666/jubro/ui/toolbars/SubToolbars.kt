@@ -13,6 +13,7 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowRight
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowUp
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Redo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Refresh
+import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardTab
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
 import com.shlem666.jubro.ui.webview.JubroWebViewViewModel
@@ -70,6 +71,10 @@ fun LeftBottom(
     JubroIconButton(
         onClick = { viewModel.redo() },
         icon = Redo
+    )
+    JubroIconButton(
+        onClick = { viewModel.tab() },
+        icon = KeyboardTab
     )
 }
 

@@ -46,6 +46,9 @@ class JubroWebViewViewModel @Inject constructor(
             )
         }
     }
+    fun tab() {
+        webViewController.simulateKeyPress(KeyEvent.KEYCODE_TAB)
+    }
 
     fun toggleLeftSideBar() {
         if (useJsApi) {
