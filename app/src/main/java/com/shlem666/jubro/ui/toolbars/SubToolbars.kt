@@ -82,15 +82,15 @@ fun RightBottom(
         icon = KeyboardArrowUp
     )
     JubroIconButton(
+        onClick = { viewModel.arrowDown() },
+        icon = KeyboardArrowDown
+    )
+    JubroIconButton(
         onClick = { viewModel.arrowLeft() },
         icon = KeyboardArrowLeft
     )
     JubroIconButton(
         onClick = { viewModel.arrowRight() },
         icon = KeyboardArrowRight
-    )
-    JubroIconButton(
-        onClick = { viewModel.arrowDown() },
-        icon = KeyboardArrowDown
     )
 }
