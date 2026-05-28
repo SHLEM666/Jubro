@@ -49,6 +49,12 @@ class JubroWebViewViewModel @Inject constructor(
     fun tab() {
         webViewController.simulateKeyPress(KeyEvent.KEYCODE_TAB)
     }
+    fun run() {
+        webViewController.simulateKeyPress(
+            code = KeyEvent.KEYCODE_ENTER,
+            metaStateCode1 = KeyEvent.META_SHIFT_ON
+        )
+    }
 
     fun toggleLeftSideBar() {
         if (useJsApi) {

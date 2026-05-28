@@ -14,6 +14,7 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowUp
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Redo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Refresh
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardTab
+import com.shlem666.jubro.core.designsystem.icon.JubroIcons.PlayArrow
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
 import com.shlem666.jubro.ui.webview.JubroWebViewViewModel
@@ -39,6 +40,12 @@ fun RightTop(
     viewModel: JubroWebViewViewModel = hiltViewModel(),
     reverse: Boolean = false
 ) {
+    val runButton = @Composable {
+        JubroIconButton(
+            onClick = { viewModel.run() },
+            icon = PlayArrow
+        )
+    }
     val menuButton = @Composable {
         JubroIconButton(
             onClick = { toggleSettingDialog() },
@@ -54,7 +61,9 @@ fun RightTop(
     if (reverse) {
         sideBarButton()
         menuButton()
+        runButton()
     } else {
+        runButton()
         menuButton()
         sideBarButton()
     }
