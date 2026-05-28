@@ -48,7 +48,7 @@ fun LeftToolBarLayout() {
         modifier = Modifier.fillMaxHeight()
     ) {
         Column { LeftTop() }
-        Column { LeftBottom() }
+        Column { LeftBottom(reverse = true) }
     }
 }
 

@@ -62,20 +62,36 @@ fun RightTop(
 
 @Composable
 fun LeftBottom(
-    viewModel: JubroWebViewViewModel = hiltViewModel()
+    viewModel: JubroWebViewViewModel = hiltViewModel(),
+    reverse: Boolean = false
 ) {
-    JubroIconButton(
-        onClick = { viewModel.undo() },
-        icon = Undo
-    )
-    JubroIconButton(
-        onClick = { viewModel.redo() },
-        icon = Redo
-    )
-    JubroIconButton(
-        onClick = { viewModel.tab() },
-        icon = KeyboardTab
-    )
+    val tabButton = @Composable {
+        JubroIconButton(
+            onClick = { viewModel.tab() },
+            icon = KeyboardTab
+        )
+    }
+    val undoButton = @Composable {
+        JubroIconButton(
+            onClick = { viewModel.undo() },
+            icon = Undo
+        )
+    }
+    val redoButton = @Composable {
+        JubroIconButton(
+            onClick = { viewModel.redo() },
+            icon = Redo
+        )
+    }
+    if (reverse) {
+        tabButton()
+        undoButton()
+        redoButton()
+    } else {
+        undoButton()
+        redoButton()
+        tabButton()
+    }
 }
 
 @Composable
