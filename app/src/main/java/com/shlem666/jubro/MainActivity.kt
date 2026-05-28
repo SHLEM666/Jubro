@@ -1,6 +1,5 @@
 package com.shlem666.jubro
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -33,6 +32,12 @@ class MainActivity : ComponentActivity() {
         // This allows us to react to dark/light mode changes.
         var darkTheme by mutableStateOf(false)
 
+        val backgroundColor = android.graphics.Color.TRANSPARENT
+        val systemBarStyle = SystemBarStyle.auto(
+            lightScrim = backgroundColor,
+            darkScrim = backgroundColor
+        ) { darkTheme }
+
         // Update the uiState
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -40,14 +45,8 @@ class MainActivity : ComponentActivity() {
                     if (uiState is Success) {
                         darkTheme = uiState.appSettings.darkTheme
                         enableEdgeToEdge(
-                            statusBarStyle = SystemBarStyle.auto(
-                                lightScrim = android.graphics.Color.TRANSPARENT,
-                                darkScrim = android.graphics.Color.TRANSPARENT,
-                            ) { darkTheme },
-                            navigationBarStyle = SystemBarStyle.auto(
-                                lightScrim = android.graphics.Color.TRANSPARENT,
-                                darkScrim = android.graphics.Color.TRANSPARENT,
-                            ) { darkTheme },
+                            statusBarStyle = systemBarStyle,
+                            navigationBarStyle = systemBarStyle
                         )
                     }
                 }
@@ -59,9 +58,5 @@ class MainActivity : ComponentActivity() {
                 JubroApp()
             }
         }
-    }
-
-    override fun getApplicationContext(): Context? {
-        return super.getApplicationContext()
     }
 }
