@@ -1,5 +1,5 @@
 /*
- * Thanks to Google AI for this code
+ * Thanks to Google AI for some part of this code.
  * Prompt:
  * android compose IconButton repeat action many times on long press
  */
@@ -30,11 +30,12 @@ fun JubroRepeatingIconButton(
 
     LaunchedEffect(isPressed) {
         if (isPressed) {
-            // First execution triggers instantly on tap
+
+            // First action triggers instantly on tap
             onClick()
             delay(delayToRepeat)
 
-            // Keep repeating until the user releases the button
+            // Repeats while the button is pressed
             while (true) {
                 onClick()
                 delay(repeatInterval)
