@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.coroutines.delay
@@ -29,19 +28,15 @@ fun JubroRepeatingIconButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    // Use rememberUpdatedState to prevent capturing stale data in the loop
-    val currentOnClick by rememberUpdatedState(onClick)
-
     LaunchedEffect(isPressed) {
         if (isPressed) {
-
             // First execution triggers instantly on tap
-            currentOnClick()
+            onClick()
             delay(delayToRepeat)
 
             // Keep repeating until the user releases the button
-            while (isPressed) {
-                currentOnClick()
+            while (true) {
+                onClick()
                 delay(repeatInterval)
             }
         }
