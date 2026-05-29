@@ -1,0 +1,56 @@
+/*
+ * Thanks to Google AI for this code
+ * Prompt:
+ * android compose IconButton repeat action many times on long press
+ */
+
+package com.shlem666.jubro.core.designsystem.component
+
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.coroutines.delay
+import androidx.compose.runtime.*
+
+@Composable
+fun JubroRepeatingIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    icon: ImageVector,
+    description: String? = null,
+    delayToRepeat: Long = 300L,
+    repeatInterval: Long = 50L,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    // Use rememberUpdatedState to prevent capturing stale data in the loop
+    val currentOnClick by rememberUpdatedState(onClick)
+
+    LaunchedEffect(isPressed) {
+        if (isPressed) {
+
+            // First execution triggers instantly on tap
+            currentOnClick()
+            delay(delayToRepeat)
+
+            // Keep repeating until the user releases the button
+            while (isPressed) {
+                currentOnClick()
+                delay(repeatInterval)
+            }
+        }
+    }
+
+    JubroIconButton(
+        modifier = modifier,
+        onClick = { /* Do nothing */ },
+        icon = icon,
+        description = description,
+        interactionSource = interactionSource,
+    )
+}

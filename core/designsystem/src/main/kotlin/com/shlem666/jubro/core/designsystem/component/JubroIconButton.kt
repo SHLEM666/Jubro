@@ -1,5 +1,6 @@
 package com.shlem666.jubro.core.designsystem.component
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -12,10 +13,12 @@ fun JubroIconButton(
     onClick: () -> Unit,
     icon: ImageVector,
     description: String? = null,
+    interactionSource: MutableInteractionSource? = null,
 ) {
     IconButton(
         modifier = modifier,
         onClick = { onClick() },
+        interactionSource = interactionSource,
     ) {
         Icon(
             imageVector = icon,
