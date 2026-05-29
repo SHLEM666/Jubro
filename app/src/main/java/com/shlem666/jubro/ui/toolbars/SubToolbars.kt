@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.shlem666.jubro.core.designsystem.component.JubroIconButton
+import com.shlem666.jubro.core.designsystem.component.JubroRepeatingIconButton
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowDown
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowLeft
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardArrowRight
@@ -75,7 +76,7 @@ fun LeftBottom(
     reverse: Boolean = false
 ) {
     val tabButton = @Composable {
-        JubroIconButton(
+        JubroRepeatingIconButton(
             onClick = { viewModel.tab() },
             icon = KeyboardTab
         )
@@ -107,19 +108,19 @@ fun LeftBottom(
 fun RightBottom(
     viewModel: JubroWebViewViewModel = hiltViewModel()
 ) {
-    JubroIconButton(
+    JubroRepeatingIconButton(
         onClick = { viewModel.arrowUp() },
         icon = KeyboardArrowUp
     )
-    JubroIconButton(
+    JubroRepeatingIconButton(
         onClick = { viewModel.arrowDown() },
         icon = KeyboardArrowDown
     )
-    JubroIconButton(
+    JubroRepeatingIconButton(
         onClick = { viewModel.arrowLeft() },
         icon = KeyboardArrowLeft
     )
-    JubroIconButton(
+    JubroRepeatingIconButton(
         onClick = { viewModel.arrowRight() },
         icon = KeyboardArrowRight
     )
