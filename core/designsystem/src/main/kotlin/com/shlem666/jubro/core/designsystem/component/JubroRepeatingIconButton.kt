@@ -25,15 +25,19 @@ fun JubroRepeatingIconButton(
     delayToRepeat: Long = 300L,
     repeatInterval: Long = 50L,
 ) {
+    // This temporary variable needs to simulate a regular behavior:
+    // The action must be performed after the button is released
+    var tempOnClick = onClick
+
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
     LaunchedEffect(isPressed) {
         if (isPressed) {
 
-            // First action triggers instantly on tap
-            onClick()
+            // Clears after the delayToRepeat time has expired
             delay(delayToRepeat)
+            tempOnClick = { }
 
             // Repeats while the button is pressed
             while (true) {
@@ -45,7 +49,7 @@ fun JubroRepeatingIconButton(
 
     JubroIconButton(
         modifier = modifier,
-        onClick = { /* Do nothing */ },
+        onClick = { tempOnClick() },
         icon = icon,
         description = description,
         interactionSource = interactionSource,
