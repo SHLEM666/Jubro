@@ -50,9 +50,6 @@ fun JubroWebView(
                     ): Boolean {
                         val requestUrl = request.url.toString()
                         if (
-                            requestUrl.contains(
-                                jupyterUrl, true
-                            ) ||
                             "$requestUrl/".contains(
                                 jupyterUrl, true
                             )
