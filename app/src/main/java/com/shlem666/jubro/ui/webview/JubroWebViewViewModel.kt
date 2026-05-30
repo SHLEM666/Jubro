@@ -11,7 +11,7 @@ import com.shlem666.jubro.core.data.repository.UserDataRepository
 
 @HiltViewModel
 class JubroWebViewViewModel @Inject constructor(
-    userDataRepository: UserDataRepository,
+    private val userDataRepository: UserDataRepository,
     private val webViewController: WebViewController
 ) : ViewModel() {
 
