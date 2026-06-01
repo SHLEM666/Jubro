@@ -12,11 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.shlem666.jubro.ui.UiViewModel
 
 @Composable
 fun JubroWebView(
     url: String,
-    viewModel: JubroWebViewViewModel = hiltViewModel(),
+    viewModel: UiViewModel = hiltViewModel(),
 ) {
     // so that the jupyterUrl value in the shouldOverrideUrlLoading
     // function is not taken from the closure

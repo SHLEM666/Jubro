@@ -18,11 +18,11 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardTab
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.PlayArrow
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
-import com.shlem666.jubro.ui.webview.JubroWebViewViewModel
+import com.shlem666.jubro.ui.UiViewModel
 
 @Composable
 fun LeftTop(
-    viewModel: JubroWebViewViewModel = hiltViewModel()
+    viewModel: UiViewModel = hiltViewModel()
 ) {
     JubroIconButton(
         modifier = Modifier.scale(scaleX = -1f, scaleY = 1f),
@@ -38,7 +38,7 @@ fun LeftTop(
 @Composable
 fun RightTop(
     toggleSettingDialog: () -> Unit,
-    viewModel: JubroWebViewViewModel = hiltViewModel(),
+    viewModel: UiViewModel = hiltViewModel(),
     reverse: Boolean = false
 ) {
     val runButton = @Composable {
@@ -72,7 +72,7 @@ fun RightTop(
 
 @Composable
 fun LeftBottom(
-    viewModel: JubroWebViewViewModel = hiltViewModel(),
+    viewModel: UiViewModel = hiltViewModel(),
     reverse: Boolean = false
 ) {
     val tabButton = @Composable {
@@ -106,7 +106,7 @@ fun LeftBottom(
 
 @Composable
 fun RightBottom(
-    viewModel: JubroWebViewViewModel = hiltViewModel()
+    viewModel: UiViewModel = hiltViewModel()
 ) {
     JubroRepeatingIconButton(
         onClick = { viewModel.arrowUp() },
