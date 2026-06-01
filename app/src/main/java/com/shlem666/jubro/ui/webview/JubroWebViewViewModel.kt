@@ -88,7 +88,7 @@ class JubroWebViewViewModel @Inject constructor(
     }
 
     fun reload() {
-        webViewController.webView.reload()
+        webViewController.reload()
     }
 
     fun arrowUp() {
@@ -105,7 +105,7 @@ class JubroWebViewViewModel @Inject constructor(
     }
 
     fun attacheWebView(webView: WebView) {
-        webViewController.webView = webView
+        webViewController.attacheWebView(webView)
     }
 
     fun onPageFinished() {

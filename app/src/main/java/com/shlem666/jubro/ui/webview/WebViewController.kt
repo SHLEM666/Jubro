@@ -12,6 +12,14 @@ class WebViewController @Inject constructor(
 ) {
     lateinit var webView: WebView
 
+    fun attacheWebView(webView: WebView) {
+        this.webView = webView
+    }
+
+    fun reload() {
+        webView.reload()
+    }
+
     fun evalJS(fileName: String) {
         webView.evaluateJavascript(
             codeDataRepository.files[fileName] ?: "",
