@@ -8,10 +8,12 @@ import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.shlem666.jubro.core.data.repository.UserDataRepository
+import com.shlem666.jubro.core.data.repository.CodeDataRepository
 
 @HiltViewModel
 class JubroWebViewViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
+    private val codeDataRepository: CodeDataRepository,
     private val webViewController: WebViewController
 ) : ViewModel() {
 
@@ -25,9 +27,15 @@ class JubroWebViewViewModel @Inject constructor(
         }
     }
 
+    private fun getScript(fileName: String): String {
+        return codeDataRepository.files[fileName] ?: ""
+    }
+
     fun undo() {
         if (useJsApi) {
-            webViewController.evalJS("Undo.js")
+            webViewController.evalJS(
+                getScript("Undo.js")
+            )
         } else {
             webViewController.simulateKeyPress(
                 code = KeyEvent.KEYCODE_Z,
@@ -37,7 +45,9 @@ class JubroWebViewViewModel @Inject constructor(
     }
     fun redo() {
         if (useJsApi) {
-            webViewController.evalJS("Redo.js")
+            webViewController.evalJS(
+                getScript("Redo.js")
+            )
         } else {
             webViewController.simulateKeyPress(
                 code = KeyEvent.KEYCODE_Z,
@@ -58,7 +68,9 @@ class JubroWebViewViewModel @Inject constructor(
 
     fun toggleLeftSideBar() {
         if (useJsApi) {
-            webViewController.evalJS("ToggleLeftSideBar.js")
+            webViewController.evalJS(
+                getScript("ToggleLeftSideBar.js")
+            )
         } else {
             webViewController.simulateKeyPress(
                 code = KeyEvent.KEYCODE_B,
@@ -73,7 +85,9 @@ class JubroWebViewViewModel @Inject constructor(
     }
     fun toggleRightSideBar() {
         if (useJsApi) {
-            webViewController.evalJS("ToggleRightSideBar.js")
+            webViewController.evalJS(
+                getScript("ToggleRightSideBar.js")
+            )
         } else {
             webViewController.simulateKeyPress(
                 code = KeyEvent.KEYCODE_J,
@@ -110,7 +124,7 @@ class JubroWebViewViewModel @Inject constructor(
 
     fun onPageFinished() {
         webViewController.evalJS(
-            "JupyterLabOnPageFinished.js"
+            getScript("JupyterLabOnPageFinished.js")
         )
     }
 }

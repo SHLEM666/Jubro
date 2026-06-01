@@ -5,12 +5,10 @@ import android.view.InputDevice
 import android.view.KeyEvent
 import android.webkit.WebView
 import javax.inject.Inject
-import com.shlem666.jubro.core.data.repository.CodeDataRepository
 
-class WebViewController @Inject constructor(
-    private val codeDataRepository: CodeDataRepository
-) {
-    lateinit var webView: WebView
+class WebViewController @Inject constructor() {
+
+    private lateinit var webView: WebView
 
     fun attacheWebView(webView: WebView) {
         this.webView = webView
@@ -20,11 +18,8 @@ class WebViewController @Inject constructor(
         webView.reload()
     }
 
-    fun evalJS(fileName: String) {
-        webView.evaluateJavascript(
-            codeDataRepository.files[fileName] ?: "",
-            null
-        )
+    fun evalJS(script: String) {
+        webView.evaluateJavascript(script, null)
     }
 
     fun simulateKeyPress(
