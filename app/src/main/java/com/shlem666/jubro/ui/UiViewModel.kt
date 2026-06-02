@@ -5,7 +5,7 @@ import android.webkit.WebView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
 import com.shlem666.jubro.core.data.repository.UserDataRepository
@@ -119,13 +119,13 @@ class UiViewModel @Inject constructor(
     fun arrowUp() {
         webViewController.simulateKeyPress(KeyEvent.KEYCODE_DPAD_UP)
     }
+    fun arrowDown() {
+        webViewController.simulateKeyPress(KeyEvent.KEYCODE_DPAD_DOWN)
+    }
     fun arrowLeft() {
         webViewController.simulateKeyPress(KeyEvent.KEYCODE_DPAD_LEFT)
     }
     fun arrowRight() {
         webViewController.simulateKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT)
-    }
-    fun arrowDown() {
-        webViewController.simulateKeyPress(KeyEvent.KEYCODE_DPAD_DOWN)
     }
 }
