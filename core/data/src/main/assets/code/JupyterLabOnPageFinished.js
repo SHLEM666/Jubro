@@ -7,6 +7,12 @@
 			// Make main menu panel scrollable
 			elem.innerHTML += "#jp-menu-panel {overflow-x: scroll;}";
 
+            // Increase main menu panel height
+            elem.innerHTML += ":root {--jp-private-menubar-height: 34px;}";
+
+            // Increase tab bar height
+            elem.innerHTML += ":root {--jp-private-horizontal-tab-height: 30px;}";
+
 			// Remove unnecessary padding from the main menu panel
 			// that appear on the left in front of the File
 			// menu button in the Simple interface mode.
