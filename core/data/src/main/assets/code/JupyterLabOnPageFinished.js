@@ -12,6 +12,7 @@
 
             // Increase tab bar height
             elem.innerHTML += ":root {--jp-private-horizontal-tab-height: 30px;}";
+            elem.innerHTML += ".lm-TabBar-addButton[title^='New Launcher'] {padding: 7.5px;}";
 
 			// Remove unnecessary padding from the main menu panel
 			// that appear on the left in front of the File
