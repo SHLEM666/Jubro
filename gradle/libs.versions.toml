@@ -1,4 +1,7 @@
 [versions]
+app-versionCode = "1"
+app-versionName = "0.1.0"
+
 agp = "8.13.0"
 kotlin = "2.2.0"
 coreKtx = "1.16.0"
