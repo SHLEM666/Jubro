@@ -21,6 +21,19 @@ plugins {
 
 android {
     namespace = "com.shlem666.jubro.feature.settings"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        val versionName = libs.versions.app.versionName.get()
+        buildConfigField(
+            "String",
+            "versionName",
+            "\"$versionName\""
+        )
+    }
 }
 
 dependencies {

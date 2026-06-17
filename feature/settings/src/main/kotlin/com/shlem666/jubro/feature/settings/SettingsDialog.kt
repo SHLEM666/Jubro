@@ -18,6 +18,7 @@ package com.shlem666.jubro.feature.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -30,6 +31,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -149,6 +151,10 @@ fun Items(
                     useJsApi = !tempSettings.useJsApi
                 ) )
             }
+        )
+        Text(
+            modifier = Modifier.padding(vertical = 16.dp),
+            text = "Version " + BuildConfig.versionName,
         )
     }
 }
