@@ -51,6 +51,11 @@ class UiViewModel @Inject constructor(
             metaStateCode1 = KeyEvent.META_SHIFT_ON
         )
     }
+    fun returnCarriage() {
+        webViewController.simulateKeyPress(
+            code = KeyEvent.KEYCODE_ENTER,
+        )
+    }
 
     fun toggleLeftSideBar() {
         if (useJsApi) {

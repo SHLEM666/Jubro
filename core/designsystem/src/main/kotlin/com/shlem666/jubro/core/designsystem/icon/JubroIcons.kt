@@ -19,6 +19,7 @@ package com.shlem666.jubro.core.designsystem.icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardReturn
 import androidx.compose.material.icons.automirrored.filled.KeyboardTab
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
@@ -32,6 +33,7 @@ import androidx.compose.material.icons.filled.ScreenLockPortrait
 import androidx.compose.material.icons.filled.ScreenRotation
 
 object JubroIcons {
+    val Return = Icons.AutoMirrored.Filled.KeyboardReturn
     val ViewSidebar = Icons.AutoMirrored.Outlined.ViewSidebar
     val Refresh = Icons.Filled.Refresh
     val Undo = Icons.AutoMirrored.Filled.Undo

@@ -16,6 +16,7 @@ import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Redo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Refresh
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.KeyboardTab
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.PlayArrow
+import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Return
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Undo
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.ViewSidebar
 import com.shlem666.jubro.ui.UiViewModel
@@ -33,6 +34,10 @@ fun LeftTop(
         onClick = { viewModel.reload() },
         icon = Refresh
     )
+    JubroIconButton(
+        onClick = { viewModel.run() },
+        icon = PlayArrow
+    )
 }
 
 @Composable
@@ -41,10 +46,12 @@ fun RightTop(
     viewModel: UiViewModel = hiltViewModel(),
     reverse: Boolean = false
 ) {
-    val runButton = @Composable {
+    val returnButton = @Composable {
         JubroIconButton(
-            onClick = { viewModel.run() },
-            icon = PlayArrow
+            onClick = {
+                viewModel.returnCarriage()
+            },
+            icon = Return
         )
     }
     val menuButton = @Composable {
@@ -62,9 +69,9 @@ fun RightTop(
     if (reverse) {
         sideBarButton()
         menuButton()
-        runButton()
+        returnButton()
     } else {
-        runButton()
+        returnButton()
         menuButton()
         sideBarButton()
     }
