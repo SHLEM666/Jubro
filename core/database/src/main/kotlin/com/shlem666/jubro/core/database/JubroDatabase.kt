@@ -19,13 +19,13 @@ package com.shlem666.jubro.core.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.shlem666.jubro.core.database.dao.RecentSearchQueryDao
-import com.shlem666.jubro.core.database.model.RecentSearchQueryEntity
+import com.shlem666.jubro.core.database.dao.RecentTextFieldValueDao
+import com.shlem666.jubro.core.database.model.RecentTextFieldValueEntity
 import com.shlem666.jubro.core.database.util.InstantConverter
 
 @Database(
     entities = [
-        RecentSearchQueryEntity::class,
+        RecentTextFieldValueEntity::class,
     ],
     version = 1,
     autoMigrations = [],
@@ -35,5 +35,5 @@ import com.shlem666.jubro.core.database.util.InstantConverter
     InstantConverter::class,
 )
 internal abstract class JubroDatabase : RoomDatabase() {
-    abstract fun recentSearchQueryDao(): RecentSearchQueryDao
+    abstract fun recentTextFieldValueDao(): RecentTextFieldValueDao
 }

@@ -22,14 +22,16 @@ import androidx.room.PrimaryKey
 import kotlinx.datetime.Instant
 
 /**
- * Defines an database entity that stored recent search queries.
+ * Defines an database entity that stored recent text fields values.
  */
 @Entity(
-    tableName = "recentSearchQueries",
+    tableName = "recentTextFieldValues",
 )
-data class RecentSearchQueryEntity(
+data class RecentTextFieldValueEntity(
     @PrimaryKey
-    val query: String,
+    val value: String,
+    @ColumnInfo
+    val fieldName: String,
     @ColumnInfo
     val queriedDate: Instant,
 )

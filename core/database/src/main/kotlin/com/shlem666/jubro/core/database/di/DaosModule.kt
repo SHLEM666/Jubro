@@ -17,7 +17,7 @@
 package com.shlem666.jubro.core.database.di
 
 import com.shlem666.jubro.core.database.JubroDatabase
-import com.shlem666.jubro.core.database.dao.RecentSearchQueryDao
+import com.shlem666.jubro.core.database.dao.RecentTextFieldValueDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +28,7 @@ import dagger.hilt.components.SingletonComponent
 internal object DaosModule {
 
     @Provides
-    fun providesRecentSearchQueryDao(
+    fun providesRecentTextFieldValueDao(
         database: JubroDatabase,
-    ): RecentSearchQueryDao = database.recentSearchQueryDao()
+    ): RecentTextFieldValueDao = database.recentTextFieldValueDao()
 }

@@ -19,20 +19,20 @@ package com.shlem666.jubro.core.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.shlem666.jubro.core.database.model.RecentSearchQueryEntity
+import com.shlem666.jubro.core.database.model.RecentTextFieldValueEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
- * DAO for [RecentSearchQueryEntity] access
+ * DAO for [RecentTextFieldValueEntity] access
  */
 @Dao
-interface RecentSearchQueryDao {
-    @Query(value = "SELECT * FROM recentSearchQueries ORDER BY queriedDate DESC LIMIT :limit")
-    fun getRecentSearchQueryEntities(limit: Int): Flow<List<RecentSearchQueryEntity>>
+interface RecentTextFieldValueDao {
+    @Query(value = "SELECT * FROM recentTextFieldValues ORDER BY queriedDate DESC LIMIT :limit")
+    fun getRecentTextFieldValueEntities(limit: Int): Flow<List<RecentTextFieldValueEntity>>
 
     @Upsert
-    suspend fun insertOrReplaceRecentSearchQuery(recentSearchQuery: RecentSearchQueryEntity)
+    suspend fun insertOrReplaceRecentTextFieldValue(recentTextFieldValue: RecentTextFieldValueEntity)
 
-    @Query(value = "DELETE FROM recentSearchQueries")
-    suspend fun clearRecentSearchQueries()
+    @Query(value = "DELETE FROM recentTextFieldValues")
+    suspend fun clearRecentTextFieldValues()
 }
