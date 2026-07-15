@@ -45,6 +45,8 @@ tasks {
 dependencies {
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
 }
 
 gradlePlugin {
@@ -76,6 +78,10 @@ gradlePlugin {
         register("jvmLibrary") {
             id = libs.plugins.jubro.jvm.library.get().pluginId
             implementationClass = "JvmLibraryConventionPlugin"
+        }
+        register("androidRoom") {
+            id = libs.plugins.jubro.android.room.get().pluginId
+            implementationClass = "AndroidRoomConventionPlugin"
         }
     }
 }
