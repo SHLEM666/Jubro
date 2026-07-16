@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-plugins {
-    alias(libs.plugins.jubro.android.library)
-    alias(libs.plugins.jubro.android.room)
-    alias(libs.plugins.jubro.hilt)
-}
+package com.shlem666.jubro.core.data.model
 
-android {
-    namespace = "com.shlem666.jubro.core.database"
-}
+import com.shlem666.jubro.core.database.model.RecentTextFieldValueEntity
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
-dependencies {
-    api(projects.core.model)
-    api(libs.kotlinx.datetime)
+data class RecentTextFieldValue(
+    val fieldName: String,
+    val value: String,
+    val lastUseDate: Instant = Clock.System.now(),
+)
 
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
-}
+fun RecentTextFieldValueEntity.asExternalModel() = RecentTextFieldValue(
+    fieldName = fieldName,
+    value = value,
+    lastUseDate = lastUseDate,
+)

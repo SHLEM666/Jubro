@@ -14,30 +14,34 @@
  * limitations under the License.
  */
 
-package com.shlem666.jubro.core.database.dao
+package com.shlem666.jubro.core.data.repository
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Upsert
-import com.shlem666.jubro.core.database.model.RecentTextFieldValueEntity
+import com.shlem666.jubro.core.data.model.RecentTextFieldValue
 import kotlinx.coroutines.flow.Flow
 
 /**
- * DAO for [RecentTextFieldValueEntity] access
+ * Data layer interface for the recent text fields values.
  */
-@Dao
-interface RecentTextFieldValueDao {
-    @Query(value = "SELECT * FROM recentTextFieldValues WHERE fieldName in (:fieldName) ORDER BY lastUseDate DESC LIMIT :limit")
-    fun getRecentTextFieldValueEntities(
+interface RecentTextRepository {
+
+    /**
+     * Get the recent text field values up to the number of values specified as [limit].
+     */
+    fun getRecentTextFieldValues(
         limit: Int,
         fieldName: String,
-    ): Flow<List<RecentTextFieldValueEntity>>
+    ): Flow<List<RecentTextFieldValue>>
 
-    @Upsert
+    /**
+     * Insert or replace the [recentTextFieldValue] as part of the recent values.
+     */
     suspend fun insertOrReplaceRecentTextFieldValue(
-        recentTextFieldValue: RecentTextFieldValueEntity
+        recentTextFieldValue: String,
+        fieldName: String,
     )
 
-    @Query(value = "DELETE FROM recentTextFieldValues")
+    /**
+     * Clear the recent values.
+     */
     suspend fun clearRecentTextFieldValues()
 }
