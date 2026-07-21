@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.Flow
 interface RecentTextRepository {
 
     /**
-     * Get the recent text field values up to the number of values specified as [limit].
+     * Get the recent values for [fieldName] up to the number of values specified as [limit].
      */
     fun getRecentTextFieldValues(
         limit: Int,
@@ -33,7 +33,7 @@ interface RecentTextRepository {
     ): Flow<List<RecentTextFieldValue>>
 
     /**
-     * Insert or replace the [recentTextFieldValue] as part of the recent values.
+     * Insert or replace the [recentTextFieldValue] as part of the recent values of [fieldName].
      */
     suspend fun insertOrReplaceRecentTextFieldValue(
         recentTextFieldValue: String,
