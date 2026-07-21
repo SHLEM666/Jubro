@@ -53,6 +53,8 @@ fun SettingsDialog(
         mutableStateOf((settingsUiState as Success).appSettings)
     }
 
+    val resentTextValuesUiState by viewModel.jupyterUrlResentTextValuesUiState.collectAsStateWithLifecycle()
+
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
         onDismissRequest = { onDismiss() },
@@ -68,6 +70,7 @@ fun SettingsDialog(
                         updateSettings = { tempSettings ->
                             appSettings = tempSettings
                         },
+                        recentTextFieldValueUiState = resentTextValuesUiState,
                     )
                 }
             }
@@ -76,6 +79,7 @@ fun SettingsDialog(
         confirmButton = {
             TextButton(
                 onClick = {
+                    viewModel.onNewValueApplied(appSettings.jupyterUrl)
                     viewModel.applySettings(appSettings)
                     onDismiss()
                 }
@@ -96,7 +100,9 @@ fun SettingsDialog(
 @Composable
 fun Items(
     tempSettings: AppSettings,
-    updateSettings: (AppSettings) -> Unit
+    updateSettings: (AppSettings) -> Unit,
+    recentTextFieldValueUiState: RecentTextFieldValueUiState
+        = RecentTextFieldValueUiState.Loading
 ) {
     Column(
         modifier = Modifier
@@ -111,6 +117,11 @@ fun Items(
         )
         JupyterURLItem(
             value = tempSettings.jupyterUrl,
+            suggestions = if (recentTextFieldValueUiState is RecentTextFieldValueUiState.Success) {
+                recentTextFieldValueUiState.recentValues.map { it.value }
+            } else {
+                emptyList()
+            },
             onValueChange = {
                 updateSettings( tempSettings.copy(jupyterUrl = it) )
             }

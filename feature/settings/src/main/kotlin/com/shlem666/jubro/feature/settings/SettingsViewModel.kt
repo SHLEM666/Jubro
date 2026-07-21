@@ -30,13 +30,18 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
+import com.shlem666.jubro.core.data.repository.RecentTextRepository
+import com.shlem666.jubro.core.domain.GetRecentTextFieldValuesUseCase
 import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
 import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import kotlinx.coroutines.flow.SharingStarted
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    recentTextFieldValuesUseCase: GetRecentTextFieldValuesUseCase,
     private val userDataRepository: UserDataRepository,
     private val codeDataRepository: CodeDataRepository,
+    private val recentTextRepository: RecentTextRepository,
 ) : ViewModel() {
 
     val settingsUiState: StateFlow<SettingsUiState> =
@@ -58,6 +63,25 @@ class SettingsViewModel @Inject constructor(
                 started = WhileSubscribed(5.seconds.inWholeMilliseconds),
                 initialValue = Loading,
             )
+
+    val jupyterUrlResentTextValuesUiState: StateFlow<RecentTextFieldValueUiState> =
+        recentTextFieldValuesUseCase(fieldName = "jupyterUrl")
+            .map(RecentTextFieldValueUiState::Success)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = RecentTextFieldValueUiState.Loading,
+            )
+
+    fun onNewValueApplied(value: String) {
+        if (value.isBlank()) return
+        viewModelScope.launch {
+            recentTextRepository.insertOrReplaceRecentTextFieldValue(
+                fieldName = "jupyterUrl",
+                recentTextFieldValue = value
+            )
+        }
+    }
 
     fun applySettings(settings: AppSettings) {
         viewModelScope.launch {

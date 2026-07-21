@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface RecentTextFieldValueDao {
-    @Query(value = "SELECT * FROM recentTextFieldValues WHERE fieldName in (:fieldName) ORDER BY lastUseDate DESC LIMIT :limit")
+    @Query(value = "SELECT * FROM recentTextFieldValues WHERE fieldName = :fieldName ORDER BY lastUseDate DESC LIMIT :limit")
     fun getRecentTextFieldValueEntities(
         limit: Int,
         fieldName: String,
