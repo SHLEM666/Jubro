@@ -31,14 +31,11 @@ import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
 import com.shlem666.jubro.core.data.repository.RecentTextRepository
-import com.shlem666.jubro.core.domain.GetRecentTextFieldValuesUseCase
-import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
-import com.shlem666.jubro.feature.settings.SettingsUiState.Success
-import kotlinx.coroutines.flow.SharingStarted
+import com.shlem666.jubro.core.domain.GetRecentJupyterUrlFieldValuesUseCase
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    recentTextFieldValuesUseCase: GetRecentTextFieldValuesUseCase,
+    getRecentJupyterUrlFieldValuesUseCase: GetRecentJupyterUrlFieldValuesUseCase,
     private val userDataRepository: UserDataRepository,
     private val codeDataRepository: CodeDataRepository,
     private val recentTextRepository: RecentTextRepository,
@@ -47,7 +44,7 @@ class SettingsViewModel @Inject constructor(
     val settingsUiState: StateFlow<SettingsUiState> =
         userDataRepository.userData
             .map { userData ->
-                Success(
+                SettingsUiState.Success(
                     appSettings = AppSettings(
                         jupyterUrl = userData.jupyterUrl,
                         notchPadding =  userData.notchPadding,
@@ -61,15 +58,15 @@ class SettingsViewModel @Inject constructor(
             .stateIn(
                 scope = viewModelScope,
                 started = WhileSubscribed(5.seconds.inWholeMilliseconds),
-                initialValue = Loading,
+                initialValue = SettingsUiState.Loading,
             )
 
     val jupyterUrlResentTextValuesUiState: StateFlow<RecentTextFieldValueUiState> =
-        recentTextFieldValuesUseCase(fieldName = "jupyterUrl")
+        getRecentJupyterUrlFieldValuesUseCase()
             .map(RecentTextFieldValueUiState::Success)
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
+                started = WhileSubscribed(5_000),
                 initialValue = RecentTextFieldValueUiState.Loading,
             )
 

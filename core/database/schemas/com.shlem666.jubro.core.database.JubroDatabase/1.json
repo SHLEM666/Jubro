@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "64f5ed3b9e9262a0437973ec4ef77457",
+    "identityHash": "faeb1e5e0c68e168ff46fbd004c6ff61",
     "entities": [
       {
         "tableName": "recentTextFieldValues",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fieldName` TEXT NOT NULL, `value` TEXT NOT NULL, `lastUseDate` INTEGER NOT NULL, PRIMARY KEY(`fieldName`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fieldName` TEXT NOT NULL, `value` TEXT NOT NULL, `lastUseDate` INTEGER NOT NULL, PRIMARY KEY(`value`))",
         "fields": [
           {
             "fieldPath": "fieldName",
@@ -30,14 +30,14 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "fieldName"
+            "value"
           ]
         }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64f5ed3b9e9262a0437973ec4ef77457')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'faeb1e5e0c68e168ff46fbd004c6ff61')"
     ]
   }
 }

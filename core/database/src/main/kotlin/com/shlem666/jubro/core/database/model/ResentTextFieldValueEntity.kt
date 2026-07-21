@@ -29,9 +29,9 @@ import kotlinx.datetime.Instant
 )
 data class RecentTextFieldValueEntity(
     @PrimaryKey
-    val fieldName: String,
-    @ColumnInfo
     val value: String,
+    @ColumnInfo
+    val fieldName: String,
     @ColumnInfo
     val lastUseDate: Instant,
 )

@@ -22,14 +22,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
- * A use case which returns the recent text field values.
+ * A use case which returns the recent Jupyter URL field values.
  */
-class GetRecentTextFieldValuesUseCase @Inject constructor(
+class GetRecentJupyterUrlFieldValuesUseCase @Inject constructor(
     private val recentTextRepository: RecentTextRepository,
 ) {
     operator fun invoke(
         limit: Int = 10,
-        fieldName: String,
+        fieldName: String = "jupyterUrl",
     ): Flow<List<RecentTextFieldValue>> =
         recentTextRepository.getRecentTextFieldValues(
             limit,

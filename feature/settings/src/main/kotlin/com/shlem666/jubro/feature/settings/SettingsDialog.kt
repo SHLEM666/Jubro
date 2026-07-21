@@ -53,7 +53,7 @@ fun SettingsDialog(
         mutableStateOf((settingsUiState as Success).appSettings)
     }
 
-    val resentTextValuesUiState by viewModel.jupyterUrlResentTextValuesUiState.collectAsStateWithLifecycle()
+    val jupyterUrlResentTextValuesUiState by viewModel.jupyterUrlResentTextValuesUiState.collectAsStateWithLifecycle()
 
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -70,7 +70,7 @@ fun SettingsDialog(
                         updateSettings = { tempSettings ->
                             appSettings = tempSettings
                         },
-                        recentTextFieldValueUiState = resentTextValuesUiState,
+                        jupyterUrlResentTextValuesUiState = jupyterUrlResentTextValuesUiState,
                     )
                 }
             }
@@ -101,7 +101,7 @@ fun SettingsDialog(
 fun Items(
     tempSettings: AppSettings,
     updateSettings: (AppSettings) -> Unit,
-    recentTextFieldValueUiState: RecentTextFieldValueUiState
+    jupyterUrlResentTextValuesUiState: RecentTextFieldValueUiState
         = RecentTextFieldValueUiState.Loading
 ) {
     Column(
@@ -117,8 +117,8 @@ fun Items(
         )
         JupyterURLItem(
             value = tempSettings.jupyterUrl,
-            suggestions = if (recentTextFieldValueUiState is RecentTextFieldValueUiState.Success) {
-                recentTextFieldValueUiState.recentValues.map { it.value }
+            suggestions = if (jupyterUrlResentTextValuesUiState is RecentTextFieldValueUiState.Success) {
+                jupyterUrlResentTextValuesUiState.recentValues.map { it.value }
             } else {
                 emptyList()
             },
