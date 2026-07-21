@@ -20,6 +20,8 @@ import com.shlem666.jubro.core.data.repository.OfflineFirstUserDataRepository
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.DefaultCodeDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
+import com.shlem666.jubro.core.data.repository.DefaultRecentTextRepository
+import com.shlem666.jubro.core.data.repository.RecentTextRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -38,4 +40,9 @@ abstract class DataModule {
     internal abstract fun bindsCodeDataRepository(
         codeDataRepository: DefaultCodeDataRepository,
     ): CodeDataRepository
+
+    @Binds
+    internal abstract fun bindsRecentTextRepository(
+        recentTextRepository: DefaultRecentTextRepository,
+    ): RecentTextRepository
 }
