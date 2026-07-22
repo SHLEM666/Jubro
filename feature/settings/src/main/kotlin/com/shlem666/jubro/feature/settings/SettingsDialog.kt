@@ -79,7 +79,6 @@ fun SettingsDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    viewModel.onNewValueApplied(appSettings.jupyterUrl)
                     viewModel.applySettings(appSettings)
                     onDismiss()
                 }

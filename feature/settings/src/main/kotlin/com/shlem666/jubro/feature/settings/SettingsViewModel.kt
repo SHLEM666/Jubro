@@ -30,15 +30,15 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
-import com.shlem666.jubro.core.data.repository.RecentTextRepository
 import com.shlem666.jubro.core.domain.GetRecentJupyterUrlFieldValuesUseCase
+import com.shlem666.jubro.core.domain.InsertOrReplaceJupyterUrlFieldValuesUseCase
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     getRecentJupyterUrlFieldValuesUseCase: GetRecentJupyterUrlFieldValuesUseCase,
+    private val insertOrReplaceJupyterUrlFieldValuesUseCase: InsertOrReplaceJupyterUrlFieldValuesUseCase,
     private val userDataRepository: UserDataRepository,
     private val codeDataRepository: CodeDataRepository,
-    private val recentTextRepository: RecentTextRepository,
 ) : ViewModel() {
 
     val settingsUiState: StateFlow<SettingsUiState> =
@@ -70,16 +70,6 @@ class SettingsViewModel @Inject constructor(
                 initialValue = RecentTextFieldValueUiState.Loading,
             )
 
-    fun onNewValueApplied(value: String) {
-        if (value.isBlank()) return
-        viewModelScope.launch {
-            recentTextRepository.insertOrReplaceRecentTextFieldValue(
-                fieldName = "jupyterUrl",
-                recentTextFieldValue = value
-            )
-        }
-    }
-
     fun applySettings(settings: AppSettings) {
         viewModelScope.launch {
             userDataRepository.setJupyterUrl(settings.jupyterUrl)
@@ -88,6 +78,8 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setScreenOrient(settings.screenOrient)
             userDataRepository.setUseJsApi(settings.useJsApi)
             userDataRepository.setDarkTheme(settings.darkTheme)
+
+            insertOrReplaceJupyterUrlFieldValuesUseCase(settings.jupyterUrl)
         }
     }
 
