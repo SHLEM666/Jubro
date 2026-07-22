@@ -48,12 +48,11 @@ fun SettingsDialog(
     viewModel: SettingsViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
+    val recentJupyterUrlUiState by viewModel.recentJupyterUrlUiState.collectAsStateWithLifecycle()
     val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
         mutableStateOf((settingsUiState as Success).appSettings)
     }
-
-    val jupyterUrlResentTextValuesUiState by viewModel.jupyterUrlResentTextValuesUiState.collectAsStateWithLifecycle()
 
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -70,7 +69,7 @@ fun SettingsDialog(
                         updateSettings = { tempSettings ->
                             appSettings = tempSettings
                         },
-                        jupyterUrlResentTextValuesUiState = jupyterUrlResentTextValuesUiState,
+                        recentJupyterUrlUiState = recentJupyterUrlUiState,
                     )
                 }
             }
@@ -100,9 +99,15 @@ fun SettingsDialog(
 fun Items(
     tempSettings: AppSettings,
     updateSettings: (AppSettings) -> Unit,
-    jupyterUrlResentTextValuesUiState: RecentTextFieldValueUiState
-        = RecentTextFieldValueUiState.Loading
+    recentJupyterUrlUiState: RecentTextFieldValueUiState
 ) {
+    val suggestions = when (recentJupyterUrlUiState) {
+        is RecentTextFieldValueUiState.Loading ->
+            emptyList()
+        is RecentTextFieldValueUiState.Success ->
+            recentJupyterUrlUiState.recentValues.map { it.value }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -116,11 +121,7 @@ fun Items(
         )
         JupyterURLItem(
             value = tempSettings.jupyterUrl,
-            suggestions = if (jupyterUrlResentTextValuesUiState is RecentTextFieldValueUiState.Success) {
-                jupyterUrlResentTextValuesUiState.recentValues.map { it.value }
-            } else {
-                emptyList()
-            },
+            suggestions = suggestions,
             onValueChange = {
                 updateSettings( tempSettings.copy(jupyterUrl = it) )
             }

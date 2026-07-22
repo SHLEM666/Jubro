@@ -30,13 +30,13 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
-import com.shlem666.jubro.core.domain.GetRecentJupyterUrlFieldValuesUseCase
-import com.shlem666.jubro.core.domain.InsertOrReplaceJupyterUrlFieldValuesUseCase
+import com.shlem666.jubro.core.domain.GetRecentJupyterUrlUseCase
+import com.shlem666.jubro.core.domain.SetRecentJupyterUrlUseCase
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    getRecentJupyterUrlFieldValuesUseCase: GetRecentJupyterUrlFieldValuesUseCase,
-    private val insertOrReplaceJupyterUrlFieldValuesUseCase: InsertOrReplaceJupyterUrlFieldValuesUseCase,
+    getRecentJupyterUrlUseCase: GetRecentJupyterUrlUseCase,
+    private val setRecentJupyterUrlUseCase: SetRecentJupyterUrlUseCase,
     private val userDataRepository: UserDataRepository,
     private val codeDataRepository: CodeDataRepository,
 ) : ViewModel() {
@@ -61,8 +61,8 @@ class SettingsViewModel @Inject constructor(
                 initialValue = SettingsUiState.Loading,
             )
 
-    val jupyterUrlResentTextValuesUiState: StateFlow<RecentTextFieldValueUiState> =
-        getRecentJupyterUrlFieldValuesUseCase()
+    val recentJupyterUrlUiState: StateFlow<RecentTextFieldValueUiState> =
+        getRecentJupyterUrlUseCase()
             .map(RecentTextFieldValueUiState::Success)
             .stateIn(
                 scope = viewModelScope,
@@ -79,7 +79,7 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setUseJsApi(settings.useJsApi)
             userDataRepository.setDarkTheme(settings.darkTheme)
 
-            insertOrReplaceJupyterUrlFieldValuesUseCase(settings.jupyterUrl)
+            setRecentJupyterUrlUseCase(settings.jupyterUrl)
         }
     }
 

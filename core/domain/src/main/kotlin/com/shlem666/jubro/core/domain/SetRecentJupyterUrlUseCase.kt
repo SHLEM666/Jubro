@@ -16,23 +16,22 @@
 
 package com.shlem666.jubro.core.domain
 
-import com.shlem666.jubro.core.data.model.RecentTextFieldValue
 import com.shlem666.jubro.core.data.repository.RecentTextRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
- * A use case which returns the recent Jupyter URL field values.
+ * A use case which inserts or updates the recent Jupyter URL field values to database.
  */
-class GetRecentJupyterUrlFieldValuesUseCase @Inject constructor(
-    private val recentTextRepository: RecentTextRepository,
+class SetRecentJupyterUrlUseCase @Inject constructor(
+    private val recentTextRepository: RecentTextRepository
 ) {
-    operator fun invoke(
-        limit: Int = 10,
+    suspend operator fun invoke(
+        value: String,
         fieldName: String = "jupyterUrl",
-    ): Flow<List<RecentTextFieldValue>> =
-        recentTextRepository.getRecentTextFieldValues(
-            limit,
-            fieldName,
+    ) {
+        recentTextRepository.insertOrReplaceRecentTextFieldValue(
+            recentTextFieldValue = value,
+            fieldName = fieldName,
         )
+    }
 }
