@@ -30,15 +30,15 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
-import com.shlem666.jubro.core.domain.GetRecentJupyterUrlUseCase
-import com.shlem666.jubro.core.domain.SetRecentJupyterUrlUseCase
+import com.shlem666.jubro.core.data.repository.RecentTextRepository
+import com.shlem666.jubro.core.domain.GetRecentTextValuesUseCase
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    getRecentJupyterUrlUseCase: GetRecentJupyterUrlUseCase,
-    private val setRecentJupyterUrlUseCase: SetRecentJupyterUrlUseCase,
+    getRecentTextValuesUseCase: GetRecentTextValuesUseCase,
     private val userDataRepository: UserDataRepository,
     private val codeDataRepository: CodeDataRepository,
+    private val recentTextRepository: RecentTextRepository,
 ) : ViewModel() {
 
     val settingsUiState: StateFlow<SettingsUiState> =
@@ -62,13 +62,17 @@ class SettingsViewModel @Inject constructor(
             )
 
     val recentJupyterUrlUiState: StateFlow<RecentTextFieldValueUiState> =
-        getRecentJupyterUrlUseCase()
-            .map(RecentTextFieldValueUiState::Success)
-            .stateIn(
-                scope = viewModelScope,
-                started = WhileSubscribed(5_000),
-                initialValue = RecentTextFieldValueUiState.Loading,
+        getRecentTextValuesUseCase(
+            listOf(
+                "jupyterUrl",
             )
+        )
+        .map(RecentTextFieldValueUiState::Success)
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5_000),
+            initialValue = RecentTextFieldValueUiState.Loading,
+        )
 
     fun applySettings(settings: AppSettings) {
         viewModelScope.launch {
@@ -79,7 +83,9 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setUseJsApi(settings.useJsApi)
             userDataRepository.setDarkTheme(settings.darkTheme)
 
-            setRecentJupyterUrlUseCase(settings.jupyterUrl)
+            with(recentTextRepository::insertOrReplaceRecentTextFieldValue) {
+                invoke("jupyterUrl", settings.jupyterUrl)
+            }
         }
     }
 

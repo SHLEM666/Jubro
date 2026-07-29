@@ -27,10 +27,10 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface RecentTextFieldValueDao {
-    @Query(value = "SELECT * FROM recentTextFieldValues WHERE fieldName = :fieldName ORDER BY lastUseDate DESC LIMIT :limit")
+    @Query(value = "SELECT * FROM recentTextFieldValues WHERE fieldName in (:fieldNames) ORDER BY lastUseDate DESC LIMIT :limit")
     fun getRecentTextFieldValueEntities(
+        fieldNames: List<String>,
         limit: Int,
-        fieldName: String,
     ): Flow<List<RecentTextFieldValueEntity>>
 
     @Upsert

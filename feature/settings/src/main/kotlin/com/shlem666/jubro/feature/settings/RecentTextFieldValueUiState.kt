@@ -22,6 +22,7 @@ sealed interface RecentTextFieldValueUiState {
     data object Loading : RecentTextFieldValueUiState
 
     data class Success(
-        val recentValues: List<RecentTextFieldValue> = emptyList(),
+        val recentValues: Map< String, List<RecentTextFieldValue> >
+            = emptyMap< String, List<RecentTextFieldValue> >(),
     ) : RecentTextFieldValueUiState
 }

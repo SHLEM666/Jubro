@@ -29,8 +29,8 @@ internal class DefaultRecentTextRepository @Inject constructor(
     private val recentTextFieldValueDao: RecentTextFieldValueDao,
 ) : RecentTextRepository {
     override suspend fun insertOrReplaceRecentTextFieldValue(
-        recentTextFieldValue: String,
         fieldName: String,
+        recentTextFieldValue: String,
     ) {
         recentTextFieldValueDao.insertOrReplaceRecentTextFieldValue(
             RecentTextFieldValueEntity(
@@ -42,14 +42,17 @@ internal class DefaultRecentTextRepository @Inject constructor(
     }
 
     override fun getRecentTextFieldValues(
+        fieldNames: List<String>,
         limit: Int,
-        fieldName: String,
-    ): Flow<List<RecentTextFieldValue>> =
+    ): Flow< Map< String, List<RecentTextFieldValue> > > =
         recentTextFieldValueDao.getRecentTextFieldValueEntities(
+            fieldNames,
             limit,
-            fieldName,
-        ).map { textFieldValue ->
-            textFieldValue.map { it.asExternalModel() }
+        )
+        .map { entities ->
+            entities.map { it.asExternalModel() }
+                .groupBy { it.fieldName }
+                .toMap()
         }
 
     override suspend fun clearRecentTextFieldValues() = recentTextFieldValueDao.clearRecentTextFieldValues()
