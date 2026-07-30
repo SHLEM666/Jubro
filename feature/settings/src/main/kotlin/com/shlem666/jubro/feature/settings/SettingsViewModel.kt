@@ -62,11 +62,7 @@ class SettingsViewModel @Inject constructor(
             )
 
     val recentJupyterUrlUiState: StateFlow<RecentTextFieldValueUiState> =
-        getRecentTextValuesUseCase(
-            listOf(
-                "jupyterUrl",
-            )
-        )
+        getRecentTextValuesUseCase("jupyterUrl")
         .map(RecentTextFieldValueUiState::Success)
         .stateIn(
             scope = viewModelScope,

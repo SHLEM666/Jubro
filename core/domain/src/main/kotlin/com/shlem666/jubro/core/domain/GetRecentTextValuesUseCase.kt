@@ -28,11 +28,11 @@ class GetRecentTextValuesUseCase @Inject constructor(
     private val recentTextRepository: RecentTextRepository,
 ) {
     operator fun invoke(
-        fieldNames: List<String> = emptyList(),
+        vararg fieldNames: String,
         limit: Int = 10,
     ): Flow< List<RecentTextFieldValue> > =
         recentTextRepository.getRecentTextFieldValues(
-            fieldNames,
+            fieldNames.toList(),
             limit,
         )
 }
