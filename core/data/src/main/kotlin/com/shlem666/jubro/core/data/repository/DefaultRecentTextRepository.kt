@@ -44,15 +44,13 @@ internal class DefaultRecentTextRepository @Inject constructor(
     override fun getRecentTextFieldValues(
         fieldNames: List<String>,
         limit: Int,
-    ): Flow< Map< String, List<RecentTextFieldValue> > > =
+    ): Flow< List<RecentTextFieldValue> > =
         recentTextFieldValueDao.getRecentTextFieldValueEntities(
             fieldNames,
             limit,
         )
-        .map { entities ->
-            entities.map { it.asExternalModel() }
-                .groupBy { it.fieldName }
-                .toMap()
+        .map { textFieldValue ->
+            textFieldValue.map { it.asExternalModel() }
         }
 
     override suspend fun clearRecentTextFieldValues() = recentTextFieldValueDao.clearRecentTextFieldValues()

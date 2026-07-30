@@ -30,7 +30,7 @@ interface RecentTextRepository {
     fun getRecentTextFieldValues(
         fieldNames: List<String>,
         limit: Int,
-    ): Flow< Map< String, List<RecentTextFieldValue> > >
+    ): Flow< List<RecentTextFieldValue> >
 
     /**
      * Insert or replace the [recentTextFieldValue] as part of the recent values of [fieldName].

@@ -103,7 +103,7 @@ fun Items(
 ) {
     val suggestions = when (recentJupyterUrlUiState) {
         is RecentTextFieldValueUiState.Loading ->
-            emptyMap()
+            emptyList()
         is RecentTextFieldValueUiState.Success ->
             recentJupyterUrlUiState.recentValues
     }
@@ -121,8 +121,10 @@ fun Items(
         )
         JupyterURLItem(
             value = tempSettings.jupyterUrl,
-            suggestions = suggestions["jupyterUrl"]
-                ?.map { it.value } ?: emptyList(),
+            suggestions = suggestions
+                .filter { it.fieldName == "jupyterUrl" }
+                .map { it.value }
+            ,
             onValueChange = {
                 updateSettings( tempSettings.copy(jupyterUrl = it) )
             }

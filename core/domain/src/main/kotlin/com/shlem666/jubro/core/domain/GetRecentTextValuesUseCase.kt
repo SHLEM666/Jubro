@@ -30,7 +30,7 @@ class GetRecentTextValuesUseCase @Inject constructor(
     operator fun invoke(
         fieldNames: List<String> = emptyList(),
         limit: Int = 10,
-    ): Flow< Map< String, List<RecentTextFieldValue> > > =
+    ): Flow< List<RecentTextFieldValue> > =
         recentTextRepository.getRecentTextFieldValues(
             fieldNames,
             limit,
