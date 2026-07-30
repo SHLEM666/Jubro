@@ -41,7 +41,10 @@ interface RecentTextRepository {
     )
 
     /**
-     * Clear the recent values.
+     * Clear the [recentTextFieldValue] for [fieldName].
      */
-    suspend fun clearRecentTextFieldValues()
+    suspend fun clearRecentTextFieldValues(
+        fieldName: String,
+        recentTextFieldValue: String,
+    )
 }

@@ -24,6 +24,7 @@ import com.shlem666.jubro.feature.settings.R
 fun JupyterURLItem(
     value: String,
     suggestions: List<String>,
+    onSuggestionDelete: (String, String) -> Unit,
     onValueChange: (String) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }

@@ -38,6 +38,9 @@ interface RecentTextFieldValueDao {
         recentTextFieldValue: RecentTextFieldValueEntity
     )
 
-    @Query(value = "DELETE FROM recentTextFieldValues")
-    suspend fun clearRecentTextFieldValues()
+    @Query(value = "DELETE FROM recentTextFieldValues WHERE value = :value AND fieldName = :fieldName")
+    suspend fun clearRecentTextFieldValues(
+        fieldName: String,
+        value: String,
+    )
 }

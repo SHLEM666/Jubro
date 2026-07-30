@@ -85,6 +85,18 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun deleteRecentTextFieldValue(
+        fieldName: String,
+        value: String,
+    ) {
+        viewModelScope.launch {
+            recentTextRepository.clearRecentTextFieldValues(
+                fieldName = fieldName,
+                recentTextFieldValue = value,
+            )
+        }
+    }
+
     fun getCode(fileName: String) : String {
         return codeDataRepository.files[fileName] ?: ""
     }

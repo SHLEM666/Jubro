@@ -53,5 +53,13 @@ internal class DefaultRecentTextRepository @Inject constructor(
             textFieldValue.map { it.asExternalModel() }
         }
 
-    override suspend fun clearRecentTextFieldValues() = recentTextFieldValueDao.clearRecentTextFieldValues()
+    override suspend fun clearRecentTextFieldValues(
+        fieldName: String,
+        recentTextFieldValue: String,
+    ) {
+        recentTextFieldValueDao.clearRecentTextFieldValues(
+            fieldName,
+            recentTextFieldValue,
+        )
+    }
 }
