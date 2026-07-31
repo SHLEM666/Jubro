@@ -61,7 +61,7 @@ class SettingsViewModel @Inject constructor(
                 initialValue = SettingsUiState.Loading,
             )
 
-    val recentJupyterUrlUiState: StateFlow<RecentTextFieldValueUiState> =
+    val recentTextFieldValueUiState: StateFlow<RecentTextFieldValueUiState> =
         getRecentTextValuesUseCase("jupyterUrl")
         .map(RecentTextFieldValueUiState::Success)
         .stateIn(

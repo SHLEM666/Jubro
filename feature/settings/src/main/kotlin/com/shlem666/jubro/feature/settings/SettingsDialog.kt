@@ -48,7 +48,7 @@ fun SettingsDialog(
     viewModel: SettingsViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
-    val recentJupyterUrlUiState by viewModel.recentJupyterUrlUiState.collectAsStateWithLifecycle()
+    val recentTextFieldValueUiState by viewModel.recentTextFieldValueUiState.collectAsStateWithLifecycle()
     val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
         mutableStateOf((settingsUiState as Success).appSettings)
@@ -75,7 +75,7 @@ fun SettingsDialog(
                                 value = value,
                             )
                         },
-                        recentJupyterUrlUiState = recentJupyterUrlUiState,
+                        recentTextFieldValueUiState = recentTextFieldValueUiState,
                     )
                 }
             }
@@ -106,13 +106,13 @@ fun Items(
     tempSettings: AppSettings,
     updateSettings: (AppSettings) -> Unit,
     deleteSuggestion:  (String, String) -> Unit,
-    recentJupyterUrlUiState: RecentTextFieldValueUiState
+    recentTextFieldValueUiState: RecentTextFieldValueUiState
 ) {
-    val suggestions = when (recentJupyterUrlUiState) {
+    val suggestions = when (recentTextFieldValueUiState) {
         is RecentTextFieldValueUiState.Loading ->
             emptyList()
         is RecentTextFieldValueUiState.Success ->
-            recentJupyterUrlUiState.recentValues
+            recentTextFieldValueUiState.recentValues
     }
 
     Column(
