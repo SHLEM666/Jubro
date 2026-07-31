@@ -69,7 +69,7 @@ fun SettingsDialog(
                         updateSettings = { tempSettings ->
                             appSettings = tempSettings
                         },
-                        deleteSuggestion = { value, fieldName ->
+                        deleteSuggestion = { fieldName, value ->
                             viewModel.deleteRecentTextFieldValue(
                                 fieldName = fieldName,
                                 value = value,
@@ -108,6 +108,7 @@ fun Items(
     deleteSuggestion:  (String, String) -> Unit,
     recentTextFieldValueUiState: RecentTextFieldValueUiState
 ) {
+    val jupiterUrlFieldName = "jupyterUrl"
     val suggestions = when (recentTextFieldValueUiState) {
         is RecentTextFieldValueUiState.Loading ->
             emptyList()
@@ -129,11 +130,11 @@ fun Items(
         JupyterURLItem(
             value = tempSettings.jupyterUrl,
             suggestions = suggestions
-                .filter { it.fieldName == "jupyterUrl" }
+                .filter {it.fieldName == jupiterUrlFieldName}
                 .map { it.value }
             ,
-            onSuggestionDelete = { fieldName, value ->
-                deleteSuggestion(fieldName, value)
+            onSuggestionDelete = { value ->
+                deleteSuggestion(jupiterUrlFieldName, value)
             },
             onValueChange = {
                 updateSettings( tempSettings.copy(jupyterUrl = it) )

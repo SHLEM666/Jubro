@@ -24,6 +24,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardTab
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.automirrored.outlined.ViewSidebar
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PlayArrow
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.filled.ScreenLockPortrait
 import androidx.compose.material.icons.filled.ScreenRotation
 
 object JubroIcons {
+    val Delete = Icons.Filled.Delete
     val Return = Icons.AutoMirrored.Filled.KeyboardReturn
     val ViewSidebar = Icons.AutoMirrored.Outlined.ViewSidebar
     val Refresh = Icons.Filled.Refresh
