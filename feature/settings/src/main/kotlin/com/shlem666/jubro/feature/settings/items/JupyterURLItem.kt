@@ -1,5 +1,7 @@
 package com.shlem666.jubro.feature.settings.items
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shlem666.jubro.core.designsystem.component.JubroIconButton
+import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Close
 import com.shlem666.jubro.core.designsystem.icon.JubroIcons.Delete
 import com.shlem666.jubro.feature.settings.R
 
@@ -46,6 +50,9 @@ fun JupyterURLItem(
         expanded = expanded && filteredOptions.isNotEmpty(),
         onExpandedChange = { expanded = it },
     ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        val isFocused by interactionSource.collectIsFocusedAsState()
+
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,6 +68,15 @@ fun JupyterURLItem(
                 Text(stringResource(R.string.jupyter_url))
             },
             singleLine = true,
+            interactionSource = interactionSource,
+            trailingIcon = {
+                if (value.isNotBlank() && isFocused) {
+                    JubroIconButton(
+                        onClick = { onValueChange("") },
+                        icon = Close
+                    )
+                }
+            }
         )
 
         ExposedDropdownMenu(

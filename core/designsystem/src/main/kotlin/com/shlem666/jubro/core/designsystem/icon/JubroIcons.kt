@@ -32,8 +32,10 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.ScreenLockLandscape
 import androidx.compose.material.icons.filled.ScreenLockPortrait
 import androidx.compose.material.icons.filled.ScreenRotation
+import androidx.compose.material.icons.outlined.Close
 
 object JubroIcons {
+    val Close = Icons.Outlined.Close
     val Delete = Icons.Filled.Delete
     val Return = Icons.AutoMirrored.Filled.KeyboardReturn
     val ViewSidebar = Icons.AutoMirrored.Outlined.ViewSidebar
