@@ -5,18 +5,18 @@ This application allows to use [JupyterLab](https://github.com/jupyterlab/jupyte
 <table>
     <tr>
       <td rowspan="2">
-        <img width="1080" height="2376" alt="Screenshot 1" src="https://github.com/user-attachments/assets/90b372da-d767-4ee1-94e0-cfa64d201a3b" />
+        <img width="1080" height="2376" alt="Screenshot_1" src="https://github.com/user-attachments/assets/c8ca9b57-86f7-4f8e-9e4a-abd477932962" />
       </td>
       <td rowspan="2">
-        <img width="1080" height="2376" alt="Screenshot 2" src="https://github.com/user-attachments/assets/06b84042-8e77-4326-ba93-26ecec672230" />
+        <img width="1080" height="2376" alt="Screenshot_2" src="https://github.com/user-attachments/assets/511427d4-1452-4538-b121-7080f37bd391" />
       </td>
       <td>
-        <img width="2376" height="1080" alt="Screenshot 3" src="https://github.com/user-attachments/assets/09d94d25-74cb-4e2a-a01e-3e3a1b8edaad" />
+        <img width="2376" height="1080" alt="Screenshot_3" src="https://github.com/user-attachments/assets/d2910004-b9a6-482f-b932-76224b148407" />
       </td>
     </tr>
     <tr>
       <td>
-        <img width="2376" height="1080" alt="Screenshot 4" src="https://github.com/user-attachments/assets/3e1990e5-c1ef-4b16-a36a-d3713dfa14e6" />
+        <img width="2376" height="1080" alt="Screenshot_4" src="https://github.com/user-attachments/assets/33a51f75-fde2-4a5b-81c2-ad491c5e5553" />
       </td>
     </tr>
 </table>
