@@ -29,7 +29,7 @@ class PreloadDatabaseInitializer @Inject constructor(
                 invoke(
                     RecentTextFieldValueEntity(
                         fieldName = "jupyterUrl",
-                        value = "http://localhost:8888/lab",
+                        value = "http://localhost:8888/lab/",
                         lastUseDate = Clock.System.now(),
                     )
                 )

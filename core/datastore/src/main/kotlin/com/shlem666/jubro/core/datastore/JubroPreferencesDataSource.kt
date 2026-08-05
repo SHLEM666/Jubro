@@ -33,7 +33,7 @@ class JubroPreferencesDataSource @Inject constructor(
                 jupyterUrl = if ( it.hasJupyterUrl() ) {
                     it.jupyterUrl
                 } else {
-                    "http://localhost:8888/lab/"
+                    "https://jupyter.org/try-jupyter/lab/"
                 },
                 notchPadding = if ( it.hasNotchPadding() ) {
                     it.notchPadding
