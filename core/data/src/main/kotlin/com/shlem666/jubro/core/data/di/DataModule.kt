@@ -16,12 +16,14 @@
 
 package com.shlem666.jubro.core.data.di
 
+import com.shlem666.jubro.core.data.PreloadDatabaseInitializer
 import com.shlem666.jubro.core.data.repository.OfflineFirstUserDataRepository
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.DefaultCodeDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
 import com.shlem666.jubro.core.data.repository.DefaultRecentTextRepository
 import com.shlem666.jubro.core.data.repository.RecentTextRepository
+import com.shlem666.jubro.core.database.DatabaseInitializer
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +47,9 @@ abstract class DataModule {
     internal abstract fun bindsRecentTextRepository(
         recentTextRepository: DefaultRecentTextRepository,
     ): RecentTextRepository
+
+    @Binds
+    internal abstract fun bindsDatabaseInitializer(
+        initializer: PreloadDatabaseInitializer
+    ): DatabaseInitializer
 }

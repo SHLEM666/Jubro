@@ -18,13 +18,23 @@ package com.shlem666.jubro.core.database.di
 
 import android.content.Context
 import androidx.room.Room
-import com.shlem666.jubro.core.database.JubroDatabase
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import javax.inject.Provider
 import javax.inject.Singleton
+import com.shlem666.jubro.core.common.Dispatcher
+import com.shlem666.jubro.core.common.JubroDispatchers
+import com.shlem666.jubro.core.database.DatabaseInitializer
+import com.shlem666.jubro.core.database.JubroDatabase
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,9 +43,26 @@ internal object DatabaseModule {
     @Singleton
     fun providesJubroDatabase(
         @ApplicationContext context: Context,
-    ): JubroDatabase = Room.databaseBuilder(
-        context,
-        JubroDatabase::class.java,
-        "jubro-database",
-    ).build()
+        @Dispatcher(JubroDispatchers.IO) ioDispatcher: CoroutineDispatcher,
+        initializerProvider: Provider<DatabaseInitializer>
+    ): JubroDatabase {
+        val scope = CoroutineScope(SupervisorJob() + ioDispatcher)
+
+        return Room.databaseBuilder(
+            context,
+            JubroDatabase::class.java,
+            "jubro-database",
+        )
+        .addCallback(
+            object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    scope.launch {
+                        initializerProvider.get().initialize(db)
+                    }
+                }
+            }
+        )
+        .build()
+    }
 }
