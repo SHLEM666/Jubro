@@ -16,7 +16,6 @@
 
 plugins {
     alias(libs.plugins.jubro.android.library)
-    alias(libs.plugins.jubro.android.room)
     alias(libs.plugins.jubro.hilt)
     id("kotlinx-serialization")
 }
