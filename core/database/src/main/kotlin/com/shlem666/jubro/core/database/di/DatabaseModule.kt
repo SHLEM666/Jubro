@@ -27,12 +27,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Provider
 import javax.inject.Singleton
 import com.shlem666.jubro.core.common.Dispatcher
-import com.shlem666.jubro.core.common.JubroDispatchers
+import com.shlem666.jubro.core.common.JubroDispatchers.IO
+import com.shlem666.jubro.core.common.di.ApplicationScope
 import com.shlem666.jubro.core.database.DatabaseInitializer
 import com.shlem666.jubro.core.database.JubroDatabase
 
@@ -43,26 +43,25 @@ internal object DatabaseModule {
     @Singleton
     fun providesJubroDatabase(
         @ApplicationContext context: Context,
-        @Dispatcher(JubroDispatchers.IO) ioDispatcher: CoroutineDispatcher,
+        @Dispatcher(IO) ioDispatcher: CoroutineDispatcher,
+        @ApplicationScope scope: CoroutineScope,
         initializerProvider: Provider<DatabaseInitializer>
-    ): JubroDatabase {
-        val scope = CoroutineScope(SupervisorJob() + ioDispatcher)
-
-        return Room.databaseBuilder(
-            context,
-            JubroDatabase::class.java,
-            "jubro-database",
-        )
-        .addCallback(
-            object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    scope.launch {
-                        initializerProvider.get().initialize(db)
-                    }
+    ): JubroDatabase = Room.databaseBuilder(
+        context,
+        JubroDatabase::class.java,
+        "jubro-database",
+    )
+    .addCallback(
+        object : RoomDatabase.Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                CoroutineScope(
+                    scope.coroutineContext + ioDispatcher
+                ).launch {
+                    initializerProvider.get().initialize(db)
                 }
             }
-        )
-        .build()
-    }
+        }
+    )
+    .build()
 }
