@@ -71,7 +71,10 @@ fun JupyterURLItem(
             trailingIcon = {
                 if (value.isNotBlank() && isFocused) {
                     JubroIconButton(
-                        onClick = { onValueChange("") },
+                        onClick = {
+                            onValueChange("")
+                            expanded = true
+                        },
                         icon = Close,
                         tint = shaded,
                     )
