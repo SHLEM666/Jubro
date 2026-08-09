@@ -58,7 +58,7 @@ internal object DatabaseModule {
                 CoroutineScope(
                     scope.coroutineContext + ioDispatcher
                 ).launch {
-                    initializerProvider.get().initialize(db)
+                    initializerProvider.get().initialize()
                 }
             }
         }

@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import javax.inject.Inject
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.shlem666.jubro.core.common.Dispatcher
 import com.shlem666.jubro.core.common.JubroDispatchers.IO
 import com.shlem666.jubro.core.database.dao.RecentTextFieldValueDao
@@ -15,7 +14,7 @@ class PreloadDatabaseInitializer @Inject constructor(
     @param:Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : DatabaseInitializer {
 
-    override suspend fun initialize(db: SupportSQLiteDatabase) {
+    override suspend fun initialize() {
         withContext(ioDispatcher) {
             with(recentTextFieldValueDao::insertOrReplaceRecentTextFieldValue) {
                 invoke(
