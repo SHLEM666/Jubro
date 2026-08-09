@@ -12,7 +12,7 @@ import com.shlem666.jubro.core.database.model.RecentTextFieldValueEntity
 
 class PreloadDatabaseInitializer @Inject constructor(
     private val recentTextFieldValueDao: RecentTextFieldValueDao,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
+    @param:Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : DatabaseInitializer {
 
     override suspend fun initialize(db: SupportSQLiteDatabase) {
