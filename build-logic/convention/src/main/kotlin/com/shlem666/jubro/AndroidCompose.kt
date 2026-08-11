@@ -58,9 +58,8 @@ internal fun Project.configureAndroidCompose(
             .relativeToRootProject("compose-reports")
             .let(reportsDestination::set)
 
-//        Todo: check with this
-//        @Suppress("UnstableApiUsage")
-//        stabilityConfigurationFiles
-//            .add(isolated.rootProject.projectDirectory.file("compose_compiler_config.conf"))
+        @Suppress("UnstableApiUsage")
+        stabilityConfigurationFiles
+            .add(isolated.rootProject.projectDirectory.file("compose_compiler_config.conf"))
     }
 }
