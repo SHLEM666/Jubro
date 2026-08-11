@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
+import com.shlem666.jubro.core.data.model.RecentTextFieldValue
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
 import com.shlem666.jubro.core.data.repository.RecentTextRepository
@@ -138,4 +139,11 @@ data class AppSettings(
 sealed interface SettingsUiState {
     data object Loading : SettingsUiState
     data class Success(val appSettings: AppSettings) : SettingsUiState
+}
+
+sealed interface RecentTextFieldValueUiState {
+    data object Loading : RecentTextFieldValueUiState
+    data class Success(
+        val recentValues: List<RecentTextFieldValue> = emptyList(),
+    ) : RecentTextFieldValueUiState
 }
