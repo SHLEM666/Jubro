@@ -26,7 +26,7 @@
 
 			// Cancel the context menu event
 			document.addEventListener('contextmenu', (e) => {
-				if ( true
+				if ( false
 
 				    // in the Notebook code editing area
                     || e.target.closest('.jp-Cell')
