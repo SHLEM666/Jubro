@@ -26,8 +26,33 @@
 
 			// Cancel the context menu event
 			document.addEventListener('contextmenu', (e) => {
-				e.stopImmediatePropagation();
-				e.stopPropagation();
+				if ( true
+
+				    // in the Notebook code editing area
+                    || e.target.closest('.jp-Cell')
+
+                    // in the Console error output area
+                    || e.target.closest('.jp-CodeConsole')
+
+//                    || e.target.closest('.jp-RenderedText')
+//                    || e.target.closest('.jp-mod-trusted')
+//                    || e.target.closest('.jp-OutputArea-output')
+//                    || e.target.closest('.jp-OutputArea-child')
+//                    || e.target.closest('.jp-OutputArea')
+//                    || e.target.closest('.jp-Cell-outputArea')
+//                    || e.target.closest('.jp-Cell-outputWrapper')
+//                    || e.target.closest('.jp-Cell')
+//                    || e.target.closest('.jp-CodeCell')
+//                    || e.target.closest('.jp-Console-cell')
+//                    || e.target.closest('.jp-CodeConsole')
+//                    || e.target.closest('.jp-CodeMirrorEditor')
+//                    || e.target.closest('.jp-RenderedMarkdown')
+//                    || e.target.closest('.lm-Widget')
+//                    || e.target.closest('.jp-InputArea')
+				) {
+					e.stopImmediatePropagation();
+					e.stopPropagation();
+				}
 			}, true);
 
 		} catch (err) {
