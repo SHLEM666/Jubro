@@ -1,5 +1,5 @@
 (function (window) {
-	if (document.body) {
+	if (document.body) {  
 		try {
 			var elem = document.createElement("style");
 
@@ -33,6 +33,9 @@
 
                     // in the Console error output area
                     || e.target.closest('.jp-CodeConsole')
+
+                    // in the Text Editor area
+                    || e.target.closest('.jp-Document')
 
 //                    || e.target.closest('.jp-RenderedText')
 //                    || e.target.closest('.jp-mod-trusted')
