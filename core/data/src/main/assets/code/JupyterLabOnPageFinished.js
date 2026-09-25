@@ -1,7 +1,10 @@
 (function (window) {
-	if (document.body) {  
+	if (document.body) {
 		try {
 			var elem = document.createElement("style");
+
+            // Make search panel scrollable
+            elem.innerHTML += ".jp-DocumentSearch-overlay {min-width: inherit; overflow-x: scroll;}";
 
 			// Make main menu panel scrollable
 			elem.innerHTML += "#jp-menu-panel {overflow-x: scroll;}";
