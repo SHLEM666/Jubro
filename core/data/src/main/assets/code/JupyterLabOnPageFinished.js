@@ -1,6 +1,17 @@
 (function (window) {
 	if (document.body) {
 		try {
+            // Detect jupyterapp object
+            setTimeout(
+                () => {
+                    if (window.jupyterapp) {
+                        jubroJsInterface.jupyterAppDetected(true)
+                    } else {
+                        jubroJsInterface.jupyterAppDetected(false)
+                    }
+                }, 1000
+            );
+
 			var elem = document.createElement("style");
 
             // Make search panel scrollable
