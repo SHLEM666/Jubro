@@ -73,6 +73,10 @@ fun JubroWebView(
         update = { webView ->
             webView.loadUrl(jupyterUrl)
             viewModel.attacheWebView(webView)
+            webView.addJavascriptInterface(
+                JubroJsInterface(viewModel::setUseJsApi),
+                "jubroJsInterface"
+            )
         },
         onReset = { webView ->
             webView.stopLoading()
