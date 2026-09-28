@@ -3,33 +3,25 @@ package com.shlem666.jubro.ui
 import android.view.KeyEvent
 import android.webkit.WebView
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
-import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.ui.webview.WebViewController
 
 @HiltViewModel
 class UiViewModel @Inject constructor(
-    private val userDataRepository: UserDataRepository,
     private val codeDataRepository: CodeDataRepository,
     private val webViewController: WebViewController,
 ) : ViewModel() {
 
     private var useJsApi = false
 
-    init {
-        viewModelScope.launch {
-            userDataRepository.userData.collect {
-                useJsApi = it.useJsApi
-            }
-        }
-    }
-
     private fun getScript(fileName: String): String {
         return codeDataRepository.files[fileName] ?: ""
+    }
+
+    fun setUseJsApi(value: Boolean) {
+        useJsApi = value
     }
 
     fun attacheWebView(webView: WebView) {
