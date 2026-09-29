@@ -52,7 +52,7 @@ fun HintTextSwitchItem(
     primaryText: String,
     secondaryText: String,
     isChecked: Boolean,
-    onToggle: () -> Unit
+    isSwitchEnabled: Boolean
 ) {
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
     if (showHintDialog) {
@@ -83,7 +83,7 @@ fun HintTextSwitchItem(
         Row(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
-                .clickable { onToggle() }
+                .clickable { /* TODO: Add message about auto activation */ }
                 .padding(vertical = 16.dp)
             ,
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -97,7 +97,8 @@ fun HintTextSwitchItem(
                 Switch(
                     checked = isChecked,
                     // The Row click handles the toggle
-                    onCheckedChange = null
+                    onCheckedChange = null,
+                    enabled = isSwitchEnabled,
                 )
             }
         }
