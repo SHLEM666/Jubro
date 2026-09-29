@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import com.shlem666.jubro.core.designsystem.theme.LocalSnackbarHostState
 import com.shlem666.jubro.feature.settings.R
 import com.shlem666.jubro.feature.settings.SettingsViewModel
 
@@ -54,6 +55,9 @@ fun HintTextSwitchItem(
     isChecked: Boolean,
     isSwitchEnabled: Boolean
 ) {
+    val snackbarHostState = LocalSnackbarHostState.current
+    val scope = rememberCoroutineScope()
+
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
     if (showHintDialog) {
         HintDialog( onDismiss = { showHintDialog = false } )
@@ -64,6 +68,7 @@ fun HintTextSwitchItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
+        val message = stringResource(R.string.activates_automatically)
         Column (
             modifier = Modifier
                 .weight(1f)
@@ -83,7 +88,11 @@ fun HintTextSwitchItem(
         Row(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
-                .clickable { /* TODO: Add message about auto activation */ }
+                .clickable {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(message)
+                    }
+                }
                 .padding(vertical = 16.dp)
             ,
             horizontalArrangement = Arrangement.SpaceEvenly,
