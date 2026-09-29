@@ -57,10 +57,10 @@ fun JubroApp(
         mutableStateOf( AppSettings() )
     }
     val snackbarHostState = remember { SnackbarHostState() }
+    var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
 
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
 
-        var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
         if (showSettingsDialog) {
             SettingsDialog(onDismiss = { showSettingsDialog = false })
         }
