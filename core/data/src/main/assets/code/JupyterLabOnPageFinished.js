@@ -5,9 +5,9 @@
             setTimeout(
                 () => {
                     if (window.jupyterapp) {
-                        jubroJsInterface.jupyterAppDetected(true)
+                        jubroJsInterface.setUseJsApi(true)
                     } else {
-                        jubroJsInterface.jupyterAppDetected(false)
+                        jubroJsInterface.setUseJsApi(false)
                     }
                 }, 1000
             );
