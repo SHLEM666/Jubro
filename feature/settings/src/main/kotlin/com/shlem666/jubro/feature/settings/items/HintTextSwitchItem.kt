@@ -89,8 +89,10 @@ fun HintTextSwitchItem(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
                 .clickable {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(message)
+                    if (snackbarHostState.currentSnackbarData == null) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(message)
+                        }
                     }
                 }
                 .padding(vertical = 16.dp)
