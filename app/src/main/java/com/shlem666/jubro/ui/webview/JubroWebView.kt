@@ -11,17 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.shlem666.jubro.ui.UiViewModel
 
 @Composable
 fun JubroWebView(
-    url: String,
-    viewModel: UiViewModel = hiltViewModel(),
+    startUrl: String,
+    onPageFinished: () -> Unit = { },
+    onUpdate: (webView: WebView) -> Unit = { },
 ) {
     // so that the jupyterUrl value in the shouldOverrideUrlLoading
     // function is not taken from the closure
-    val jupyterUrl by rememberUpdatedState(url)
+    val url by rememberUpdatedState(startUrl)
 
     // webview needs exactly Activity Context (LocalContext.current)
     // to mobile version of select html-element may work properly
@@ -43,7 +42,7 @@ fun JubroWebView(
                         url: String?
                     ) {
                         super.onPageFinished(view, url)
-                        viewModel.onPageFinished()
+                        onPageFinished()
                     }
                     override fun shouldOverrideUrlLoading(
                         view: WebView,
@@ -52,7 +51,7 @@ fun JubroWebView(
                         val requestUrl = request.url.toString()
                         if (
                             "$requestUrl/".contains(
-                                jupyterUrl, true
+                                url, true
                             )
                         ) {
                             view.loadUrl(requestUrl)
@@ -71,9 +70,8 @@ fun JubroWebView(
             }
         },
         update = { webView ->
-            webView.loadUrl(jupyterUrl)
-            viewModel.attacheWebView(webView)
-            viewModel.addJsInterface(webView)
+            webView.loadUrl(url)
+            onUpdate(webView)
         },
         onReset = { webView ->
             webView.stopLoading()

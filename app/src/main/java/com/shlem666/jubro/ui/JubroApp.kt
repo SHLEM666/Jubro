@@ -49,6 +49,7 @@ import com.shlem666.jubro.feature.settings.SettingsViewModel
 @Composable
 fun JubroApp(
     settingsViewModel: SettingsViewModel = hiltViewModel(),
+    uiViewModel: UiViewModel = hiltViewModel(),
 ) {
     val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
@@ -103,7 +104,14 @@ fun JubroApp(
                 Row(Modifier.padding(innerPadding)) {
                     if (!isCompact) LeftToolBarLayout()
                     Box(Modifier.weight(1f)) {
-                        JubroWebView(appSettings.jupyterUrl)
+                        JubroWebView(
+                            startUrl = appSettings.jupyterUrl,
+                            onPageFinished = { uiViewModel.onPageFinished() },
+                            onUpdate = { webView ->
+                                uiViewModel.attacheWebView(webView)
+                                uiViewModel.addJsInterface(webView)
+                            }
+                        )
                     }
                     if (!isCompact) RightToolBarLayout {
                         showSettingsDialog = true
