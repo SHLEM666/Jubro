@@ -28,6 +28,12 @@ class UiViewModel @Inject constructor(
         }
     }
 
+    fun setUseJsApi(value: Boolean) {
+        viewModelScope.launch {
+            userDataRepository.setUseJsApi(value)
+        }
+    }
+
     private fun getScript(fileName: String): String {
         return codeDataRepository.files[fileName] ?: ""
     }

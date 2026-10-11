@@ -32,6 +32,10 @@ fun JubroWebView(
                     @SuppressLint("SetJavaScriptEnabled")
                     javaScriptEnabled = true
                     domStorageEnabled = true
+                    addJavascriptInterface(
+                        JubroJsInterface(viewModel),
+                        "jubroJsInterface"
+                    )
                 }
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
