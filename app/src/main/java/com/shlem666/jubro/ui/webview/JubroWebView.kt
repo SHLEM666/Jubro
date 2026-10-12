@@ -72,11 +72,12 @@ fun JubroWebView(
                     }
                 }
                 webChromeClient = WebChromeClient()
+            }.also {
+                viewModel.attacheWebView(it)
             }
         },
         update = { webView ->
             webView.loadUrl(jupyterUrl)
-            viewModel.attacheWebView(webView)
         },
         onReset = { webView ->
             webView.stopLoading()
