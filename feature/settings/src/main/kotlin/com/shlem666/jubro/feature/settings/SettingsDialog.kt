@@ -171,11 +171,7 @@ fun Items(
             primaryText = stringResource(R.string.use_js_api),
             secondaryText = stringResource(R.string.know_more),
             isChecked = tempSettings.useJsApi,
-            onToggle = {
-                updateSettings( tempSettings.copy(
-                    useJsApi = !tempSettings.useJsApi
-                ) )
-            }
+            isSwitchEnabled = false,
         )
         Text(
             modifier = Modifier.padding(vertical = 16.dp),
