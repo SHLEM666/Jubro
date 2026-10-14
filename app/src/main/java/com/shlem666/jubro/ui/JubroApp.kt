@@ -22,7 +22,8 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.DisposableEffect
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+import androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -103,18 +104,15 @@ fun LockScreenOrientation(orientation: Int) {
 fun HideStatusBar(hide: Boolean) {
     val activity = LocalActivity.current
     val window = (activity as Activity).window
-    val windowInsetsController =
-        WindowCompat.getInsetsController(window, window.decorView)
     val statusBars = WindowInsetsCompat.Type.statusBars()
-    if (hide) {
+    val windowInsetsController = WindowCompat
+        .getInsetsController(window, window.decorView)
+    windowInsetsController.systemBarsBehavior = if (hide) {
         windowInsetsController.hide(statusBars)
-        windowInsetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat
-                .BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     } else {
         windowInsetsController.show(statusBars)
-        windowInsetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+        BEHAVIOR_DEFAULT
     }
 }
 
