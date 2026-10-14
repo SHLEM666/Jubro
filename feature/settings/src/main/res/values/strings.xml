@@ -15,8 +15,8 @@
     <string name="btn_cancel">Cancel</string>
 
     <string name="about_js_api">About Jupyter JavaScript API</string>
-    <string name="about_js_api_p1">You can enable this option if you are hosting Jupyter yourself and run it with the <tt>--expose-app-in-browser</tt> option. \n</string>
-    <string name="about_js_api_p2">In other cases, it is highly recommended to leave the option disabled and also add keyboard shortcuts for <tt>Show Left Activity Bar</tt> and <tt>Show Right Activity Bar</tt> menu items. \n</string>
+    <string name="about_js_api_p1">This option activates automatically if Jupyter is launched with the <tt>--expose-app-in-browser</tt> flag. No additional actions are needed. \n</string>
+    <string name="about_js_api_p2">If the option is disabled, it is highly recommended to add keyboard shortcuts for <tt>Show Left Activity Bar</tt> and <tt>Show Right Activity Bar</tt> menu items. \n</string>
     <string name="about_js_api_p3">To do this, go to <tt>Settings Editor > JSON Settings Editor > Keyboard Shortcuts</tt> and insert the following code to the <tt>User Preferences</tt> field.</string>
 
     <string name="btn_copy">Copy</string>
