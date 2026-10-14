@@ -77,6 +77,7 @@ fun JubroWebView(
             }
         },
         update = { webView ->
+            viewModel.setUseJsApi(false)
             webView.loadUrl(jupyterUrl)
         },
         onReset = { webView ->

@@ -77,7 +77,8 @@ class SettingsViewModel @Inject constructor(
             userDataRepository.setNotchPadding(settings.notchPadding)
             userDataRepository.setHideStatusBar(settings.hideStatusBar)
             userDataRepository.setScreenOrient(settings.screenOrient)
-            userDataRepository.setUseJsApi(settings.useJsApi)
+            // TODO Remove this property from AppSettings?
+            // userDataRepository.setUseJsApi(settings.useJsApi)
             userDataRepository.setDarkTheme(settings.darkTheme)
 
             with(recentTextRepository::insertOrReplaceRecentTextFieldValue) {

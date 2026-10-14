@@ -35,8 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.shlem666.jubro.feature.settings.SettingsUiState.Loading
-import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.feature.settings.SettingsUiState.Loading as SettingsLoading
+import com.shlem666.jubro.feature.settings.SettingsUiState.Success as SettingsSuccess
+import com.shlem666.jubro.feature.settings.RecentTextFieldValueUiState.Loading as RecentTextFieldValueLoading
+import com.shlem666.jubro.feature.settings.RecentTextFieldValueUiState.Success as RecentTextFieldValueSuccess
 import com.shlem666.jubro.feature.settings.items.HintTextSwitchItem
 import com.shlem666.jubro.feature.settings.items.JupyterURLItem
 import com.shlem666.jubro.feature.settings.items.OrientationControlItem
@@ -51,7 +53,7 @@ fun SettingsDialog(
     val recentTextFieldValueUiState by viewModel.recentTextFieldValueUiState.collectAsStateWithLifecycle()
     val settingsUiState by viewModel.settingsUiState.collectAsStateWithLifecycle()
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
-        mutableStateOf((settingsUiState as Success).appSettings)
+        mutableStateOf((settingsUiState as SettingsSuccess).appSettings)
     }
 
     AlertDialog(
@@ -60,10 +62,10 @@ fun SettingsDialog(
         title = { Text( stringResource(R.string.feature_settings_title) ) },
         text = {
             when (settingsUiState) {
-                is Loading -> {
+                is SettingsLoading -> {
                     Text( stringResource(R.string.loading) )
                 }
-                is Success -> {
+                is SettingsSuccess -> {
                     Items(
                         tempSettings = appSettings,
                         updateSettings = { tempSettings ->
@@ -76,6 +78,7 @@ fun SettingsDialog(
                             )
                         },
                         recentTextFieldValueUiState = recentTextFieldValueUiState,
+                        settingsUiState = settingsUiState,
                     )
                 }
             }
@@ -106,14 +109,19 @@ fun Items(
     tempSettings: AppSettings,
     updateSettings: (AppSettings) -> Unit,
     deleteSuggestion:  (String, String) -> Unit,
-    recentTextFieldValueUiState: RecentTextFieldValueUiState
+    recentTextFieldValueUiState: RecentTextFieldValueUiState,
+    settingsUiState: SettingsUiState,
 ) {
     val jupiterUrlFieldName = "jupyterUrl"
     val suggestions = when (recentTextFieldValueUiState) {
-        is RecentTextFieldValueUiState.Loading ->
+        is RecentTextFieldValueLoading ->
             emptyList()
-        is RecentTextFieldValueUiState.Success ->
+        is RecentTextFieldValueSuccess ->
             recentTextFieldValueUiState.recentValues
+    }
+    val appSettings = when (settingsUiState) {
+        is SettingsLoading -> AppSettings()
+        is SettingsSuccess -> settingsUiState.appSettings
     }
 
     Column(
@@ -170,7 +178,7 @@ fun Items(
         HintTextSwitchItem(
             primaryText = stringResource(R.string.use_js_api),
             secondaryText = stringResource(R.string.know_more),
-            isChecked = tempSettings.useJsApi,
+            isChecked = appSettings.useJsApi,
             isSwitchEnabled = false,
         )
         Text(
