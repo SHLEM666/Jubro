@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.text.SpannedString
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
@@ -54,6 +56,7 @@ fun HintTextSwitchItem(
     isChecked: Boolean,
     isSwitchEnabled: Boolean
 ) {
+    val alpha = if ( isSystemInDarkTheme() ) .45f else .55f
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
     if (showHintDialog) {
         HintDialog( onDismiss = { showHintDialog = false } )
@@ -99,6 +102,12 @@ fun HintTextSwitchItem(
                     // The Row click handles the toggle
                     onCheckedChange = null,
                     enabled = isSwitchEnabled,
+                    colors = SwitchDefaults.colors(
+                        disabledCheckedTrackColor = MaterialTheme
+                            .colorScheme.onSurface.copy(
+                                alpha = alpha
+                            ),
+                    )
                 )
             }
         }
