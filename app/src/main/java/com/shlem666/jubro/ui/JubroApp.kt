@@ -33,7 +33,7 @@ import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
 import com.shlem666.jubro.ui.toolbars.TopToolBarLayout
 import com.shlem666.jubro.feature.settings.SettingsDialog
 import com.shlem666.jubro.feature.settings.AppSettings
-import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.feature.settings.SettingsUiState.SettingsSuccess
 import com.shlem666.jubro.feature.settings.SettingsViewModel
 import com.shlem666.jubro.ui.webview.JubroWebView
 
@@ -53,8 +53,8 @@ fun JubroApp(
         SettingsDialog( onDismiss = { showSettingsDialog = false } )
     }
 
-    if (settingsUiState is Success) {
-        appSettings = (settingsUiState as Success).appSettings
+    if (settingsUiState is SettingsSuccess) {
+        appSettings = (settingsUiState as SettingsSuccess).appSettings
 
         HideStatusBar(!isCompact && appSettings.hideStatusBar)
         LockScreenOrientation(appSettings.screenOrient)

@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.shlem666.jubro.core.designsystem.theme.JubroTheme
 import com.shlem666.jubro.ui.JubroApp
 import com.shlem666.jubro.feature.settings.SettingsViewModel
-import com.shlem666.jubro.feature.settings.SettingsUiState.Success
+import com.shlem666.jubro.feature.settings.SettingsUiState.SettingsSuccess
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.settingsUiState.collect { uiState ->
-                    if (uiState is Success) {
+                    if (uiState is SettingsSuccess) {
                         darkTheme = uiState.appSettings.darkTheme
                         enableEdgeToEdge(
                             statusBarStyle = systemBarStyle,

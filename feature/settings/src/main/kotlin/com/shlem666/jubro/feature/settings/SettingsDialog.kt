@@ -35,10 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.shlem666.jubro.feature.settings.SettingsUiState.Loading as SettingsLoading
-import com.shlem666.jubro.feature.settings.SettingsUiState.Success as SettingsSuccess
-import com.shlem666.jubro.feature.settings.RecentTextFieldValueUiState.Loading as RecentTextFieldValueLoading
-import com.shlem666.jubro.feature.settings.RecentTextFieldValueUiState.Success as RecentTextFieldValueSuccess
+import com.shlem666.jubro.feature.settings.SettingsUiState.SettingsLoading
+import com.shlem666.jubro.feature.settings.SettingsUiState.SettingsSuccess
+import com.shlem666.jubro.feature.settings.RecentTextFieldValueUiState.RecentTextLoading
+import com.shlem666.jubro.feature.settings.RecentTextFieldValueUiState.RecentTextSuccess
 import com.shlem666.jubro.feature.settings.items.HintTextSwitchItem
 import com.shlem666.jubro.feature.settings.items.JupyterURLItem
 import com.shlem666.jubro.feature.settings.items.OrientationControlItem
@@ -114,9 +114,9 @@ fun Items(
 ) {
     val jupiterUrlFieldName = "jupyterUrl"
     val suggestions = when (recentTextFieldValueUiState) {
-        is RecentTextFieldValueLoading ->
+        is RecentTextLoading ->
             emptyList()
-        is RecentTextFieldValueSuccess ->
+        is RecentTextSuccess ->
             recentTextFieldValueUiState.recentValues
     }
     val appSettings = when (settingsUiState) {

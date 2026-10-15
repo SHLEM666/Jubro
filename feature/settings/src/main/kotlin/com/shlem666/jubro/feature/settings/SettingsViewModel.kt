@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 import com.shlem666.jubro.core.data.model.RecentTextFieldValue
 import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
@@ -45,7 +44,7 @@ class SettingsViewModel @Inject constructor(
     val settingsUiState: StateFlow<SettingsUiState> =
         userDataRepository.userData
             .map { userData ->
-                SettingsUiState.Success(
+                SettingsUiState.SettingsSuccess(
                     appSettings = AppSettings(
                         jupyterUrl = userData.jupyterUrl,
                         notchPadding =  userData.notchPadding,
@@ -58,18 +57,18 @@ class SettingsViewModel @Inject constructor(
             }
             .stateIn(
                 scope = viewModelScope,
-                started = WhileSubscribed(5.seconds.inWholeMilliseconds),
-                initialValue = SettingsUiState.Loading,
+                started = WhileSubscribed(5_000),
+                initialValue = SettingsUiState.SettingsLoading,
             )
 
     val recentTextFieldValueUiState: StateFlow<RecentTextFieldValueUiState> =
         getRecentTextValuesUseCase("jupyterUrl")
-        .map(RecentTextFieldValueUiState::Success)
-        .stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(5_000),
-            initialValue = RecentTextFieldValueUiState.Loading,
-        )
+            .map(RecentTextFieldValueUiState::RecentTextSuccess)
+            .stateIn(
+                scope = viewModelScope,
+                started = WhileSubscribed(5_000),
+                initialValue = RecentTextFieldValueUiState.RecentTextLoading,
+            )
 
     fun applySettings(settings: AppSettings) {
         viewModelScope.launch {
@@ -138,13 +137,13 @@ data class AppSettings(
 }
 
 sealed interface SettingsUiState {
-    data object Loading : SettingsUiState
-    data class Success(val appSettings: AppSettings) : SettingsUiState
+    data object SettingsLoading : SettingsUiState
+    data class SettingsSuccess(val appSettings: AppSettings) : SettingsUiState
 }
 
 sealed interface RecentTextFieldValueUiState {
-    data object Loading : RecentTextFieldValueUiState
-    data class Success(
+    data object RecentTextLoading : RecentTextFieldValueUiState
+    data class RecentTextSuccess(
         val recentValues: List<RecentTextFieldValue> = emptyList(),
     ) : RecentTextFieldValueUiState
 }
