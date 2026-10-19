@@ -15,12 +15,17 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import dagger.hilt.android.AndroidEntryPoint
 import com.shlem666.jubro.core.designsystem.theme.JubroTheme
+import com.shlem666.jubro.core.ui.snackbar.SnackbarManager
 import com.shlem666.jubro.ui.JubroApp
 import com.shlem666.jubro.feature.settings.SettingsViewModel
 import com.shlem666.jubro.feature.settings.SettingsUiState.SettingsSuccess
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var snackbarManager: SnackbarManager
 
     private val viewModel: SettingsViewModel by viewModels()
 
@@ -55,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             JubroTheme(darkTheme = darkTheme) {
-                JubroApp()
+                JubroApp(snackbarManager = snackbarManager)
             }
         }
     }

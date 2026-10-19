@@ -32,6 +32,7 @@ import com.shlem666.jubro.core.data.repository.UserDataRepository
 import com.shlem666.jubro.core.data.repository.CodeDataRepository
 import com.shlem666.jubro.core.data.repository.RecentTextRepository
 import com.shlem666.jubro.core.domain.GetRecentTextValuesUseCase
+import com.shlem666.jubro.core.ui.snackbar.SnackbarManager
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -39,6 +40,7 @@ class SettingsViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val codeDataRepository: CodeDataRepository,
     private val recentTextRepository: RecentTextRepository,
+    private val snackbarManager: SnackbarManager,
 ) : ViewModel() {
 
     val settingsUiState: StateFlow<SettingsUiState> =
@@ -100,6 +102,10 @@ class SettingsViewModel @Inject constructor(
 
     fun getCode(fileName: String) : String {
         return codeDataRepository.files[fileName] ?: ""
+    }
+
+    fun showMessage(massage: String) {
+        snackbarManager.showMessage(massage)
     }
 }
 

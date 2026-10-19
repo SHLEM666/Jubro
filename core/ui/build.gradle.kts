@@ -17,6 +17,7 @@
 plugins {
     alias(libs.plugins.jubro.android.library)
     alias(libs.plugins.jubro.android.library.compose)
+    alias(libs.plugins.jubro.hilt)
 }
 
 android {
@@ -24,5 +25,5 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.activity.compose)
 }

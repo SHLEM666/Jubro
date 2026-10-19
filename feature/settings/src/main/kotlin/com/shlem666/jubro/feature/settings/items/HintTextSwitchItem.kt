@@ -54,7 +54,8 @@ fun HintTextSwitchItem(
     primaryText: String,
     secondaryText: String,
     isChecked: Boolean,
-    isSwitchEnabled: Boolean
+    isSwitchEnabled: Boolean,
+    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val alpha = if ( isSystemInDarkTheme() ) .45f else .55f
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
@@ -67,6 +68,7 @@ fun HintTextSwitchItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
+        val message = stringResource(R.string.activates_automatically)
         Column (
             modifier = Modifier
                 .weight(1f)
@@ -86,7 +88,9 @@ fun HintTextSwitchItem(
         Row(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
-                .clickable { /* TODO: Add message about auto activation */ }
+                .clickable {
+                    viewModel.showMessage(message)
+                }
                 .padding(vertical = 16.dp)
             ,
             horizontalArrangement = Arrangement.SpaceEvenly,
