@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.shlem666.jubro.core.designsystem.theme.LocalSnackbarHostState
+import com.shlem666.jubro.core.ui.snackbar.JubroSnackbarManager
 import com.shlem666.jubro.core.ui.snackbar.SnackbarManager
 import com.shlem666.jubro.ui.toolbars.BottomToolBarLayout
 import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
@@ -48,14 +49,13 @@ import com.shlem666.jubro.feature.settings.AppSettings
 import com.shlem666.jubro.feature.settings.SettingsUiState.SettingsSuccess
 import com.shlem666.jubro.feature.settings.SettingsViewModel
 import com.shlem666.jubro.ui.webview.JubroWebView
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
 fun JubroApp(
     settingsViewModel: SettingsViewModel = hiltViewModel(),
-    snackbarManager: SnackbarManager,
+    snackbarManager: SnackbarManager = JubroSnackbarManager(),
 ) {
     val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
@@ -75,16 +75,7 @@ fun JubroApp(
         if (settingsUiState is SettingsSuccess) {
             appSettings = (settingsUiState as SettingsSuccess).appSettings
 
-            LaunchedEffect(Unit) {
-                var snackbarJob: Job? = null
-                snackbarManager.messages.collectLatest { message ->
-                    snackbarJob?.cancel()
-                    snackbarJob = launch {
-                        snackbarHostState.showSnackbar(message)
-                    }
-                }
-            }
-
+            SnackbarService(snackbarManager, snackbarHostState)
             HideStatusBar(!isCompact && appSettings.hideStatusBar)
             LockScreenOrientation(appSettings.screenOrient)
             HandleOnBackPressed()
@@ -120,6 +111,22 @@ fun JubroApp(
                     if (!isCompact) RightToolBarLayout {
                         showSettingsDialog = true
                     }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SnackbarService(
+    snackbarManager: SnackbarManager = JubroSnackbarManager(),
+    snackbarHostState: SnackbarHostState,
+) {
+    LaunchedEffect(Unit) {
+        snackbarManager.messages.collectLatest { message ->
+            if (snackbarHostState.currentSnackbarData == null) {
+                launch {
+                    snackbarHostState.showSnackbar(message)
                 }
             }
         }

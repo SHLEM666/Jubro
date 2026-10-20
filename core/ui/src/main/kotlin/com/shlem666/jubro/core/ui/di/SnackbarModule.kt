@@ -30,7 +30,7 @@ abstract class SnackbarModule {
 
     @Binds
     @Singleton
-    abstract fun bindSnackbarManager(
+    internal abstract fun bindSnackbarManager(
         jubroSnackbarManager: JubroSnackbarManager
     ): SnackbarManager
 }
