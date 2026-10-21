@@ -38,8 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.shlem666.jubro.core.designsystem.theme.LocalSnackbarHostState
-import com.shlem666.jubro.core.ui.snackbar.JubroSnackbarManager
-import com.shlem666.jubro.core.ui.snackbar.SnackbarManager
+import com.shlem666.jubro.core.ui.snackbar.SnackbarViewModel
 import com.shlem666.jubro.ui.toolbars.BottomToolBarLayout
 import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
 import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
@@ -54,8 +53,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun JubroApp(
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
-    snackbarManager: SnackbarManager = JubroSnackbarManager(),
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
     val isCompact = currentWindowAdaptiveInfo().windowSizeClass
@@ -75,7 +73,7 @@ fun JubroApp(
         if (settingsUiState is SettingsSuccess) {
             appSettings = (settingsUiState as SettingsSuccess).appSettings
 
-            SnackbarService(snackbarManager, snackbarHostState)
+            SnackbarService(snackbarHostState)
             HideStatusBar(!isCompact && appSettings.hideStatusBar)
             LockScreenOrientation(appSettings.screenOrient)
             HandleOnBackPressed()
@@ -119,15 +117,13 @@ fun JubroApp(
 
 @Composable
 fun SnackbarService(
-    snackbarManager: SnackbarManager = JubroSnackbarManager(),
     snackbarHostState: SnackbarHostState,
+    snackbarViewModel: SnackbarViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) {
-        snackbarManager.messages.collectLatest { message ->
-            if (snackbarHostState.currentSnackbarData == null) {
-                launch {
-                    snackbarHostState.showSnackbar(message)
-                }
+        snackbarViewModel.messages.collectLatest { message ->
+            this.launch {
+                snackbarHostState.showSnackbar(message)
             }
         }
     }

@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.shlem666.jubro.core.ui.snackbar.SnackbarViewModel
 import kotlinx.coroutines.launch
 import com.shlem666.jubro.feature.settings.R
 import com.shlem666.jubro.feature.settings.SettingsViewModel
@@ -55,7 +56,7 @@ fun HintTextSwitchItem(
     secondaryText: String,
     isChecked: Boolean,
     isSwitchEnabled: Boolean,
-    viewModel: SettingsViewModel = hiltViewModel(),
+    snackbarViewModel: SnackbarViewModel = hiltViewModel(),
 ) {
     val alpha = if ( isSystemInDarkTheme() ) .45f else .55f
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
@@ -89,7 +90,7 @@ fun HintTextSwitchItem(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
                 .clickable {
-                    viewModel.showMessage(message)
+                    snackbarViewModel.showMessage(message)
                 }
                 .padding(vertical = 16.dp)
             ,
