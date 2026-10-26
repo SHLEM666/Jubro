@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,6 +46,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import kotlinx.coroutines.launch
 import com.shlem666.jubro.feature.settings.R
 import com.shlem666.jubro.feature.settings.SettingsViewModel
@@ -54,12 +57,30 @@ fun HintTextSwitchItem(
     primaryText: String,
     secondaryText: String,
     isChecked: Boolean,
-    isSwitchEnabled: Boolean
+    isSwitchEnabled: Boolean,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
+    val message = stringResource(R.string.activates_automatically)
     val alpha = if ( isSystemInDarkTheme() ) .45f else .55f
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
     if (showHintDialog) {
         HintDialog( onDismiss = { showHintDialog = false } )
+    }
+
+    LaunchedEffect(viewModel.shouldDisplaySnackbar) {
+        if (viewModel.shouldDisplaySnackbar) {
+            val snackBarResult = onShowSnackbar(message, null)
+            if (snackBarResult) {
+                /* Do nothing */
+            } else {
+                viewModel.hideSnackbar()
+            }
+        }
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        viewModel.hideSnackbar()
     }
 
     Row(
@@ -86,7 +107,7 @@ fun HintTextSwitchItem(
         Row(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
-                .clickable { /* TODO: Add message about auto activation */ }
+                .clickable { viewModel.showSnackbar() }
                 .padding(vertical = 16.dp)
             ,
             horizontalArrangement = Arrangement.SpaceEvenly,

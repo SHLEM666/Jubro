@@ -7,7 +7,10 @@ import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutoutPadding
+import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,10 +19,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
@@ -27,6 +36,7 @@ import androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_B
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.shlem666.jubro.core.designsystem.theme.LocalSnackbarHostState
 import com.shlem666.jubro.ui.toolbars.BottomToolBarLayout
 import com.shlem666.jubro.ui.toolbars.LeftToolBarLayout
 import com.shlem666.jubro.ui.toolbars.RightToolBarLayout
@@ -47,39 +57,53 @@ fun JubroApp(
     var appSettings by rememberSaveable(stateSaver = AppSettings.Saver) {
         mutableStateOf( AppSettings() )
     }
-
+    val snackbarHostState = remember { SnackbarHostState() }
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
-    if (showSettingsDialog) {
-        SettingsDialog( onDismiss = { showSettingsDialog = false } )
-    }
 
-    if (settingsUiState is SettingsSuccess) {
-        appSettings = (settingsUiState as SettingsSuccess).appSettings
+    CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
 
-        HideStatusBar(!isCompact && appSettings.hideStatusBar)
-        LockScreenOrientation(appSettings.screenOrient)
-        HandleOnBackPressed()
+        if (showSettingsDialog) {
+            SettingsDialog( onDismiss = { showSettingsDialog = false } )
+        }
 
-        Scaffold(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-                .imePadding()
-                .then(if (appSettings.notchPadding) {
-                    Modifier.displayCutoutPadding()
-                } else { Modifier } )
-            ,
-            topBar = { if (isCompact) TopToolBarLayout {
-                showSettingsDialog = true
-            } },
-            bottomBar = { if (isCompact) BottomToolBarLayout() },
-        ) { innerPadding ->
-            Row ( Modifier.padding(innerPadding) ) {
-                if (!isCompact) LeftToolBarLayout()
-                Box( Modifier.weight(1f) ) {
-                    JubroWebView(appSettings.jupyterUrl)
-                }
-                if (!isCompact) RightToolBarLayout {
+        if (settingsUiState is SettingsSuccess) {
+            appSettings = (settingsUiState as SettingsSuccess).appSettings
+
+            HideStatusBar(!isCompact && appSettings.hideStatusBar)
+            LockScreenOrientation(appSettings.screenOrient)
+            HandleOnBackPressed()
+
+            Scaffold(
+                modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.background)
+                    .imePadding()
+                    .then(if (appSettings.notchPadding) {
+                        Modifier.displayCutoutPadding()
+                    } else { Modifier } )
+                ,
+                topBar = { if (isCompact) TopToolBarLayout {
                     showSettingsDialog = true
+                } },
+                bottomBar = { if (isCompact) BottomToolBarLayout() },
+                snackbarHost = {
+                    SnackbarHost(
+                        snackbarHostState,
+                        modifier = Modifier.windowInsetsPadding(
+                            WindowInsets.safeDrawing.exclude(
+                                WindowInsets.ime,
+                            ),
+                        ),
+                    )
+                },
+            ) { innerPadding ->
+                Row(Modifier.padding(innerPadding)) {
+                    if (!isCompact) LeftToolBarLayout()
+                    Box(Modifier.weight(1f)) {
+                        JubroWebView(appSettings.jupyterUrl)
+                    }
+                    if (!isCompact) RightToolBarLayout {
+                        showSettingsDialog = true
+                    }
                 }
             }
         }
