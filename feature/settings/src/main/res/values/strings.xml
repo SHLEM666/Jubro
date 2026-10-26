@@ -10,7 +10,8 @@
     <string name="hide_status_bar_in_landscape">Hide status bar in landscape</string>
     <string name="use_js_api">Jupyter JavaScript API</string>
     <string name="activates_automatically">Activates automatically</string>
-    <string name="know_more">Would you like to know more?</string>
+    <string name="would_know_more">Would you like to know more?</string>
+    <string name="know_more">Know more</string>
 
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>

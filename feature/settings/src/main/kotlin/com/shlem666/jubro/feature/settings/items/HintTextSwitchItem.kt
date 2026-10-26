@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,6 +63,7 @@ fun HintTextSwitchItem(
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val message = stringResource(R.string.activates_automatically)
+    val actionLabel = stringResource(R.string.know_more)
     val alpha = if ( isSystemInDarkTheme() ) .45f else .55f
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
     if (showHintDialog) {
@@ -70,17 +72,23 @@ fun HintTextSwitchItem(
 
     LaunchedEffect(viewModel.shouldDisplaySnackbar) {
         if (viewModel.shouldDisplaySnackbar) {
-            val snackBarResult = onShowSnackbar(message, null)
-            if (snackBarResult) {
-                /* Do nothing */
-            } else {
-                viewModel.hideSnackbar()
+            if (
+                onShowSnackbar(message, actionLabel)
+            ) {
+                showHintDialog = true
             }
+            viewModel.hideSnackbar()
         }
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
         viewModel.hideSnackbar()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.hideSnackbar()
+        }
     }
 
     Row(
