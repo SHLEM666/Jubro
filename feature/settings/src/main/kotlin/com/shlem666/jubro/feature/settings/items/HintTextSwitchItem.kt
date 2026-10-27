@@ -60,34 +60,34 @@ fun HintTextSwitchItem(
     isChecked: Boolean,
     isSwitchEnabled: Boolean,
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val message = stringResource(R.string.activates_automatically)
     val actionLabel = stringResource(R.string.know_more)
     val alpha = if ( isSystemInDarkTheme() ) .45f else .55f
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
+    var showSnackbar by rememberSaveable { mutableStateOf(false) }
     if (showHintDialog) {
         HintDialog( onDismiss = { showHintDialog = false } )
     }
 
-    LaunchedEffect(viewModel.shouldDisplaySnackbar) {
-        if (viewModel.shouldDisplaySnackbar) {
+    LaunchedEffect(showSnackbar) {
+        if (showSnackbar) {
             if (
                 onShowSnackbar(message, actionLabel)
             ) {
                 showHintDialog = true
             }
-            viewModel.hideSnackbar()
+            showSnackbar = false
         }
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        viewModel.hideSnackbar()
+        showSnackbar = false
     }
 
     DisposableEffect(Unit) {
         onDispose {
-            viewModel.hideSnackbar()
+            showSnackbar = false
         }
     }
 
@@ -115,7 +115,7 @@ fun HintTextSwitchItem(
         Row(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
-                .clickable { viewModel.showSnackbar() }
+                .clickable { showSnackbar = true }
                 .padding(vertical = 16.dp)
             ,
             horizontalArrangement = Arrangement.SpaceEvenly,

@@ -17,10 +17,7 @@
 package com.shlem666.jubro.feature.settings
 
 import android.content.pm.ActivityInfo
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,8 +40,6 @@ class SettingsViewModel @Inject constructor(
     private val codeDataRepository: CodeDataRepository,
     private val recentTextRepository: RecentTextRepository,
 ) : ViewModel() {
-
-    var shouldDisplaySnackbar by mutableStateOf(false)
 
     val settingsUiState: StateFlow<SettingsUiState> =
         userDataRepository.userData
@@ -74,18 +69,6 @@ class SettingsViewModel @Inject constructor(
                 started = WhileSubscribed(5_000),
                 initialValue = RecentTextFieldValueUiState.RecentTextLoading,
             )
-
-    fun showSnackbar() {
-        viewModelScope.launch {
-            shouldDisplaySnackbar = true
-        }
-    }
-
-    fun hideSnackbar() {
-        viewModelScope.launch {
-            shouldDisplaySnackbar = false
-        }
-    }
 
     fun applySettings(settings: AppSettings) {
         viewModelScope.launch {
