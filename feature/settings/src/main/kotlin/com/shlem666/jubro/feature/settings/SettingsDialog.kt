@@ -23,9 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarResult.ActionPerformed
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -124,7 +122,6 @@ fun Items(
     recentTextFieldValueUiState: RecentTextFieldValueUiState,
     settingsUiState: SettingsUiState,
 ) {
-    val snackbarHostState = LocalSnackbarHostState.current
     val jupiterUrlFieldName = "jupyterUrl"
     val suggestions = when (recentTextFieldValueUiState) {
         is RecentTextLoading ->
@@ -193,13 +190,6 @@ fun Items(
             secondaryText = stringResource(R.string.would_know_more),
             isChecked = appSettings.useJsApi,
             isSwitchEnabled = false,
-            onShowSnackbar = { message, action ->
-                snackbarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = action,
-                    duration = SnackbarDuration.Short,
-                ) == ActionPerformed
-            },
         )
         Text(
             modifier = Modifier.padding(vertical = 16.dp),

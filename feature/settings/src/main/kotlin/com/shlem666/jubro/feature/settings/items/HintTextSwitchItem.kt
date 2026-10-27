@@ -27,8 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,9 +45,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import kotlinx.coroutines.launch
+import com.shlem666.jubro.core.ui.snackbar.JubroSnackbar
 import com.shlem666.jubro.feature.settings.R
 import com.shlem666.jubro.feature.settings.SettingsViewModel
 
@@ -59,37 +56,22 @@ fun HintTextSwitchItem(
     secondaryText: String,
     isChecked: Boolean,
     isSwitchEnabled: Boolean,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
-    val message = stringResource(R.string.activates_automatically)
-    val actionLabel = stringResource(R.string.know_more)
     val alpha = if ( isSystemInDarkTheme() ) .45f else .55f
     var showHintDialog by rememberSaveable { mutableStateOf(false) }
-    var showSnackbar by rememberSaveable { mutableStateOf(false) }
     if (showHintDialog) {
         HintDialog( onDismiss = { showHintDialog = false } )
     }
 
-    LaunchedEffect(showSnackbar) {
-        if (showSnackbar) {
-            if (
-                onShowSnackbar(message, actionLabel)
-            ) {
-                showHintDialog = true
-            }
-            showSnackbar = false
-        }
-    }
+    var showSnackbar by rememberSaveable { mutableStateOf(false) }
 
-    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        showSnackbar = false
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            showSnackbar = false
-        }
-    }
+    JubroSnackbar(
+        trigger = showSnackbar,
+        hide = { showSnackbar = false },
+        message = stringResource(R.string.activates_automatically),
+        actionLabel = stringResource(R.string.know_more),
+        onAction = { showHintDialog = true }
+    )
 
     Row(
         modifier = Modifier.fillMaxWidth(),
