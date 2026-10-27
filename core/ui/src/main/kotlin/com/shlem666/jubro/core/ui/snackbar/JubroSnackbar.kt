@@ -1,45 +1,45 @@
 package com.shlem666.jubro.core.ui.snackbar
 
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import com.shlem666.jubro.core.designsystem.theme.LocalSnackbarHostState
 
 @Composable
 fun JubroSnackbar(
+    hostState: SnackbarHostState,
     trigger: Boolean,
-    hide: () -> Unit,
+    hideSnackbar: () -> Unit,
     message: String,
     actionLabel: String? = null,
     onAction: () -> Unit = { },
 ) {
-
-    val snackbarHostState = LocalSnackbarHostState.current
-
     LaunchedEffect(trigger) {
         if (trigger) {
             if (
-                showSnackbar(
-                    hostState = snackbarHostState,
+                hostState.showSnackbar(
                     message = message,
-                    action = actionLabel,
-                )
+                    actionLabel = actionLabel,
+                    duration = SnackbarDuration.Short,
+                ) == SnackbarResult.ActionPerformed
             ) {
                 onAction()
             }
-            hide()
+            hideSnackbar()
         }
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        hide()
+        hideSnackbar()
     }
 
     DisposableEffect(Unit) {
         onDispose {
-            hide()
+            hideSnackbar()
         }
     }
 }

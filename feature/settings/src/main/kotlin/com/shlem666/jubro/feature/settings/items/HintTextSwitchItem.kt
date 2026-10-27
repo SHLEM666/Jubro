@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.shlem666.jubro.core.designsystem.theme.LocalSnackbarHostState
 import kotlinx.coroutines.launch
 import com.shlem666.jubro.core.ui.snackbar.JubroSnackbar
 import com.shlem666.jubro.feature.settings.R
@@ -64,10 +65,10 @@ fun HintTextSwitchItem(
     }
 
     var showSnackbar by rememberSaveable { mutableStateOf(false) }
-
     JubroSnackbar(
+        hostState = LocalSnackbarHostState.current,
         trigger = showSnackbar,
-        hide = { showSnackbar = false },
+        hideSnackbar = { showSnackbar = false },
         message = stringResource(R.string.activates_automatically),
         actionLabel = stringResource(R.string.know_more),
         onAction = { showHintDialog = true }
