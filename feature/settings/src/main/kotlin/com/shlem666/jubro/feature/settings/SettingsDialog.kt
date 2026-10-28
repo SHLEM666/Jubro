@@ -187,7 +187,7 @@ fun Items(
         )
         HintTextSwitchItem(
             primaryText = stringResource(R.string.use_js_api),
-            secondaryText = stringResource(R.string.know_more),
+            secondaryText = stringResource(R.string.would_know_more),
             isChecked = appSettings.useJsApi,
             isSwitchEnabled = false,
         )

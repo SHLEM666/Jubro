@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.shlem666.jubro.core.ui.snackbar.SnackbarEvent
 import com.shlem666.jubro.core.ui.snackbar.SnackbarViewModel
 import kotlinx.coroutines.launch
 import com.shlem666.jubro.feature.settings.R
@@ -64,12 +66,19 @@ fun HintTextSwitchItem(
         HintDialog( onDismiss = { showHintDialog = false } )
     }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            snackbarViewModel.dismiss()
+        }
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         val message = stringResource(R.string.activates_automatically)
+        val actionLabel = stringResource(R.string.know_more)
         Column (
             modifier = Modifier
                 .weight(1f)
@@ -90,7 +99,13 @@ fun HintTextSwitchItem(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
                 .clickable {
-                    snackbarViewModel.showMessage(message)
+                    snackbarViewModel.showMessage(
+                        SnackbarEvent(
+                            message = message,
+                            actionLabel = actionLabel,
+                            onAction = { showHintDialog = true }
+                        )
+                    )
                 }
                 .padding(vertical = 16.dp)
             ,

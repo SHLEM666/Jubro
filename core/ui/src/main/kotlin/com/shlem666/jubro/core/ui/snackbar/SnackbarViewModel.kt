@@ -8,13 +8,23 @@ import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 class SnackbarViewModel @Inject constructor() : ViewModel() {
-    private val _messages = MutableSharedFlow<String>(
+    private val _messages = MutableSharedFlow<SnackbarEvent?>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
-    val messages: SharedFlow<String> = _messages.asSharedFlow()
+    val messages: SharedFlow<SnackbarEvent?> = _messages.asSharedFlow()
 
-    fun showMessage(message: String) {
-        _messages.tryEmit(message)
+    fun showMessage(event: SnackbarEvent) {
+        _messages.tryEmit(event)
+    }
+
+    fun dismiss() {
+        _messages.tryEmit(null)
     }
 }
+
+data class SnackbarEvent(
+    val message: String,
+    val actionLabel: String? = null,
+    val onAction: (() -> Unit)? = null
+)

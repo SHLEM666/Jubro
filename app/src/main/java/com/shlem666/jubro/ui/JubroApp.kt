@@ -23,8 +23,10 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -121,9 +123,21 @@ fun SnackbarService(
     snackbarViewModel: SnackbarViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) {
-        snackbarViewModel.messages.collectLatest { message ->
-            this.launch {
-                snackbarHostState.showSnackbar(message)
+        snackbarViewModel.messages.collectLatest { event ->
+            if (event != null) {
+                this.launch {
+                    if (
+                        snackbarHostState.showSnackbar(
+                            message = event.message,
+                            actionLabel = event.actionLabel,
+                            duration = SnackbarDuration.Short
+                        ) == SnackbarResult.ActionPerformed
+                    ) {
+                        event.onAction?.invoke()
+                    }
+                }
+            } else {
+                snackbarHostState.currentSnackbarData?.visuals.
             }
         }
     }
